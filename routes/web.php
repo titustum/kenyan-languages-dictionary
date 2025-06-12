@@ -7,6 +7,9 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
+// explore
+Route::view('explore', 'explore')->name('explore');
+
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
