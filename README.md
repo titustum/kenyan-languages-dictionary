@@ -33,7 +33,7 @@ Users can explore words with images, audio pronunciations, and cultural context.
    ```bash
    git clone https://github.com/yourusername/kenyan-languages-dictionary.git
    cd kenyan-languages-dictionary
-````
+   ```
 
 2. Install PHP dependencies
 
