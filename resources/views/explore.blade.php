@@ -8,6 +8,46 @@
                 </p>
             </div>
 
+            @php
+            $selectedLanguage = "All";
+            @endphp
+
+            <!-- Language Filter Section - Horizontally Scrollable -->
+            <div class="mb-12 py-3">
+                <h3 class="text-lg font-medium text-gray-300 mb-4 text-center">Filter by Language:</h3>
+                <div class="flex flex-row items-center justify-start sm:justify-center space-x-3 sm:space-x-4
+                            overflow-x-auto pb-4 px-2 sm:px-0 scrollbar-hide">
+                    {{-- All Languages Button --}}
+                    <button wire:click="filterByLanguage('')"
+                        class="flex-shrink-0 px-6 py-2 rounded-full text-sm font-semibold whitespace-nowrap
+                                {{ $selectedLanguage === '' ? 'bg-purple-600 text-white shadow-lg' : 'bg-gray-700 text-gray-300 hover:bg-gray-600' }}
+                                transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-900">
+                        All Languages
+                    </button>
+
+                    {{-- Dynamic Language Buttons --}}
+                    {{-- Replace this with a foreach loop for your actual languages from the Livewire component --}}
+                    @php
+                    $languages = [
+                    'Swahili', 'Gikuyu', 'Luo', 'Kalenjin', 'Kamba', 'Maasai',
+                    'Luhya', 'Kisii', 'Meru', 'Embu', 'Taita', 'Pokot', 'Turkana',
+                    'Samburu', 'Somali', 'Borana', 'Rendille'
+                    ];
+                    @endphp
+
+                    @foreach ($languages as $language)
+                    <button wire:click="filterByLanguage('{{ $language }}')"
+                        class="flex-shrink-0 px-6 py-2 rounded-full text-sm font-semibold whitespace-nowrap
+                                    {{ $selectedLanguage === $language ? 'bg-purple-600 text-white shadow-lg' : 'bg-gray-700 text-gray-300 hover:bg-gray-600' }}
+                                    transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-900">
+                        {{ $language }}
+                    </button>
+                    @endforeach
+                    {{-- End Dynamic Language Buttons --}}
+                </div>
+            </div>
+            <!-- End Language Filter Section -->
+
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
 
                 @foreach ($entries as $entry)
@@ -51,8 +91,6 @@
                     </div>
                 </div>
                 @endforeach
-
-
 
             </div>
         </div>

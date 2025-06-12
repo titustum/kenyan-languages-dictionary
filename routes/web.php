@@ -8,7 +8,7 @@ Route::get('/', function () {
 })->name('home');
 
 // explore
-Route::view('explore', [App\Http\Controllers\DictionaryEntryController::class, 'index'])->name('explore');
+Route::get('explore', [App\Http\Controllers\DictionaryEntryController::class, 'index'])->name('explore');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
