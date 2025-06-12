@@ -58,4 +58,10 @@ class User extends Authenticatable
             ->map(fn ($word) => Str::substr($word, 0, 1))
             ->implode('');
     }
+
+    // Relation: User has many dictionary entries
+    public function dictionaryEntries()
+    {
+        return $this->hasMany(DictionaryEntry::class);
+    }
 }

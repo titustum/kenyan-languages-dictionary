@@ -9,21 +9,33 @@
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                <!-- Dictionary Entry Card 1: Jambo (Swahili) -->
+
+                @foreach ($entries as $entry)
                 <div
                     class="bg-gray-800 rounded-2xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl">
-                    <img src="https://placehold.co/600x400/1f2937/d1d5db?text=Greetings" alt="People greeting"
-                        class="w-full h-48 object-cover">
+
+                    {{-- Image --}}
+                    <img src="{{ $entry->image_path ? asset('storage/' . $entry->image_path) : 'https://placehold.co/600x400/1f2937/d1d5db?text=' . urlencode($entry->category ?? 'Word') }}"
+                        alt="{{ $entry->word }}" class="w-full h-48 object-cover">
+
                     <div class="p-6">
-                        <h3 class="text-2xl font-bold text-white mb-2">Jambo</h3>
-                        <p class="text-sm text-gray-400 mb-4">Swahili - "Hello"</p>
-                        <p class="text-gray-300 text-base mb-4">A common greeting used across Kenya, meaning "Hello" or
-                            "How are you?".</p>
+                        {{-- Word and Translation --}}
+                        <h3 class="text-2xl font-bold text-white mb-2">{{ ucfirst($entry->word) }}</h3>
+                        <p class="text-sm text-gray-400 mb-4">
+                            {{ $entry->language->name ?? 'Unknown Language' }} - "{{ $entry->translation_en }}"
+                        </p>
+
+                        {{-- Example Sentence --}}
+                        @if($entry->example_sentence)
+                        <p class="text-gray-300 text-base mb-4">{{ $entry->example_sentence }}</p>
+                        @endif
+
+                        {{-- Audio Button --}}
                         <div class="flex items-center justify-between">
+                            @if($entry->audio_path)
                             <button
                                 class="bg-purple-600 text-white p-2 rounded-full hover:bg-purple-700 transition duration-200"
-                                onclick="playAudio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3')">
-                                <!-- Placeholder Audio URL -->
+                                onclick="playAudio('{{ asset('storage/' . $entry->audio_path) }}')">
                                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd"
@@ -32,92 +44,15 @@
                                 </svg>
                             </button>
                             <span class="text-sm text-gray-500">Listen</span>
+                            @else
+                            <span class="text-sm text-gray-500 italic">No audio</span>
+                            @endif
                         </div>
                     </div>
                 </div>
+                @endforeach
 
-                <!-- Dictionary Entry Card 2: Asante (Swahili) -->
-                <div
-                    class="bg-gray-800 rounded-2xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl">
-                    <img src="https://placehold.co/600x400/1f2937/d1d5db?text=Thank+You" alt="Handshake"
-                        class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-bold text-white mb-2">Asante</h3>
-                        <p class="text-sm text-gray-400 mb-4">Swahili - "Thank you"</p>
-                        <p class="text-gray-300 text-base mb-4">A polite expression of gratitude, widely understood and
-                            appreciated.</p>
-                        <div class="flex items-center justify-between">
-                            <button
-                                class="bg-purple-600 text-white p-2 rounded-full hover:bg-purple-700 transition duration-200"
-                                onclick="playAudio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3')">
-                                <!-- Placeholder Audio URL -->
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd"
-                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
-                                        clip-rule="evenodd"></path>
-                                </svg>
-                            </button>
-                            <span class="text-sm text-gray-500">Listen</span>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Dictionary Entry Card 3: Habari (Swahili) -->
-                <div
-                    class="bg-gray-800 rounded-2xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl">
-                    <img src="https://placehold.co/600x400/1f2937/d1d5db?text=News" alt="Person reading news"
-                        class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-bold text-white mb-2">Habari</h3>
-                        <p class="text-sm text-gray-400 mb-4">Swahili - "News/How are you?"</p>
-                        <p class="text-gray-300 text-base mb-4">Translates to "news" but commonly used as a greeting
-                            asking "How are you?".</p>
-                        <div class="flex items-center justify-between">
-                            <button
-                                class="bg-purple-600 text-white p-2 rounded-full hover:bg-purple-700 transition duration-200"
-                                onclick="playAudio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3')">
-                                <!-- Placeholder Audio URL -->
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd"
-                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
-                                        clip-rule="evenodd"></path>
-                                </svg>
-                            </button>
-                            <span class="text-sm text-gray-500">Listen</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Dictionary Entry Card 4: Nyumba (Gikuyu) -->
-                <div
-                    class="bg-gray-800 rounded-2xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl">
-                    <img src="https://placehold.co/600x400/1f2937/d1d5db?text=House" alt="Traditional house"
-                        class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-bold text-white mb-2">Nyumba</h3>
-                        <p class="text-sm text-gray-400 mb-4">Gikuyu - "House"</p>
-                        <p class="text-gray-300 text-base mb-4">A dwelling place, central to family life in Kikuyu
-                            culture.</p>
-                        <div class="flex items-center justify-between">
-                            <button
-                                class="bg-purple-600 text-white p-2 rounded-full hover:bg-purple-700 transition duration-200"
-                                onclick="playAudio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3')">
-                                <!-- Placeholder Audio URL -->
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd"
-                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
-                                        clip-rule="evenodd"></path>
-                                </svg>
-                            </button>
-                            <span class="text-sm text-gray-500">Listen</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Add more dictionary entries as needed, following the same structure -->
 
             </div>
         </div>
