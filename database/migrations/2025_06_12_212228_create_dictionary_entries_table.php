@@ -13,16 +13,14 @@ return new class extends Migration
     {
         Schema::create('dictionary_entries', function (Blueprint $table) {
             $table->id();
-
             // Foreign keys
             $table->foreignId('language_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete(); 
             // Word details
             $table->string('word');
             $table->string('slug')->unique();
             $table->string('translation_en');
-            $table->string('category')->nullable();  // e.g. animal, food
+            $table->foreignId('category_id')->constrained()->cascadeOnDelete(); // e.g. animal, food
             $table->string('image_path')->nullable();
             $table->string('audio_path')->nullable();
             $table->text('example_sentence')->nullable();

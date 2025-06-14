@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\DictionaryEntryController;
+use App\Http\Controllers\LanguageController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
@@ -8,7 +10,8 @@ Route::get('/', function () {
 })->name('home');
 
 // explore
-Route::get('explore', [App\Http\Controllers\DictionaryEntryController::class, 'index'])->name('explore');
+Route::resource('languages', LanguageController::class);
+Route::resource('words', DictionaryEntryController::class);
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
@@ -21,5 +24,9 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('settings/password', 'settings.password')->name('settings.password');
     Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
 });
+
+Route::get('/languages/{language:slug}/entries', [DictionaryEntryController::class, 'entriesByLanguage'])
+    ->name('languages.entries');
+
 
 require __DIR__.'/auth.php';

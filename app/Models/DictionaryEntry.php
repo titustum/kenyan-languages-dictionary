@@ -15,8 +15,8 @@ class DictionaryEntry extends Model
         'user_id',
         'word',
         'slug',
-        'translation_en',
-        'category',
+        'category_id', // Category ID for grouping entries
+        'translation_en', // English translation
         'image_path',
         'audio_path',
         'example_sentence',
@@ -31,6 +31,17 @@ class DictionaryEntry extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    // Use slug instead of id for route model binding
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 
     // Automatically generate slug before saving

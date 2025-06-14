@@ -2,20 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DictionaryEntry;
-use App\Models\Language;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
-class LanguageController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('languages.index', [
-            'languages' => Language::all(),
-        ]);
+        //
     }
 
     /**
@@ -37,18 +34,15 @@ class LanguageController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Language $language)
+    public function show(Category $category)
     {
-        return view('languages.show', [
-            'language' => $language,
-            'dictionaryEntries' => $language->dictionaryEntries()->paginate(10),
-        ]);
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Language $language)
+    public function edit(Category $category)
     {
         //
     }
@@ -56,7 +50,7 @@ class LanguageController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Language $language)
+    public function update(Request $request, Category $category)
     {
         //
     }
@@ -64,7 +58,7 @@ class LanguageController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Language $language)
+    public function destroy(Category $category)
     {
         //
     }

@@ -4,28 +4,27 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Support\Str;
 
-class Language extends Model
+class Category extends Model
 {
-    use HasFactory;
+    use HasFactory; 
 
     protected $fillable = [
+        'user_id',
         'name',
         'slug',
-        'description',
-        'region',
-        'color',
-        'image_path',
         'icon',
     ];
 
-    // Relation: Language has many dictionary entries
+    // Relations
     public function dictionaryEntries()
     {
         return $this->hasMany(DictionaryEntry::class);
     }
-
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
     // Use slug instead of id for route model binding
     public function getRouteKeyName()
     {

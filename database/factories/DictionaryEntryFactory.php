@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
 use App\Models\DictionaryEntry;
 use App\Models\Language;
 use App\Models\User;
@@ -29,11 +30,10 @@ class DictionaryEntryFactory extends Factory
         return [
             'language_id' => Language::inRandomOrder()->first()->id ?? Language::factory(),
             'user_id' => User::inRandomOrder()->first()->id ?? User::factory(),
-
+            'category_id' => Category::inRandomOrder()->first()->id ?? Category::factory(),
             'word' => $word,
             'slug' => Str::slug($word) . '-' . Str::random(4),
             'translation_en' => $this->faker->word(),
-            'category' => $this->faker->randomElement(['animal', 'food', 'object', 'greeting', 'body', 'action']),
             'image_path' => 'images/sample-' . rand(1, 5) . '.jpg', // replace with actual sample images later
             'audio_path' => 'audio/sample-' . rand(1, 5) . '.mp3',   // replace with actual sample audio later
             'example_sentence' => $this->faker->sentence(),
