@@ -90,7 +90,7 @@
                 <div class="bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-700">
                     <h2 class="text-2xl font-bold text-white mb-6">Quick Actions</h2>
                     <div class="flex flex-col space-y-4">
-                        <a href="#"
+                        <a href="{{ route('entries.create') }}"
                             class="w-full bg-gradient-to-r from-purple-600 to-indigo-700 text-white py-3 px-6 rounded-lg text-lg font-semibold text-center
                                           hover:from-purple-700 hover:to-indigo-800 transition duration-300 ease-in-out transform hover:-translate-y-0.5 shadow-md">
                             Add New Word Entry
