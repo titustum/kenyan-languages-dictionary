@@ -1,4 +1,4 @@
-<x-layouts.app.portal :title="__('Dashboard')">
+<x-layouts.app :title="__('Dashboard')">
     <section class="py-12 bg-gray-900 min-h-screen rounded-md text-white">
         <div class="max-w-7xl mx-auto px-4 lg:px-8">
 
@@ -111,4 +111,4 @@
 
         </div>
     </section>
-</x-layouts.app.portal>
+</x-layouts.app>
