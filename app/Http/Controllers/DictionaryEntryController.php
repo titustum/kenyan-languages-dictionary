@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\DictionaryEntry;
 use App\Models\Language;
 use Illuminate\Http\Request;
@@ -71,22 +72,21 @@ class DictionaryEntryController extends Controller
     public function entriesByLanguage(Request $request, Language $language)
     {
         $query = $language->dictionaryEntries()->with(['user', 'category']);
-
+        // Apply search filter if present
         if ($search = $request->get('search')) {
-            $query->where('word', 'like', '%' . $search . '%')
-                ->orWhere('translation_en', 'like', '%' . $search . '%');
+            $query->where(function ($q) use ($search) {
+                $q->where('word', 'like', '%' . $search . '%')
+                  ->orWhere('translation_en', 'like', '%' . $search . '%');
+            });
         }
-
+        // Apply category filter if present
         if ($categorySlug = $request->get('category')) {
             $query->whereHas('category', function ($q) use ($categorySlug) {
                 $q->where('slug', $categorySlug);
             });
         }
-
-        $entries = $query->latest()->get();
-
-        $categories = \App\Models\Category::orderBy('name')->get();
-
+        $entries = $query->latest()->paginate(12); // You can adjust the number of items per page
+        $categories = Category::orderBy('name')->get(); 
         return view('languages.entries', compact('language', 'entries', 'categories'));
     }
 }

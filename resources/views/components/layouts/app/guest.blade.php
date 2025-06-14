@@ -142,10 +142,10 @@
                     <a href="#features" class="hover:text-purple-400 transition-colors">Features</a>
                     <a href="#languages" class="hover:text-purple-400 transition-colors">Languages</a>
                     <a href="#community" class="hover:text-purple-400 transition-colors">Community</a>
-                    <button
+                    <a href="{{ route('login') }}"
                         class="bg-gradient-to-r from-purple-600 to-red-600 px-6 py-2 rounded-full hover:shadow-lg transition-all">
                         Get Started
-                    </button>
+                    </a>
                 </div>
 
                 <!-- Mobile/Tablet Navigation -->
