@@ -11,7 +11,7 @@ Route::get('/', function () {
 
 // explore
 Route::resource('languages', LanguageController::class);
-Route::resource('words', DictionaryEntryController::class);
+Route::resource('entries', DictionaryEntryController::class);
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])

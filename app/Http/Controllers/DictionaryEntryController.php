@@ -23,9 +23,18 @@ class DictionaryEntryController extends Controller
      */
     public function create()
     {
-        //
-    }
+        $categories = Category::orderBy('name')->get();
+        $languages = Language::orderBy('name')->get();
 
+        return view('admin.entries.create', [
+            'categories' => $categories,
+            'languages' => $languages,
+            'image_path' => null, // prevent undefined variable
+            'audio_path' => null, // prevent undefined variable
+            'existing_audio_path' => null, // prevent undefined variable
+            'existing_image_path' => null, // same here if needed
+        ]);
+    }
     /**
      * Store a newly created resource in storage.
      */

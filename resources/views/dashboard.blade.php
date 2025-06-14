@@ -1,6 +1,6 @@
 <x-layouts.app :title="__('Dashboard')">
     <section class="py-12 bg-gray-900 min-h-screen rounded-md text-white">
-        <div class="max-w-7xl mx-auto px-4 lg:px-8">
+        <div class="max-w-8xl mx-auto px-4 lg:px-8">
 
             <!-- Welcome Header -->
             <div class="mb-10 text-center">

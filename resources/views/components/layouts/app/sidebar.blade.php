@@ -278,7 +278,7 @@
                 x-transition:leave="transition ease-in duration-200 transform"
                 x-transition:leave-start="opacity-100 translate-x-0"
                 x-transition:leave-end="opacity-0 -translate-x-full"
-                class="fixed inset-y-0 left-0 w-64 sidebar-bg border-r border-gray-800 p-6 z-50 flex flex-col shadow-xl"
+                class="fixed inset-y-0 left-0 w-64 sidebar-bg border-r  border-gray-800 p-6 z-50 flex flex-col shadow-xl"
                 @click.away="open = false" style="display: none;">
                 <button @click="open = false"
                     class="absolute top-4 right-4 text-gray-400 hover:text-white focus:outline-none">
@@ -364,7 +364,7 @@
         </header>
 
         <!-- Main content area -->
-        <main class="flex-grow p-4 main-content-bg">
+        <main class="flex-grow p-4 bg-gray-900">
             {{ $slot }}
         </main>
     </div>
