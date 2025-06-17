@@ -11,6 +11,14 @@ use Illuminate\Support\Facades\Auth;
 
 class MainController extends Controller
 {
+    public function viewLanguages()
+    {
+        return view('languages', [
+            'languages' => Language::all(),
+        ]);
+    }
+
+
     public function contribute(){
         $languages = Language::all();
         $categories = Category::all(); 
@@ -63,5 +71,37 @@ class MainController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Word successfully contributed!');
-    } 
+    }
+    
+    /**
+     * Display entries for a specific language.
+     */
+    public function languageEntries(Request $request, Language $language)
+    {
+        $query = $language->dictionaryEntries()->with(['user', 'category']);
+        // Apply search filter if present
+        if ($search = $request->get('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('word', 'like', '%' . $search . '%')
+                  ->orWhere('translation_en', 'like', '%' . $search . '%');
+            });
+        }
+        // Apply category filter if present
+        if ($categorySlug = $request->get('category')) {
+            $query->whereHas('category', function ($q) use ($categorySlug) {
+                $q->where('slug', $categorySlug);
+            });
+        }
+        $entries = $query->latest()->paginate(12); // You can adjust the number of items per page
+        $categories = Category::orderBy('name')->get(); 
+        return view('entries', compact('language', 'entries', 'categories'));
+    }
+
+    public function viewLanguage(Language $language)
+    {
+        return view('view-language', [
+            'language' => $language,
+            'dictionaryEntries' => $language->dictionaryEntries()->paginate(10),
+        ]);
+    }
 }
