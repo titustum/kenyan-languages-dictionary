@@ -1,7 +1,4 @@
-<x-layouts.app.guest language="{{ $language->name }}">
-    {{-- Custom Tailwind CSS --}}
-
-    {{-- Custom Tailwind Animations and other styles --}}
+<x-layouts.app.guest language="English Concepts"> {{-- Language name here is for the overall page context --}}
     @push('styles')
     <style>
         /* Custom styling for audio player track and thumb for consistency */
@@ -139,27 +136,28 @@
 
         <div class="max-w-7xl mx-auto px-4 lg:px-8 relative z-10">
 
-            {{-- Header and Language Info --}}
+            {{-- Header and Language Info (Adjusted for Main Concepts) --}}
             <div class="text-center mb-8 md:mb-16 animate-fadeInUp">
-                <div class="text-7xl mb-4 transform hover:scale-110 transition-transform duration-300">{{
-                    $language->icon ?? '🌍' }}</div>
+                <div class="text-7xl mb-4 transform hover:scale-110 transition-transform duration-300">💡</div>
                 <h1 class="text-4xl md:text-5xl font-extrabold leading-tight text-white/95 drop-shadow-lg">
-                    Dive into {{ $language->name }} Vocabulary
+                    Browse Core English Concepts
                 </h1>
                 <p class="text-gray-300 mt-4 text-lg md:text-xl max-w-3xl mx-auto">
-                    {{ $language->description ?? 'Explore a rich collection of words, phrases, and examples from this
-                    vibrant language.' }}
+                    Explore the central concepts in our dictionary. If you know a translation, contribute it!
                 </p>
 
-                <a href="{{ route('languages.show', $language) }}"
-                    class="inline-flex items-center text-blue-400 hover:text-blue-300 hover:underline mt-6 font-medium transition duration-200 group">
+                {{-- Link to contribute a new English concept (likely for admins) --}}
+                @auth
+                <a href="{{ route('contribute.create') }}"
+                    class="inline-flex items-center text-emerald-400 hover:text-emerald-300 hover:underline mt-6 font-medium transition duration-200 group">
                     <svg class="w-5 h-5 mr-1 group-hover:-translate-x-1 transition-transform duration-200" fill="none"
                         stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                            d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                     </svg>
-                    Learn more about the {{ $language->name }} Community
+                    Contribute a New English Concept
                 </a>
+                @endauth
             </div>
 
             {{-- Filter Button for Mobile --}}
@@ -193,7 +191,8 @@
                     </div>
                     <ul class="space-y-3">
                         <li>
-                            <a href="{{ route('languages.entries', $language->slug) }}"
+                            {{-- This route should filter main concepts, not language entries --}}
+                            <a href="{{ route('concepts.index') }}"
                                 class="block p-3 rounded-lg text-base transition duration-200 ease-in-out
                                         {{ request()->get('category') ? 'text-gray-300 hover:bg-gray-700' : 'bg-purple-600 text-white font-bold shadow-lg shadow-purple-500/20' }}">
                                 <span class="flex items-center gap-2">
@@ -202,13 +201,14 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M4 6h16M4 12h16M4 18h16"></path>
                                     </svg>
-                                    All Entries
+                                    All Concepts
                                 </span>
                             </a>
                         </li>
                         @foreach ($categories as $category)
                         <li>
-                            <a href="{{ route('languages.entries', [$language->slug, 'category' => $category->slug]) }}"
+                            {{-- This route should filter main concepts by category --}}
+                            <a href="{{ route('concepts.index', ['category' => $category->slug]) }}"
                                 class="flex items-center text-base gap-3 p-3 rounded-lg transition duration-200 ease-in-out
                                         {{ request()->get('category') === $category->slug ? 'bg-purple-600 text-white font-bold shadow-lg shadow-purple-500/20' : 'text-gray-300 hover:bg-gray-700' }}">
                                 <span>{{ $category->icon ?? '📁' }}</span>
@@ -229,7 +229,7 @@
                     <div class="mb-6 animate-fadeInUp delay-100">
                         <div class="relative">
                             <input type="text" id="searchInput" value="{{ request()->get('search') }}"
-                                placeholder="Search words, translations, or examples..."
+                                placeholder="Search English words, descriptions, or examples..."
                                 class="w-full bg-gray-800 border border-gray-700 rounded-xl pl-12 pr-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition duration-200 text-lg">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <svg class="h-7 w-7 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -241,22 +241,24 @@
                         </div>
                     </div>
 
-                    {{-- Entries Grid Container --}}
-                    @if($entries->count())
+                    {{-- Concepts Grid Container --}}
+                    @if($mainEntries->count())
                     <div id="entriesGrid"
                         class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3 animate-fadeInScale">
-                        @foreach ($entries as $entry)
-                        <div class="entry-card bg-gray-800 rounded-2xl p-2 border border-gray-700 shadow-lg hover:border-emerald-500 transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-xl group"
-                            data-word="{{ strtolower($entry->word) }}"
-                            data-translation="{{ strtolower($entry->translation_en) }}"
-                            data-example="{{ strtolower($entry->example_sentence ?? '') }}">
+                        @foreach ($mainEntries as $mainEntry)
+                        <div class="concept-card bg-gray-800 rounded-2xl p-2 border border-gray-700 shadow-lg hover:border-emerald-500 transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-xl group"
+                            data-word-en="{{ strtolower($mainEntry->word_en) }}"
+                            data-description-en="{{ strtolower($mainEntry->description_en ?? '') }}"
+                            data-example-en="{{ strtolower($mainEntry->example_sentence_en ?? '') }}"
+                            data-category-slug="{{ $mainEntry->category->slug ?? '' }}">
 
                             {{-- Image at the top --}}
-                            @if($entry->image_path)
+                            @if($mainEntry->image_path)
                             <div
                                 class="mb-4 overflow-hidden rounded-lg bg-gray-900 flex items-center justify-center h-28 md:h-34 lg:h-40">
-                                <img src="{{ asset('storage/' . $entry->image_path) }}" alt="{{ $entry->word }}"
-                                    class="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-300 ease-in-out">
+                                <img src="{{ $mainEntry->image_url }}" alt="{{ $mainEntry->word_en }}"
+                                    class="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-300 ease-in-out"
+                                    onerror="this.onerror=null;this.src='{{ asset('images/placeholder.png') }}';">
                             </div>
                             @else
                             <div
@@ -270,42 +272,46 @@
                             </div>
                             @endif
 
-                            {{-- Word + Translation --}}
+                            {{-- English Word & Category --}}
                             <div class="mb-3">
-                                <h3 class="text-xl lg:text-3xl font-extrabold text-white leading-tight entry-word mb-1">
-                                    {{ $entry->word }}
+                                <h3
+                                    class="text-xl lg:text-3xl font-extrabold text-white leading-tight concept-word mb-1">
+                                    {{ $mainEntry->word_en }}
                                 </h3>
-                                <p class="text-emerald-400 text-base lg:text-lg font-semibold entry-translation">
-                                    {{ $entry->translation_en }}
+                                <p class="text-gray-400 text-sm lg:text-base font-semibold">
+                                    Category: {{ $mainEntry->category->name ?? 'Uncategorized' }}
                                 </p>
                             </div>
 
-                            {{-- Example Sentence --}}
-                            @if($entry->example_sentence)
-                            <p class="text-sm text-gray-400 italic mb-3 entry-example">"{{ $entry->example_sentence }}"
+                            {{-- English Description (Optional) --}}
+                            @if($mainEntry->description_en)
+                            <p class="text-sm text-gray-400 mb-3 concept-description">
+                                {{ Str::limit($mainEntry->description_en, 80) }}
                             </p>
                             @endif
 
-                            {{-- Audio --}}
-                            @if($entry->audio_path)
-                            <audio controls class="w-full mt-auto mb-0 block">
-                                <source src="{{ asset('storage/' . $entry->audio_path) }}" type="audio/mpeg">
-                                Your browser does not support the audio element.
-                            </audio>
-                            @else
-                            <div class="w-full text-xs mt-auto mb-0 block text-gray-500 md:text-sm text-center">
-                                Audio coming soon!
-                            </div>
+                            {{-- English Example Sentence (Optional) --}}
+                            @if($mainEntry->example_sentence_en)
+                            <p class="text-sm text-gray-400 italic mb-3 concept-example">
+                                "{{ Str::limit($mainEntry->example_sentence_en, 80) }}"
+                            </p>
                             @endif
+
+                            {{-- Add Translation Link/Button --}}
+                            <div class="w-full mt-auto pt-4 border-t border-gray-700">
+                                <a href="{{ route('contribute.translation.create', ['mainEntry' => $mainEntry->slug_en]) }}"
+                                    class="block w-full text-center px-4 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 transition font-medium">
+                                    Add Translation
+                                </a>
+                            </div>
                         </div>
                         @endforeach
                     </div>
 
-                    {{-- Pagination (might need to be hidden/disabled for live search, or handled via AJAX for large
-                    datasets) --}}
-                    @if ($entries->hasPages())
+                    {{-- Pagination Links --}}
+                    @if ($mainEntries->hasPages())
                     <div id="paginationLinks" class="mt-10 animate-fadeInUp delay-200">
-                        {{ $entries->links('pagination::tailwind') }}
+                        {{ $mainEntries->links('pagination::tailwind') }}
                     </div>
                     @endif
 
@@ -314,23 +320,21 @@
                     <div id="noEntriesFoundInitial"
                         class="text-center py-20 lg:col-span-4 bg-gray-800 rounded-2xl shadow-xl border border-gray-700 animate-fadeInUp">
                         <div class="text-7xl mb-6">📭</div>
-                        <h3 class="text-3xl font-bold mb-3 text-white">No Entries Found Yet!</h3>
+                        <h3 class="text-3xl font-bold mb-3 text-white">No Concepts Found Yet!</h3>
                         <p class="text-gray-400 text-lg max-w-md mx-auto">
-                            It seems there are no words matching your search or category. Try broadening your search or
-                            selecting "All Entries" to see everything.
+                            It seems there are no English concepts matching your criteria.
                         </p>
-                        <a href="{{ route('languages.entries', $language->slug) }}"
+                        @auth {{-- Suggest contributing if logged in --}}
+                        <a href="{{ route('contribute.create') }}"
                             class="mt-8 inline-flex items-center bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white font-semibold py-3 px-7 rounded-full transition duration-300 transform hover:-translate-y-1 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-purple-500/50">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004 16.08V12m4.214-1.214L11.99 15.01"></path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M20 20v-5h-.582m-15.356-2A8.001 8.001 0 0120 7.92V12m-4.214 1.214L12.01 8.99">
-                                </path>
+                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                             </svg>
-                            Reset Filters
+                            Add Your First Concept
                         </a>
+                        @endauth
                     </div>
                     @endif
 
@@ -340,10 +344,9 @@
                         <div class="text-7xl mb-6">🔍</div>
                         <h3 class="text-3xl font-bold mb-3 text-white">No Matches Found!</h3>
                         <p class="text-gray-400 text-lg max-w-md mx-auto">
-                            Your search yielded no results in this category. Try a different search term or select "All
-                            Entries."
+                            Your search yielded no results. Try a different search term or clear the filter.
                         </p>
-                        <button onclick="document.getElementById('searchInput').value = ''; filterEntries();"
+                        <button onclick="document.getElementById('searchInput').value = ''; filterConcepts();"
                             class="mt-8 inline-block bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white font-semibold py-3 px-7 rounded-full transition duration-300 transform hover:-translate-y-1 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-purple-500/50">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -366,8 +369,8 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const searchInput = document.getElementById('searchInput');
-            const entriesGrid = document.getElementById('entriesGrid');
-            const entryCards = document.querySelectorAll('.entry-card');
+            const conceptsGrid = document.getElementById('entriesGrid'); // Renamed for clarity
+            const conceptCards = document.querySelectorAll('.concept-card'); // Renamed for clarity
             const initialEmptyState = document.getElementById('noEntriesFoundInitial');
             const jsEmptyState = document.getElementById('noResultsFoundJS');
             const paginationLinks = document.getElementById('paginationLinks');
@@ -378,17 +381,26 @@
             const closeSidebarBtn = document.getElementById('closeSidebarBtn');
             const sidebarOverlay = document.getElementById('sidebarOverlay');
 
-            // Function to filter entries based on search term
-            window.filterEntries = function() {
+            // Function to filter concepts based on search term and category
+            window.filterConcepts = function() { // Renamed function for clarity
                 const searchTerm = searchInput.value.toLowerCase().trim();
+                const urlParams = new URLSearchParams(window.location.search);
+                const currentCategorySlug = urlParams.get('category'); // Get category from URL
                 let visibleCount = 0;
 
-                entryCards.forEach(card => {
-                    const word = card.dataset.word;
-                    const translation = card.dataset.translation;
-                    const example = card.dataset.example;
+                conceptCards.forEach(card => {
+                    const wordEn = card.dataset.wordEn;
+                    const descriptionEn = card.dataset.descriptionEn;
+                    const exampleEn = card.dataset.exampleEn;
+                    const categorySlug = card.dataset.categorySlug;
 
-                    if (word.includes(searchTerm) || translation.includes(searchTerm) || example.includes(searchTerm)) {
+                    const matchesSearch = wordEn.includes(searchTerm) ||
+                                          descriptionEn.includes(searchTerm) ||
+                                          exampleEn.includes(searchTerm);
+
+                    const matchesCategory = !currentCategorySlug || categorySlug === currentCategorySlug;
+
+                    if (matchesSearch && matchesCategory) {
                         card.style.display = ''; // Show the card
                         visibleCount++;
                     } else {
@@ -398,13 +410,14 @@
 
                 // Handle empty states based on filter results
                 if (visibleCount === 0) {
-                    if (entriesGrid) entriesGrid.style.display = 'none';
+                    if (conceptsGrid) conceptsGrid.style.display = 'none';
                     if (paginationLinks) paginationLinks.style.display = 'none';
                     if (initialEmptyState) initialEmptyState.style.display = 'none';
                     if (jsEmptyState) jsEmptyState.style.display = 'block';
                 } else {
-                    if (entriesGrid) entriesGrid.style.display = 'grid';
-                    if (paginationLinks && !searchTerm) paginationLinks.style.display = 'block';
+                    if (conceptsGrid) conceptsGrid.style.display = 'grid';
+                    // Only show pagination if no search term is active
+                    if (paginationLinks && !searchTerm && !currentCategorySlug) paginationLinks.style.display = 'block';
                     else if (paginationLinks) paginationLinks.style.display = 'none';
                     if (initialEmptyState) initialEmptyState.style.display = 'none';
                     if (jsEmptyState) jsEmptyState.style.display = 'none';
@@ -412,41 +425,38 @@
             };
 
             // Event listener for input changes (typing)
-            searchInput.addEventListener('keyup', filterEntries);
-            searchInput.addEventListener('change', filterEntries);
+            searchInput.addEventListener('keyup', window.filterConcepts);
+            searchInput.addEventListener('change', window.filterConcepts);
 
-            // Run filter on initial load if there's a search term from the URL
-            if (searchInput.value) {
-                filterEntries();
+            // Run filter on initial load if there's a search term or category filter from the URL
+            if (searchInput.value || new URLSearchParams(window.location.search).get('category')) {
+                window.filterConcepts();
             } else {
-                if (jsEmptyState) jsEmptyState.style.display = 'none';
-                if (initialEmptyState && entryCards.length === 0) initialEmptyState.style.display = 'block';
-                else if (initialEmptyState) initialEmptyState.style.display = 'none';
+                // Initial check for overall empty state
+                if (conceptCards.length === 0) {
+                    if (conceptsGrid) conceptsGrid.style.display = 'none';
+                    if (paginationLinks) paginationLinks.style.display = 'none';
+                    if (initialEmptyState) initialEmptyState.style.display = 'block';
+                } else {
+                    if (initialEmptyState) initialEmptyState.style.display = 'none';
+                }
+                 if (jsEmptyState) jsEmptyState.style.display = 'none'; // Ensure JS empty state is hidden by default
             }
 
-            // If there are no entries initially, hide the grid and show initial empty state
-            if (entryCards.length === 0) {
-                if (entriesGrid) entriesGrid.style.display = 'none';
-                if (paginationLinks) paginationLinks.style.display = 'none';
-                if (initialEmptyState) initialEmptyState.style.display = 'block';
-            }
 
             // --- Mobile Sidebar Toggle Logic ---
             const toggleSidebar = () => {
                 const isHidden = sidebar.classList.contains('hidden');
                 if (isHidden) {
-                    // Show sidebar
                     sidebar.classList.remove('hidden');
                     sidebarOverlay.classList.remove('hidden');
-                    // Trigger animations
                     sidebar.classList.add('sidebar-enter-active');
                     sidebarOverlay.classList.add('overlay-enter-active');
                     setTimeout(() => {
                         sidebar.classList.remove('sidebar-enter-active', 'sidebar-enter-from');
                         sidebarOverlay.classList.remove('overlay-enter-active', 'overlay-enter-from');
-                    }, 300); // Match transition duration
+                    }, 300);
                 } else {
-                    // Hide sidebar
                     sidebar.classList.add('sidebar-leave-active');
                     sidebarOverlay.classList.add('overlay-leave-active');
                     setTimeout(() => {
@@ -454,9 +464,8 @@
                         sidebarOverlay.classList.add('hidden');
                         sidebar.classList.remove('sidebar-leave-active', 'sidebar-leave-to');
                         sidebarOverlay.classList.remove('overlay-leave-active', 'overlay-leave-to');
-                    }, 300); // Match transition duration
+                    }, 300);
                 }
-                // Toggle body overflow to prevent scrolling content behind sidebar
                 document.body.classList.toggle('overflow-hidden', isHidden);
             };
 
@@ -467,30 +476,33 @@
                 closeSidebarBtn.addEventListener('click', toggleSidebar);
             }
             if (sidebarOverlay) {
-                sidebarOverlay.addEventListener('click', toggleSidebar); // Close sidebar when clicking overlay
+                sidebarOverlay.addEventListener('click', toggleSidebar);
             }
 
-            // Close sidebar when a category link is clicked on mobile
+            // Close sidebar when a category link is clicked on mobile AND re-run filters
             document.querySelectorAll('#sidebar ul a').forEach(link => {
-                link.addEventListener('click', () => {
-                    if (window.innerWidth < 1024) { // Only on small screens (less than lg)
-                        toggleSidebar();
+                link.addEventListener('click', (event) => {
+                    if (window.innerWidth < 1024) {
+                        setTimeout(() => { // Small delay to allow URL to update before filterConcepts runs
+                            toggleSidebar();
+                            // Re-run filter after category change on mobile
+                            window.filterConcepts();
+                        }, 50);
                     }
                 });
             });
+
 
             // Handle resize: If resized to desktop, ensure sidebar is visible and overlay is hidden
             window.addEventListener('resize', () => {
                 if (window.innerWidth >= 1024) { // lg breakpoint
                     sidebar.classList.remove('hidden', 'sidebar-enter-active', 'sidebar-leave-active');
-                    sidebar.style.transform = ''; // Clear any transform from JS
-                    sidebar.style.opacity = ''; // Clear any opacity from JS
+                    sidebar.style.transform = '';
+                    sidebar.style.opacity = '';
                     sidebarOverlay.classList.add('hidden');
                     sidebarOverlay.classList.remove('overlay-enter-active', 'overlay-leave-active');
                     document.body.classList.remove('overflow-hidden');
                 } else {
-                    // On mobile, if sidebar was open, keep it open, otherwise keep hidden
-                    // This handles cases where user resizes from desktop to mobile
                     if (!sidebar.classList.contains('hidden')) {
                         document.body.classList.add('overflow-hidden');
                     }

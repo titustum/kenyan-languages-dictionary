@@ -13,9 +13,18 @@ Route::get('/languages', [MainController::class, 'viewLanguages'])->name('langua
 Route::get('/{language:slug}/entries', [MainController::class, 'languageEntries'])->name('languages.entries');
 Route::get('/about/{language:slug}', [MainController::class, 'viewLanguage'])->name('languages.show');
 Route::post('/storeContribution', [MainController::class, 'storeContribution'])->name('contribute.store');
+Route::get('/concepts', [MainController::class, 'mainConcepts'])->name('concepts.index');
 
-// explore 
-Route::resource('entries', DictionaryEntryController::class);
+
+use App\Http\Controllers\TranslationContributionController; 
+// Route for adding a new translation to a specific main entry
+Route::get('/contribute/translation/create/{mainEntry:slug_en}', [TranslationContributionController::class, 'create'])
+    ->name('contribute.translation.create');
+
+// Route to store the translation (POST request from the form)
+Route::post('/contribute/translation', [TranslationContributionController::class, 'store'])
+    ->name('contribute.translation.store');
+ 
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])

@@ -55,50 +55,51 @@
                 </div>
             </div>
 
-            {{-- Make sure the regions array exists and is passed to the view --}} 
+            {{-- Make sure the regions array exists and is passed to the view --}}
             @php
-                $regions = [
-                    'Nyanza Kenya',
-                    'Western Kenya',
-                    'Rift Valley Kenya',
-                    'Central Kenya',
-                    'Coast Region',
-                    'Northern Kenya',
-                    'Eastern Kenya',
-                ];
+            $regions = [
+            'Nyanza Kenya',
+            'Western Kenya',
+            'Rift Valley',
+            'Central Kenya',
+            'Coastal Kenya',
+            'Northern Kenya',
+            'Eastern Kenya',
+            ];
             @endphp
-           
+
             <div id="filterTagsContainer" class="my-12 flex flex-wrap justify-center gap-3">
                 <button data-region-slug="all"
                     class="filter-tag px-4 py-2 bg-emerald-600 border border-emerald-600 rounded-full text-sm text-white hover:bg-emerald-700 hover:text-white transition-all duration-300 font-semibold shadow-lg">
                     All Regions
                 </button>
                 @foreach ($regions as $region)
-                    <button data-region-slug="{{ Str::slug($region) }}"
-                        class="filter-tag px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-sm text-gray-300 hover:bg-white/20 hover:text-white transition-all duration-300">
-                        {{ $region }}
-                    </button>
+                <button data-region-slug="{{ Str::slug($region) }}"
+                    class="filter-tag px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-sm text-gray-300 hover:bg-white/20 hover:text-white transition-all duration-300">
+                    {{ $region }}
+                </button>
                 @endforeach
             </div>
 
-            <div id="languagesGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
+            <div id="languagesGrid"
+                class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
                 @php
                 $enhancedColors = [
-                    'red' => 'from-red-500 to-red-600 shadow-red-500/25',
-                    'yellow' => 'from-yellow-400 to-yellow-500 shadow-yellow-500/25 text-gray-900',
-                    'green' => 'from-green-500 to-green-600 shadow-green-500/25',
-                    'blue' => 'from-blue-500 to-blue-600 shadow-blue-500/25',
-                    'indigo' => 'from-indigo-500 to-indigo-600 shadow-indigo-500/25',
-                    'purple' => 'from-purple-500 to-purple-600 shadow-purple-500/25',
-                    'pink' => 'from-pink-500 to-pink-600 shadow-pink-500/25',
-                    'orange' => 'from-orange-500 to-orange-600 shadow-orange-500/25',
-                    'teal' => 'from-teal-500 to-teal-600 shadow-teal-500/25',
-                    'cyan' => 'from-cyan-500 to-cyan-600 shadow-cyan-500/25',
-                    'amber' => 'from-amber-400 to-amber-500 shadow-amber-500/25 text-gray-900',
-                    'lime' => 'from-lime-400 to-lime-500 shadow-lime-500/25 text-gray-900',
-                    'gray' => 'from-gray-500 to-gray-600 shadow-gray-500/25',
-                    'rose' => 'from-rose-500 to-rose-600 shadow-rose-500/25',
-                    'brown' => 'from-yellow-800 to-yellow-900 shadow-yellow-800/25',
+                'red' => 'from-red-500 to-red-600 shadow-red-500/25',
+                'yellow' => 'from-yellow-400 to-yellow-500 shadow-yellow-500/25 text-gray-900',
+                'green' => 'from-green-500 to-green-600 shadow-green-500/25',
+                'blue' => 'from-blue-500 to-blue-600 shadow-blue-500/25',
+                'indigo' => 'from-indigo-500 to-indigo-600 shadow-indigo-500/25',
+                'purple' => 'from-purple-500 to-purple-600 shadow-purple-500/25',
+                'pink' => 'from-pink-500 to-pink-600 shadow-pink-500/25',
+                'orange' => 'from-orange-500 to-orange-600 shadow-orange-500/25',
+                'teal' => 'from-teal-500 to-teal-600 shadow-teal-500/25',
+                'cyan' => 'from-cyan-500 to-cyan-600 shadow-cyan-500/25',
+                'amber' => 'from-amber-400 to-amber-500 shadow-amber-500/25 text-gray-900',
+                'lime' => 'from-lime-400 to-lime-500 shadow-lime-500/25 text-gray-900',
+                'gray' => 'from-gray-500 to-gray-600 shadow-gray-500/25',
+                'rose' => 'from-rose-500 to-rose-600 shadow-rose-500/25',
+                'brown' => 'from-yellow-800 to-yellow-900 shadow-yellow-800/25',
                 ];
                 @endphp
 
@@ -107,8 +108,8 @@
                     class="language-card group relative bg-gradient-to-br {{ $enhancedColors[$language->color] ?? 'from-gray-700 to-gray-800 shadow-gray-700/25' }} rounded-2xl p-6 text-center cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-2xl border border-white/10 backdrop-blur-sm"
                     role="button" tabindex="0"
                     aria-label="Explore {{ $language->name }} language from {{ $language->region }}"
-                    data-name="{{ strtolower($language->name) }}"
-                    data-region="{{ Str::slug($language->region) }}"> {{-- Added data attributes --}}
+                    data-name="{{ strtolower($language->name) }}" data-region="{{ Str::slug($language->region) }}"> {{--
+                    Added data attributes --}}
 
                     <div
                         class="absolute inset-0 rounded-2xl bg-gradient-to-br {{ str_replace('shadow-', 'from-', explode(' ', $enhancedColors[$language->color] ?? 'shadow-gray-700/25')[2]) }}/0 group-hover:{{ str_replace('shadow-', 'from-', explode(' ', $enhancedColors[$language->color] ?? 'shadow-gray-700/25')[2]) }}/20 transition-all duration-300">
@@ -152,7 +153,8 @@
             </div>
 
             {{-- Empty State for JS filtering --}}
-            <div id="noLanguagesFoundJS" class="text-center py-20 bg-gray-800 rounded-2xl shadow-xl border border-gray-700 hidden mt-10">
+            <div id="noLanguagesFoundJS"
+                class="text-center py-20 bg-gray-800 rounded-2xl shadow-xl border border-gray-700 hidden mt-10">
                 <div class="text-7xl mb-6">🚫</div>
                 <h3 class="text-3xl font-bold mb-3 text-white">No Languages Found!</h3>
                 <p class="text-gray-400 text-lg max-w-md mx-auto">
@@ -160,7 +162,13 @@
                 </p>
                 <button onclick="resetFilters();"
                     class="mt-8 inline-flex items-center bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-semibold py-3 px-7 rounded-full transition duration-300 transform hover:-translate-y-1 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-emerald-500/50">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004 16.08V12m4.214-1.214L11.99 15.01"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 20v-5h-.582m-15.356-2A8.001 8.001 0 0120 7.92V12m-4.214 1.214L12.01 8.99"></path></svg>
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004 16.08V12m4.214-1.214L11.99 15.01"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M20 20v-5h-.582m-15.356-2A8.001 8.001 0 0120 7.92V12m-4.214 1.214L12.01 8.99"></path>
+                    </svg>
                     Reset Filters
                 </button>
             </div>
