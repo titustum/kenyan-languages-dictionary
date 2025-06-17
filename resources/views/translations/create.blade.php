@@ -8,6 +8,25 @@
         </p>
 
         <div class="bg-gray-800 p-8 rounded-lg shadow-xl border border-gray-700 animate-fadeInUp">
+
+            @if (session('success'))
+            <div class="mb-4 p-4 bg-green-600 text-white rounded">
+                {{ session('success') }}
+            </div>
+            @endif
+
+
+            @if ($errors->any())
+            <div class="mb-4 p-4 bg-red-600 text-white rounded">
+                <ul class="list-disc list-inside">
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+
+
             <form action="{{ route('contribute.translation.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 

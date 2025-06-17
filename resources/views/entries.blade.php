@@ -243,6 +243,7 @@
 
                     {{-- Entries Grid Container --}}
                     @if($entries->count())
+
                     <div id="entriesGrid"
                         class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3 animate-fadeInScale">
                         @foreach ($entries as $entry)
@@ -252,10 +253,11 @@
                             data-example="{{ strtolower($entry->example_sentence ?? '') }}">
 
                             {{-- Image at the top --}}
-                            @if($entry->image_path)
+                            @if($entry->mainEntry->image_path)
                             <div
                                 class="mb-4 overflow-hidden rounded-lg bg-gray-900 flex items-center justify-center h-28 md:h-34 lg:h-40">
-                                <img src="{{ asset('storage/' . $entry->image_path) }}" alt="{{ $entry->word }}"
+                                <img src="{{ asset('storage/' . $entry->mainEntry->image_path) }}"
+                                    alt="{{ $entry->word }}"
                                     class="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-300 ease-in-out">
                             </div>
                             @else
@@ -276,7 +278,7 @@
                                     {{ $entry->word }}
                                 </h3>
                                 <p class="text-emerald-400 text-base lg:text-lg font-semibold entry-translation">
-                                    {{ $entry->translation_en }}
+                                    {{ $entry->mainEntry->word_en }}
                                 </p>
                             </div>
 

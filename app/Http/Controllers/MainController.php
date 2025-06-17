@@ -74,22 +74,29 @@ class MainController extends Controller
      */
     public function languageEntries(Request $request, Language $language)
     {
-        $query = $language->dictionaryTranslations()->with(['user', 'category']);
+        $query = $language->dictionaryTranslations()
+            ->with(['mainEntry.category']);
+
         // Apply search filter if present
         if ($search = $request->get('search')) {
             $query->where(function ($q) use ($search) {
                 $q->where('word', 'like', '%' . $search . '%')
-                  ->orWhere('translation_en', 'like', '%' . $search . '%');
+                ->orWhereHas('mainEntry', function ($sub) use ($search) {
+                    $sub->where('word_en', 'like', '%' . $search . '%');
+                });
             });
         }
+
         // Apply category filter if present
         if ($categorySlug = $request->get('category')) {
-            $query->whereHas('category', function ($q) use ($categorySlug) {
+            $query->whereHas('mainEntry.category', function ($q) use ($categorySlug) {
                 $q->where('slug', $categorySlug);
             });
         }
-        $entries = $query->latest()->paginate(12); // You can adjust the number of items per page
+
+        $entries = $query->latest()->paginate(12);
         $categories = Category::orderBy('name')->get(); 
+
         return view('entries', compact('language', 'entries', 'categories'));
     }
 
