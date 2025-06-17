@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\DictionaryEntry;
-use App\Models\User;
-use CategorySeeder;
+use App\Models\User; 
+use Database\Seeders\CategorySeeder;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -24,10 +24,11 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call(
-            LanguageSeeder::class, 
-            CategorySeeder::class, 
+            [LanguageSeeder::class, 
+            CategorySeeder::class
+            ]
         );
 
-        DictionaryEntry::factory(100)->create();
+        // DictionaryEntry::factory(100)->create();
     }
 }

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             // Foreign keys
             $table->foreignId('language_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete(); 
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete()->default(1); 
             // Word details
             $table->string('word');
             $table->string('slug')->unique();

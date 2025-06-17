@@ -1,42 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lugha - Kenyan Languages Visual Dictionary</title>
-
-
+    <title>MotherLang - Preserve Kenya's Linguistic Heritage</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
         }
 
-        .gradient-bg {
-            background: linear-gradient(135deg, #1e40af 0%, #7c3aed 50%, #dc2626 100%);
-        }
-
-        .glass-effect {
-            backdrop-filter: blur(20px);
+        .glass-morphism {
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             background: rgba(255, 255, 255, 0.1);
         }
 
-        .language-card {
-            transition: all 0.3s ease;
-            transform: translateZ(0);
+        .slide-in-left {
+            transform: translateX(-100%);
         }
 
-        .language-card:hover {
-            transform: translateY(-8px) scale(1.02);
-        }
-
-        .floating {
-            animation: float 6s ease-in-out infinite;
+        .slide-in-left.active {
+            transform: translateX(0);
         }
 
         @keyframes float {
@@ -47,322 +35,248 @@
             }
 
             50% {
-                transform: translateY(-20px);
-            }
-        }
-
-        .slide-in-left {
-            animation: slideInLeft 0.8s ease-out;
-        }
-
-        .slide-in-right {
-            animation: slideInRight 0.8s ease-out;
-        }
-
-        @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-50px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(50px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .pulse-glow {
-            animation: pulseGlow 2s infinite;
-        }
-
-        @keyframes pulseGlow {
-
-            0%,
-            100% {
-                box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
-            }
-
-            50% {
-                box-shadow: 0 0 40px rgba(124, 58, 237, 0.6);
+                transform: translateY(-10px);
             }
         }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.13.3/cdn.min.js" defer></script>
 </head>
 
 <body class="bg-gray-900 text-white overflow-x-hidden">
-    <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-50 glass-effect border-b border-white/10"
-        x-data="{ open: false, searchOpen: false, searchQuery: '' }">
-        <div class="max-w-7xl mx-auto px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <a href="{{ url('/') }}" class="flex items-center space-x-3">
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-overlay" class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden"></div>
+
+    <!-- Mobile Navigation (Slides from left) -->
+    <nav id="mobile-nav"
+        class="fixed top-0 left-0 h-full w-80 bg-gradient-to-b from-slate-900 via-gray-900 to-slate-800 z-50 transform slide-in-left transition-transform duration-300 ease-in-out lg:hidden border-r border-white/10 backdrop-blur-xl">
+        <div class="flex flex-col h-full">
+            <!-- Mobile Header -->
+            <div class="flex items-center justify-between p-6 border-b border-white/10">
+                <div class="flex items-center space-x-3">
                     <div
-                        class="w-10 h-10 bg-gradient-to-r from-purple-500 to-red-500 rounded-lg flex items-center justify-center font-bold text-lg">
-                        M
+                        class="w-10 h-10 bg-gradient-to-r from-purple-500 to-red-500  rounded-xl flex items-center justify-center shadow-lg">
+                        <span class="text-white font-bold text-lg">M</span>
                     </div>
-                    <span class="text-xl font-bold">MotherLang</span>
-                </a>
+                    <span
+                        class="text-xl font-bold bg-gradient-to-r from-emerald-400 to-blue-400 bg-clip-text text-transparent">MotherLang</span>
+                </div>
+                <button id="close-mobile-nav"
+                    class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white/10 transition-colors">
+                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+            </div>
 
-                <!-- Desktop Navigation -->
-                <div class="hidden lg:flex items-center space-x-8">
-                    <!-- Search Form -->
-                    <div class="relative">
-                        <form class="relative flex items-center">
-                            <input type="text" placeholder="Search words..."
-                                class="bg-white/10 border border-white/20 rounded-full px-4 py-2 pl-10 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all w-64"
-                                x-model="searchQuery">
-                            <svg class="w-5 h-5 text-gray-300 absolute left-3 top-1/2 transform -translate-y-1/2"
-                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                            </svg>
-                            <button type="submit"
-                                class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-purple-600 to-red-600 rounded-full p-1.5 hover:shadow-lg transition-all">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                                </svg>
-                            </button>
-                        </form>
-                    </div>
-
-                    <a href="#features" class="hover:text-purple-400 transition-colors">Features</a>
-                    <a href="#languages" class="hover:text-purple-400 transition-colors">Languages</a>
-                    <a href="#community" class="hover:text-purple-400 transition-colors">Community</a>
-                    <a href="{{ route('login') }}"
-                        class="bg-gradient-to-r from-purple-600 to-red-600 px-6 py-2 rounded-full hover:shadow-lg transition-all">
-                        Get Started
+            <!-- Mobile Menu Items -->
+            <div class="flex-1 px-6 py-8 overflow-y-auto">
+                <div class="space-y-6">
+                    <a href="/" class="flex items-center space-x-3 text-emerald-400 font-medium">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                            </path>
+                        </svg>
+                        <span>Home</span>
+                    </a>
+                    <a href="/languages"
+                        class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                            </path>
+                        </svg>
+                        <span>Languages</span>
+                    </a>
+                    <a href="/learn"
+                        class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+                            </path>
+                        </svg>
+                        <span>Learn</span>
+                    </a>
+                    <a href="/contribute"
+                        class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z">
+                            </path>
+                        </svg>
+                        <span>Contribute</span>
+                    </a>
+                    <a href="/about"
+                        class="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span>About</span>
                     </a>
                 </div>
 
-                <!-- Mobile/Tablet Navigation -->
-                <div class="flex lg:hidden items-center space-x-3">
-                    <!-- Mobile Search Toggle -->
-                    <button @click="searchOpen = !searchOpen" class="p-2 hover:text-purple-400 transition-colors">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                        </svg>
-                    </button>
-
-                    <!-- Mobile Menu Toggle -->
-                    <button @click="open = !open" class="p-2">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 6h16M4 12h16M4 18h16"></path>
-                        </svg>
-                    </button>
+                <!-- Mobile CTA Buttons -->
+                <div class="mt-12 space-y-4">
+                    <a href="/login"
+                        class="block w-full px-6 py-3 text-center bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl font-medium hover:bg-white/20 transition-all">
+                        Sign In
+                    </a>
+                    <a href="/register"
+                        class="block w-full px-6 py-3 text-center bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-xl font-medium hover:from-emerald-600 hover:to-emerald-700 transition-all shadow-lg">
+                        Get Started
+                    </a>
                 </div>
             </div>
 
-            <!-- Mobile Search Bar -->
-            <div x-show="searchOpen" x-transition:enter="transition ease-out duration-200"
-                x-transition:enter-start="opacity-0 transform -translate-y-2"
-                x-transition:enter-end="opacity-100 transform translate-y-0"
-                x-transition:leave="transition ease-in duration-150"
-                x-transition:leave-start="opacity-100 transform translate-y-0"
-                x-transition:leave-end="opacity-0 transform -translate-y-2" class="lg:hidden pb-4">
-                <form class="relative flex items-center">
-                    <input type="text" placeholder="Search words..."
-                        class="bg-white/10 border border-white/20 rounded-full px-4 py-2 pl-10 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all w-full">
-                    <svg class="w-5 h-5 text-gray-300 absolute left-3 top-1/2 transform -translate-y-1/2" fill="none"
-                        stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                    </svg>
-                    <button type="submit"
-                        class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-purple-600 to-red-600 rounded-full p-1.5 hover:shadow-lg transition-all">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            <!-- Mobile Footer -->
+            <div class="p-6 border-t border-white/10">
+                <div class="flex items-center justify-center space-x-4">
+                    <a href="#"
+                        class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-white/20 transition-colors">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
                         </svg>
-                    </button>
-                </form>
-            </div>
-
-            <!-- Mobile Menu -->
-            <div x-show="open" x-transition:enter="transition ease-out duration-200"
-                x-transition:enter-start="opacity-0 transform -translate-y-2"
-                x-transition:enter-end="opacity-100 transform translate-y-0"
-                x-transition:leave="transition ease-in duration-150"
-                x-transition:leave-start="opacity-100 transform translate-y-0"
-                x-transition:leave-end="opacity-0 transform -translate-y-2" class="lg:hidden pb-4">
-                <div class="flex flex-col space-y-3">
-                    <a href="#features" class="hover:text-purple-400 transition-colors">Features</a>
-                    <a href="#languages" class="hover:text-purple-400 transition-colors">Languages</a>
-                    <a href="#community" class="hover:text-purple-400 transition-colors">Community</a>
-                    <button
-                        class="bg-gradient-to-r from-purple-600 to-red-600 px-6 py-2 rounded-full hover:shadow-lg transition-all text-center">
-                        Get Started
-                    </button>
+                    </a>
+                    <a href="#"
+                        class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-white/20 transition-colors">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z" />
+                        </svg>
+                    </a>
                 </div>
             </div>
         </div>
     </nav>
 
-
-    {{ $slot }}
-
-    <!-- CTA Section -->
-    <section class="py-20 gradient-bg relative overflow-hidden">
-        <div class="absolute inset-0 opacity-10">
-            <div class="floating absolute top-10 right-10 w-32 h-32 bg-white rounded-full blur-2xl"></div>
-            <div class="floating absolute bottom-20 left-20 w-24 h-24 bg-yellow-400 rounded-full blur-xl"
-                style="animation-delay: -3s;"></div>
-        </div>
-        <div class="relative z-10 max-w-4xl mx-auto text-center px-6 lg:px-8">
-            <h2 class="text-4xl md:text-6xl font-bold mb-6">
-                Start Your Language Journey Today
-            </h2>
-            <p class="text-xl md:text-2xl text-gray-200 mb-10 max-w-2xl mx-auto">
-                Join thousands of language enthusiasts in preserving and celebrating Kenya's rich linguistic heritage.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <button
-                    class="px-10 py-4 bg-white text-gray-900 rounded-full text-lg font-bold hover:bg-gray-100 transition-all pulse-glow">
-                    Explore Languages
-                </button>
-                <button
-                    class="px-10 py-4 border-2 border-white rounded-full text-lg font-bold hover:bg-white hover:text-gray-900 transition-all">
-                    Become a Contributor
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 py-12 border-t border-gray-800">
+    <!-- Desktop Header -->
+    <header class="fixed top-0 left-0 right-0 z-30 glass-morphism border-b border-white/10">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
-            <div class="grid md:grid-cols-4 gap-8">
-                <div>
-                    <div class="flex items-center space-x-3 mb-4">
-                        <div
-                            class="w-10 h-10 bg-gradient-to-r from-purple-500 to-red-500 rounded-lg flex items-center justify-center font-bold text-lg">
-                            M
-                        </div>
-                        <span class="text-xl font-bold">MotherLang</span>
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <a href="{{ url('/') }}" class="flex items-center space-x-3">
+                    <div
+                        class="w-12 h-12 bg-gradient-to-r from-purple-500 to-red-500  rounded-2xl flex items-center justify-center shadow-lg">
+                        <span class="text-white font-bold text-xl">M</span>
                     </div>
-                    <p class="text-gray-400">Preserving Kenya's linguistic heritage through community collaboration.</p>
-                </div>
-                <div>
-                    <h4 class="font-semibold mb-4">Languages</h4>
-                    <div class="space-y-2 text-gray-400">
-                        <div>Kikuyu</div>
-                        <div>Swahili</div>
-                        <div>Luo</div>
-                        <div>Maasai</div>
+                    <div>
+                        <h1
+                            class="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-blue-400 bg-clip-text text-transparent">
+                            MotherLang</h1>
+                        <p class="text-xs text-gray-400 -mt-1">Preserve • Learn • Share</p>
                     </div>
+                </a>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden lg:flex items-center space-x-8">
+                    <a href="{{ url('/') }}"
+                        class="text-emerald-400 font-medium hover:text-emerald-300 transition-colors">Home</a>
+                    <a href="/languages" class="text-gray-300 hover:text-white transition-colors">Languages</a>
+                    <a href="/learn" class="text-gray-300 hover:text-white transition-colors">Learn</a>
+                    <a href="/contribute" class="text-gray-300 hover:text-white transition-colors">Contribute</a>
+                    <a href="/about" class="text-gray-300 hover:text-white transition-colors">About</a>
+                </nav>
+
+                <!-- Desktop CTA Buttons -->
+                <div class="hidden lg:flex items-center space-x-4">
+                    <a href="/login" class="px-6 py-2.5 text-gray-300 hover:text-white transition-colors">Sign In</a>
+                    <a href="/register"
+                        class="px-6 py-2.5 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-xl font-medium hover:from-emerald-600 hover:to-emerald-700 transform hover:scale-105 transition-all duration-300 shadow-lg shadow-emerald-500/25">
+                        Get Started
+                    </a>
                 </div>
-                <div>
-                    <h4 class="font-semibold mb-4">Community</h4>
-                    <div class="space-y-2 text-gray-400">
-                        <div>Contributors</div>
-                        <div>Leaderboard</div>
-                        <div>Guidelines</div>
-                        <div>Support</div>
-                    </div>
-                </div>
-                <div>
-                    <h4 class="font-semibold mb-4">About</h4>
-                    <div class="space-y-2 text-gray-400">
-                        <div>Our Mission</div>
-                        <div>Contact</div>
-                        <div>Privacy</div>
-                        <div>Terms</div>
-                    </div>
-                </div>
-            </div>
-            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-                <p>&copy; 2025 MotherLang - Kenyan Languages Visual Dictionary. Built with Laravel & TailwindCSS.</p>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn"
+                    class="lg:hidden w-10 h-10 flex items-center justify-center rounded-lg hover:bg-white/10 transition-colors">
+                    <svg class="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
             </div>
         </div>
-    </footer>
+    </header>
 
-    <script>
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
+    <!-- Main Content -->
+    <main class="pt-20">
 
-        // Add scroll effect to navigation
-        window.addEventListener('scroll', () => {
-            const nav = document.querySelector('nav');
-            if (window.scrollY > 100) {
-                nav.style.background = 'rgba(17, 24, 39, 0.9)';
-            } else {
-                nav.style.background = 'rgba(255, 255, 255, 0.1)';
-            }
-        });
+        {{ $slot }}
 
-        // Language card interactions
-        document.querySelectorAll('.language-card').forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.3)';
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                this.style.boxShadow = 'none';
-            });
-        });
 
-        // Counter animation for stats
-        function animateCounter(element, target) {
-            let current = 0;
-            const increment = target / 100;
-            const timer = setInterval(() => {
-                current += increment;
-                if (current >= target) {
-                    current = target;
-                    clearInterval(timer);
-                }
-                element.textContent = Math.floor(current) + (target >= 1000 ? 'K+' : '+');
-            }, 20);
-        }
+        <!-- Footer -->
+        <footer class="bg-gray-900 py-12 border-t border-gray-800">
+            <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                <div class="grid md:grid-cols-4 gap-8">
+                    <div>
+                        <div class="flex items-center space-x-3 mb-4">
+                            <div
+                                class="w-10 h-10 bg-gradient-to-r from-purple-500 to-red-500 rounded-lg flex items-center justify-center font-bold text-lg">
+                                M
+                            </div>
+                            <span class="text-xl font-bold">MotherLang</span>
+                        </div>
+                        <p class="text-gray-400">Preserving Kenya's linguistic heritage through community collaboration.
+                        </p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold mb-4">Languages</h4>
+                        <div class="space-y-2 text-gray-400">
+                            <div>Kikuyu</div>
+                            <div>Swahili</div>
+                            <div>Luo</div>
+                            <div>Maasai</div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold mb-4">Community</h4>
+                        <div class="space-y-2 text-gray-400">
+                            <div>Contributors</div>
+                            <div>Leaderboard</div>
+                            <div>Guidelines</div>
+                            <div>Support</div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold mb-4">About</h4>
+                        <div class="space-y-2 text-gray-400">
+                            <div>Our Mission</div>
+                            <div>Contact</div>
+                            <div>Privacy</div>
+                            <div>Terms</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                    <p>&copy; 2025 MotherLang - Kenyan Languages Visual Dictionary. Built with Laravel & TailwindCSS.
+                    </p>
+                </div>
+            </div>
+        </footer>
 
-        // Trigger animations when stats come into view
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const statElements = entry.target.querySelectorAll('.text-4xl');
-                    statElements.forEach((el, index) => {
-                        const targets = [43, 10, 500, 100];
-                        setTimeout(() => {
-                            animateCounter(el, targets[index]);
-                        }, index * 200);
-                    });
-                    observer.unobserve(entry.target);
-                }
-            });
-        });
+        <script>
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileNav = document.getElementById('mobile-nav');
+            const mobileOverlay = document.getElementById('mobile-overlay');
+            const closeMobileNav = document.getElementById('close-mobile-nav');
 
-        // Observe the stats section
-        const statsSection = document.querySelector('.grid.grid-cols-2.md\\:grid-cols-4');
-        if (statsSection) {
-            observer.observe(statsSection);
-        }
-    </script>
+            const openMenu = () => {
+                mobileNav.classList.add('active');
+                mobileOverlay.classList.remove('hidden');
+            };
+
+            const closeMenu = () => {
+                mobileNav.classList.remove('active');
+                mobileOverlay.classList.add('hidden');
+            };
+
+            mobileMenuBtn.addEventListener('click', openMenu);
+            closeMobileNav.addEventListener('click', closeMenu);
+            mobileOverlay.addEventListener('click', closeMenu);
+        </script>
 </body>
 
 </html>

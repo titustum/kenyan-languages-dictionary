@@ -1,24 +1,36 @@
 <x-layouts.app.guest>
+
+    @php
+    $enhancedColors = [
+    'red' => 'from-red-500 to-red-600 shadow-red-500/25',
+    'yellow' => 'from-yellow-400 to-yellow-500 shadow-yellow-500/25 text-gray-900',
+    'green' => 'from-green-500 to-green-600 shadow-green-500/25',
+    'blue' => 'from-blue-500 to-blue-600 shadow-blue-500/25',
+    'indigo' => 'from-indigo-500 to-indigo-600 shadow-indigo-500/25',
+    'purple' => 'from-purple-500 to-purple-600 shadow-purple-500/25',
+    'pink' => 'from-pink-500 to-pink-600 shadow-pink-500/25',
+    'orange' => 'from-orange-500 to-orange-600 shadow-orange-500/25',
+    'teal' => 'from-teal-500 to-teal-600 shadow-teal-500/25',
+    'cyan' => 'from-cyan-500 to-cyan-600 shadow-cyan-500/25',
+    'amber' => 'from-amber-400 to-amber-500 shadow-amber-500/25 text-gray-900',
+    'lime' => 'from-lime-400 to-lime-500 shadow-lime-500/25 text-gray-900',
+    'gray' => 'from-gray-500 to-gray-600 shadow-gray-500/25',
+    'rose' => 'from-rose-500 to-rose-600 shadow-rose-500/25',
+    'brown' => 'from-yellow-800 to-yellow-900 shadow-yellow-800/25',
+    ];
+    @endphp
+
     <section class="min-h-screen mt-12 py-16 bg-gray-900 text-white relative overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 lg:px-8">
 
             <!-- Header and Back -->
             <div class="mb-10 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
-                <a href="{{ route('languages.show', $language->slug) }}"
-                    class="text-blue-400 hover:underline text-sm flex items-center group">
-                    <svg class="w-4 h-4 mr-1 transform transition-transform group-hover:-translate-x-1" fill="none"
-                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                    </svg>
-                    Back to {{ $language->name }}
-                </a>
 
                 <div class="text-center flex-1">
                     <div class="text-6xl mb-2">{{ $language->icon ?? '🌍' }}</div>
-                    <h1 class="text-4xl md:text-5xl font-extrabold">{{ $language->name }} Dictionary</h1>
+                    <h1 class="text-4xl md:text-5xl font-extrabold">Explore {{ $language->name }} Language</h1>
                     <p class="text-gray-400 mt-3 text-lg max-w-2xl mx-auto">
-                        Explore community-contributed words with rich media, specific categories, and cultural context.
+                        {{ $language->description }}
                     </p>
                 </div>
 
@@ -75,48 +87,41 @@
 
                     <!-- Entries Grid -->
                     @if($entries->count())
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                         @foreach ($entries as $entry)
                         <div
-                            class="bg-gray-800 rounded-xl p-5 shadow hover:shadow-lg transition duration-300 hover:scale-[1.02] border border-gray-700 hover:border-purple-600">
-                            <div class="flex justify-between items-start mb-3">
-                                <h2 class="text-2xl font-bold text-white">{{ ucfirst($entry->word) }}</h2>
-                                @if($entry->category)
-                                <span
-                                    class="text-sm text-gray-400 flex items-center gap-1.5 bg-gray-700 px-3 py-1 rounded-full whitespace-nowrap">
-                                    {{ $entry->category->icon ?? '📁' }} {{ $entry->category->name }}
-                                </span>
-                                @endif
-                            </div>
-
-                            <p class="text-purple-400 italic mb-3 text-lg">{{ $entry->translation_en }}</p>
-
+                            class="bg-white/5 rounded-xl p-4 border border-white/10 hover:border-emerald-500 transition-all space-y-3">
+                            {{-- Image at the top --}}
                             @if($entry->image_path)
-                            <img src="{{ asset('storage/' . $entry->image_path) }}" alt="Image for {{ $entry->word }}"
-                                class="w-full h-48 object-cover rounded-md mb-3 border border-gray-700">
+                            <img src="{{ asset('storage/' . $entry->image_path) }}" alt="{{ $entry->word }}"
+                                class="w-full h-40 object-contain p-3 rounded-lg">
                             @endif
 
-                            @if($entry->audio_path)
-                            <div class="mb-3">
-                                <audio controls class="w-full audio-player-custom">
-                                    <source src="{{ asset('storage/' . $entry->audio_path) }}" type="audio/mpeg">
-                                    Your browser does not support the audio element.
-                                </audio>
+                            {{-- Word + Category --}}
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-xl font-semibold text-white">{{ $entry->word }}</h3>
+                                {{-- <span class="text-sm text-gray-400">{{ $entry->category->icon ?? '📁' }} {{
+                                    $entry->category->name }}</span> --}}
                             </div>
-                            @endif
 
+                            {{-- Translation --}}
+                            <p class="text-emerald-400 text-lg">{{ $entry->translation_en }}</p>
+
+                            {{-- Example Sentence --}}
                             @if($entry->example_sentence)
-                            <div class="text-base text-gray-300 italic mb-3 leading-relaxed">
-                                “{{ $entry->example_sentence }}”
-                            </div>
+                            <p class="text-sm text-gray-400 italic">“{{ $entry->example_sentence }}”</p>
                             @endif
 
-                            <div class="text-xs text-gray-500 mt-2">
-                                Contributed by: <span class="font-semibold text-gray-400">{{ $entry->user->name ??
-                                    'Unknown' }}</span>
-                            </div>
+                            {{-- Audio --}}
+                            @if($entry->audio_path)
+                            <audio controls class="w-full mt-2">
+                                <source src="{{ asset('storage/' . $entry->audio_path) }}" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            @endif
                         </div>
                         @endforeach
+
                     </div>
 
                     <!-- Pagination -->
