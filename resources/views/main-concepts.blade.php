@@ -225,6 +225,23 @@
                 {{-- Main Content --}}
                 <main class="lg:col-span-4 space-y-8">
 
+                    @if (session('success'))
+                    <div class="mb-4 p-4 bg-green-600 text-white rounded">
+                        {{ session('success') }}
+                    </div>
+                    @endif
+
+
+                    @if ($errors->any())
+                    <div class="mb-4 p-4 bg-red-600 text-white rounded">
+                        <ul class="list-disc list-inside">
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
+
                     {{-- Search Input --}}
                     <div class="mb-6 animate-fadeInUp delay-100">
                         <div class="relative">
@@ -281,29 +298,43 @@
                                 <p class="text-gray-400 text-sm lg:text-base font-semibold">
                                     Category: {{ $mainEntry->category->name ?? 'Uncategorized' }}
                                 </p>
-                            </div>
+                            </div> 
 
-                            {{-- English Description (Optional) --}}
-                            @if($mainEntry->description_en)
-                            <p class="text-sm text-gray-400 mb-3 concept-description">
-                                {{ Str::limit($mainEntry->description_en, 80) }}
-                            </p>
-                            @endif
 
-                            {{-- English Example Sentence (Optional) --}}
-                            @if($mainEntry->example_sentence_en)
-                            <p class="text-sm text-gray-400 italic mb-3 concept-example">
-                                "{{ Str::limit($mainEntry->example_sentence_en, 80) }}"
-                            </p>
-                            @endif
+                            <form action="{{ route('contribute.translation.store') }}" method="POST"
+                                class="space-y-2 mt-4">
+                                @csrf
+                                <input type="hidden" name="main_entry_id" value="{{ $mainEntry->id }}">
 
-                            {{-- Add Translation Link/Button --}}
-                            <div class="w-full mt-auto pt-4 border-t border-gray-700">
-                                <a href="{{ route('contribute.translation.create', ['mainEntry' => $mainEntry->slug_en]) }}"
-                                    class="block w-full text-center px-4 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 transition font-medium">
-                                    Add Translation
-                                </a>
-                            </div>
+                                <div>
+                                    <label for="language_id_{{ $mainEntry->id }}"
+                                        class="block text-sm font-medium text-gray-300">
+                                        Language
+                                    </label>
+                                    <select name="language_id" id="language_id_{{ $mainEntry->id }}"
+                                        class="w-full bg-gray-700 text-white rounded-md border border-gray-600 focus:ring-emerald-500 focus:border-emerald-500">
+                                        @foreach($languages as $language)
+                                        <option value="{{ $language->id }}">{{ $language->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label for="translation_text_{{ $mainEntry->id }}"
+                                        class="block text-sm font-medium text-gray-300">
+                                        Translation
+                                    </label>
+                                    <input type="text" name="word" id="word_{{ $mainEntry->id }}"
+                                        class="w-full bg-gray-700 text-white rounded-md border border-gray-600 focus:ring-emerald-500 focus:border-emerald-500"
+                                        placeholder="Enter translation..." required>
+                                </div>
+
+                                <button type="submit"
+                                    class="w-full px-4 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 transition font-medium">
+                                    Submit Translation
+                                </button>
+                            </form>
+
                         </div>
                         @endforeach
                     </div>

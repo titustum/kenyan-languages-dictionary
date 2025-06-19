@@ -21,7 +21,7 @@ return new class extends Migration
                   ->comment('The user who created or last updated this main entry concept.');
 
             // Core English representation (for reference)
-            $table->string('word_en')->unique()->comment('The primary English word for this concept (e.g., "Cat").');
+            $table->string('word_en')->comment('The primary English word for this concept (e.g., "Cat").');
             $table->string('slug_en')->unique()->comment('Unique URL-friendly slug for the English word.');
             $table->text('description_en')->nullable()->comment('General English description for the concept.');
             $table->text('example_sentence_en')->nullable()->comment('An example sentence in English for the concept.');

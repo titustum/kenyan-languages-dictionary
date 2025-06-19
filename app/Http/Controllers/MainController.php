@@ -108,10 +108,20 @@ class MainController extends Controller
     }
 
 
-    public function mainConcepts()
+    public function mainConcepts(Request $request)
     {
-        $mainEntries = DictionaryMainEntry::with('category')->latest()->paginate(10); // Example pagination
+        if ($categorySlug = $request->get('category')) {
+            $mainEntries = DictionaryMainEntry::with('category')
+                ->whereHas('category', function ($query) use ($categorySlug) {
+                    $query->where('slug', $categorySlug);
+                })
+                ->latest()
+                ->paginate(20); // Example pagination
+        } else {
+            $mainEntries = DictionaryMainEntry::with('category')->latest()->paginate(20); // Example pagination
+        } 
         $categories = Category::orderBy('name')->get(); 
-        return view('main-concepts', compact('mainEntries', 'categories'));
+        $languages = Language::get(['id','name']);
+        return view('main-concepts', compact('mainEntries', 'categories', 'languages'));
     }
 }
