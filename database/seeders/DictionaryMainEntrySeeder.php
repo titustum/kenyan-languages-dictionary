@@ -332,6 +332,19 @@ class DictionaryMainEntrySeeder extends Seeder
                 ['category' => 'Travel', 'word_en' => 'Taxi', 'image_path' => 'images/travel/taxi.png'],
                 ['category' => 'Travel', 'word_en' => 'Beach', 'image_path' => 'images/travel/beach.png'],
 
+                //Clothing
+                ['category' => 'Clothing', 'word_en' => 'Shirt', 'image_path' => 'images/clothing/shirt.png'],
+                ['category' => 'Clothing', 'word_en' => 'Pants', 'image_path' => 'images/clothing/pants.png'],
+                ['category' => 'Clothing', 'word_en' => 'Dress', 'image_path' => 'images/clothing/dress.png'],
+                ['category' => 'Clothing', 'word_en' => 'Hat', 'image_path' => 'images/clothing/hat.png'],
+                ['category' => 'Clothing', 'word_en' => 'Shoes', 'image_path' => 'images/clothing/shoes.png'],
+                ['category' => 'Clothing', 'word_en' => 'Jacket', 'image_path' => 'images/clothing/jacket.png'],
+                ['category' => 'Clothing', 'word_en' => 'Skirt', 'image_path' => 'images/clothing/skirt.png'],
+                ['category' => 'Clothing', 'word_en' => 'Socks', 'image_path' => 'images/clothing/socks.png'],
+                ['category' => 'Clothing', 'word_en' => 'Belt', 'image_path' => 'images/clothing/belt.png'],
+                ['category' => 'Clothing', 'word_en' => 'Gloves', 'image_path' => 'images/clothing/gloves.png'],
+
+
                 // Time
                 ['category' => 'Time', 'word_en' => 'Day', 'image_path' => 'images/time/day.png'],
                 ['category' => 'Time', 'word_en' => 'Night', 'image_path' => 'images/time/night.png'],

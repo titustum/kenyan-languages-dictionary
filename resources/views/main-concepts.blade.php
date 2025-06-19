@@ -1,4 +1,4 @@
-<x-layouts.app.guest language="English Concepts"> {{-- Language name here is for the overall page context --}}
+<x-layouts.app.guest :language="($language?->name ?? 'English Concepts')">
     @push('styles')
     <style>
         /* Custom styling for audio player track and thumb for consistency */
@@ -130,51 +130,62 @@
     @endpush
 
     <section class="min-h-screen py-16 md:py-24 bg-gray-950 text-white relative overflow-hidden">
-        {{-- Subtle background pattern --}}
         <div class="absolute inset-0 z-0 opacity-10"
             style="background-image: radial-gradient(#2d3748 1px, transparent 1px); background-size: 20px 20px;"></div>
 
         <div class="max-w-7xl mx-auto px-4 lg:px-8 relative z-10">
 
-            {{-- Header and Language Info (Adjusted for Main Concepts) --}}
+            {{-- Header --}}
             <div class="text-center mb-8 md:mb-16 animate-fadeInUp">
-                <div class="text-7xl mb-4 transform hover:scale-110 transition-transform duration-300">💡</div>
-                <h1 class="text-4xl md:text-5xl font-extrabold leading-tight text-white/95 drop-shadow-lg">
-                    Browse Core English Concepts
-                </h1>
-                <p class="text-gray-300 mt-4 text-lg md:text-xl max-w-3xl mx-auto">
-                    Explore the central concepts in our dictionary. If you know a translation, contribute it!
+                <div class="text-7xl mb-4 transform hover:scale-110 transition">💡</div>
+                <h1 class="text-4xl md:text-5xl font-extrabold">Browse Core English Concepts</h1>
+                <p class="text-gray-300 mt-4 text-lg md:text-xl mx-auto max-w-3xl">
+                    Explore the central concepts in our dictionary. Know a translation? Contribute it!
                 </p>
-
-                {{-- Link to contribute a new English concept (likely for admins) --}}
                 @auth
                 <a href="{{ route('contribute.create') }}"
-                    class="inline-flex items-center text-emerald-400 hover:text-emerald-300 hover:underline mt-6 font-medium transition duration-200 group">
-                    <svg class="w-5 h-5 mr-1 group-hover:-translate-x-1 transition-transform duration-200" fill="none"
-                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                    </svg>
+                    class="inline-flex items-center text-emerald-400 hover:text-emerald-300 mt-6">
+                    <svg class="w-5 h-5 mr-1">...</svg>
                     Contribute a New English Concept
                 </a>
                 @endauth
             </div>
 
-            {{-- Filter Button for Mobile --}}
-            <div class="lg:hidden text-center mb-8">
-                <button id="toggleSidebarBtn"
-                    class="inline-flex items-center justify-center px-6 py-3 bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white font-semibold rounded-full shadow-lg transition duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-purple-500/50">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z">
-                        </path>
-                    </svg>
-                    Filter Categories
-                </button>
+            {{-- Language Selector --}}
+            @if (!$language)
+            <div class="text-center mb-12">
+                <form method="GET" action="{{ route('concepts.index') }}">
+                    <label for="lang" class="block text-xl font-semibold">Choose translation language:</label>
+                    <select name="lang" id="lang" class="bg-gray-800 text-white px-4 py-2 rounded-md" required>
+                        <option value="">-- Select --</option>
+                        @foreach ($languages as $lang)
+                        <option value="{{ $lang->slug }}">{{ $lang->name }}</option>
+                        @endforeach
+                    </select>
+                    <button type="submit"
+                        class="ml-4 px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-md">Continue</button>
+                </form>
             </div>
+            @else
+            <div class="mb-6 text-right">
+                <form method="GET" action="{{ route('concepts.index') }}">
+                    <input type="hidden" name="category" value="{{ request()->get('category') }}">
+                    <label for="lang" class="text-white mr-2">Translating into:</label>
+                    <select name="lang" id="lang" onchange="this.form.submit()"
+                        class="bg-gray-700 text-white px-3 py-1 rounded-md">
+                        @foreach ($languages as $lang)
+                        <option value="{{ $lang->slug }}" @selected($lang->id === $language->id)>
+                            {{ $lang->name }}
+                        </option>
+                        @endforeach
+                    </select>
+                </form>
+            </div>
+            @endif
 
+            {{-- Sidebar & Grid Layout --}}
             <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 md:gap-10">
+                {{-- Sidebar omitted for brevity … --}}
                 {{-- Sidebar: Categories --}}
                 <aside id="sidebar"
                     class="lg:col-span-1 mt-20 bg-gray-800 p-6 shadow-xl lg:rounded-2xl border border-gray-700 animate-slideInLeft overflow-y-auto hidden lg:block fixed inset-y-0 left-0 w-64 z-40 lg:static lg:w-auto">
@@ -192,7 +203,7 @@
                     <ul class="space-y-3">
                         <li>
                             {{-- This route should filter main concepts, not language entries --}}
-                            <a href="{{ route('concepts.index') }}"
+                            <a href="{{ request()->fullUrlWithQuery(['category' => null]) }}"
                                 class="block p-3 rounded-lg text-base transition duration-200 ease-in-out
                                         {{ request()->get('category') ? 'text-gray-300 hover:bg-gray-700' : 'bg-purple-600 text-white font-bold shadow-lg shadow-purple-500/20' }}">
                                 <span class="flex items-center gap-2">
@@ -208,7 +219,7 @@
                         @foreach ($categories as $category)
                         <li>
                             {{-- This route should filter main concepts by category --}}
-                            <a href="{{ route('concepts.index', ['category' => $category->slug]) }}"
+                            <a href="{{ request()->fullUrlWithQuery(['category' => $category->slug]) }}"
                                 class="flex items-center text-base gap-3 p-3 rounded-lg transition duration-200 ease-in-out
                                         {{ request()->get('category') === $category->slug ? 'bg-purple-600 text-white font-bold shadow-lg shadow-purple-500/20' : 'text-gray-300 hover:bg-gray-700' }}">
                                 <span>{{ $category->icon ?? '📁' }}</span>
@@ -221,176 +232,99 @@
 
                 {{-- Overlay for mobile sidebar --}}
                 <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-20 hidden lg:hidden"></div>
-
-                {{-- Main Content --}}
                 <main class="lg:col-span-4 space-y-8">
-
-                    @if (session('success'))
-                    <div class="mb-4 p-4 bg-green-600 text-white rounded">
-                        {{ session('success') }}
-                    </div>
+                    @if(session('success'))
+                    <div class="mb-4 p-4 bg-green-600 rounded">{{ session('success') }}</div>
                     @endif
-
-
-                    @if ($errors->any())
-                    <div class="mb-4 p-4 bg-red-600 text-white rounded">
+                    @if($errors->any())
+                    <div class="mb-4 p-4 bg-red-600 rounded">
                         <ul class="list-disc list-inside">
-                            @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
+                            @foreach($errors->all() as $err)
+                            <li>{{ $err }}</li>
                             @endforeach
                         </ul>
                     </div>
                     @endif
 
                     {{-- Search Input --}}
-                    <div class="mb-6 animate-fadeInUp delay-100">
+                    <div class="mb-6 animate-fadeInUp">
                         <div class="relative">
-                            <input type="text" id="searchInput" value="{{ request()->get('search') }}"
-                                placeholder="Search English words, descriptions, or examples..."
-                                class="w-full bg-gray-800 border border-gray-700 rounded-xl pl-12 pr-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition duration-200 text-lg">
+                            <input id="searchInput" value="{{ request('search') }}"
+                                placeholder="Search English words, descriptions, or examples…"
+                                class="w-full bg-gray-800 border-gray-700 rounded-xl pl-12 pr-4 py-3 text-white placeholder-gray-400 focus:ring-purple-500">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <svg class="h-7 w-7 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                                </svg>
+                                <svg class="h-7 w-7 text-gray-400">...</svg>
                             </div>
                         </div>
                     </div>
 
-                    {{-- Concepts Grid Container --}}
+                    {{-- Concept Cards --}}
                     @if($mainEntries->count())
                     <div id="entriesGrid"
-                        class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3 animate-fadeInScale">
+                        class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 animate-fadeInScale">
                         @foreach ($mainEntries as $mainEntry)
-                        <div class="concept-card bg-gray-800 rounded-2xl p-2 border border-gray-700 shadow-lg hover:border-emerald-500 transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-xl group"
-                            data-word-en="{{ strtolower($mainEntry->word_en) }}"
-                            data-description-en="{{ strtolower($mainEntry->description_en ?? '') }}"
-                            data-example-en="{{ strtolower($mainEntry->example_sentence_en ?? '') }}"
-                            data-category-slug="{{ $mainEntry->category->slug ?? '' }}">
-
-                            {{-- Image at the top --}}
+                        <div
+                            class="concept-card bg-gray-800 rounded-2xl p-4 border-gray-700 shadow-lg hover:border-emerald-500 transition">
+                            {{-- Image --}}
                             @if($mainEntry->image_path)
-                            <div
-                                class="mb-4 overflow-hidden rounded-lg bg-gray-900 flex items-center justify-center h-28 md:h-34 lg:h-40">
-                                <img src="{{ $mainEntry->image_url }}" alt="{{ $mainEntry->word_en }}"
-                                    class="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-300 ease-in-out"
-                                    onerror="this.onerror=null;this.src='{{ asset('images/placeholder.png') }}';">
-                            </div>
+                            <img src="{{ $mainEntry->image_url }}" alt="{{ $mainEntry->word_en }}"
+                                class="w-full h-32 object-contain rounded-lg mb-4">
                             @else
                             <div
-                                class="mb-4 h-28 md:h-34 lg:h-40 bg-gray-900 rounded-lg flex items-center justify-center text-gray-500 text-opacity-50">
-                                <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
-                                    </path>
-                                </svg>
+                                class="w-full h-32 bg-gray-900 rounded-lg mb-4 flex items-center justify-center text-gray-500">
+                                <svg class="w-16 h-16">...</svg>
                             </div>
                             @endif
 
-                            {{-- English Word & Category --}}
-                            <div class="mb-3">
-                                <h3
-                                    class="text-xl lg:text-3xl font-extrabold text-white leading-tight concept-word mb-1">
-                                    {{ $mainEntry->word_en }}
-                                </h3>
-                                <p class="text-gray-400 text-sm lg:text-base font-semibold">
-                                    Category: {{ $mainEntry->category->name ?? 'Uncategorized' }}
-                                </p>
-                            </div> 
+                            {{-- Word & Category --}}
+                            <h3 class="text-xl font-bold mb-1">{{ $mainEntry->word_en }}</h3>
+                            <p class="text-gray-400 text-sm mb-3">Category: {{ $mainEntry->category->name }}</p>
 
-
-                            <form action="{{ route('contribute.translation.store') }}" method="POST"
-                                class="space-y-2 mt-4">
+                            {{-- Translation Form --}}
+                            @if ($language)
+                            <form action="{{ route('contribute.translation.store') }}" method="POST" class="space-y-2">
                                 @csrf
                                 <input type="hidden" name="main_entry_id" value="{{ $mainEntry->id }}">
+                                <input type="hidden" name="language_id" value="{{ $language->id }}">
 
-                                <div>
-                                    <label for="language_id_{{ $mainEntry->id }}"
-                                        class="block text-sm font-medium text-gray-300">
-                                        Language
-                                    </label>
-                                    <select name="language_id" id="language_id_{{ $mainEntry->id }}"
-                                        class="w-full bg-gray-700 text-white rounded-md border border-gray-600 focus:ring-emerald-500 focus:border-emerald-500">
-                                        @foreach($languages as $language)
-                                        <option value="{{ $language->id }}">{{ $language->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label for="translation_text_{{ $mainEntry->id }}"
-                                        class="block text-sm font-medium text-gray-300">
-                                        Translation
-                                    </label>
-                                    <input type="text" name="word" id="word_{{ $mainEntry->id }}"
-                                        class="w-full bg-gray-700 text-white rounded-md border border-gray-600 focus:ring-emerald-500 focus:border-emerald-500"
-                                        placeholder="Enter translation..." required>
-                                </div>
+                                <input name="word" placeholder="Translation in {{ $language->name }}"
+                                    class="w-full bg-gray-700 text-white rounded-md border-gray-600 py-2 px-3" required>
 
                                 <button type="submit"
-                                    class="w-full px-4 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 transition font-medium">
-                                    Submit Translation
+                                    class="w-full px-4 py-2 bg-emerald-600 hover:bg-emerald-700 rounded-md">
+                                    Submit
                                 </button>
                             </form>
-
+                            @else
+                            <p class="text-sm italic text-gray-400">Select a language above to contribute.</p>
+                            @endif
                         </div>
                         @endforeach
                     </div>
 
-                    {{-- Pagination Links --}}
-                    @if ($mainEntries->hasPages())
-                    <div id="paginationLinks" class="mt-10 animate-fadeInUp delay-200">
-                        {{ $mainEntries->links('pagination::tailwind') }}
+                    {{-- Pagination --}}
+                    <div id="paginationLinks" class="mt-10">
+                        {{ $mainEntries->appends([
+                        'lang' => $langSlug,
+                        'category' => request('category'),
+                        'search' => request('search'),
+                        ])->links('pagination::tailwind') }}
                     </div>
-                    @endif
-
                     @else
-                    {{-- Empty State (initial state if no entries from server) --}}
-                    <div id="noEntriesFoundInitial"
-                        class="text-center py-20 lg:col-span-4 bg-gray-800 rounded-2xl shadow-xl border border-gray-700 animate-fadeInUp">
+                    {{-- No Results Empty State --}}
+                    <div class="text-center py-20 bg-gray-800 rounded-2xl shadow-xl border-gray-700">
                         <div class="text-7xl mb-6">📭</div>
-                        <h3 class="text-3xl font-bold mb-3 text-white">No Concepts Found Yet!</h3>
-                        <p class="text-gray-400 text-lg max-w-md mx-auto">
-                            It seems there are no English concepts matching your criteria.
-                        </p>
-                        @auth {{-- Suggest contributing if logged in --}}
+                        <h3 class="text-3xl font-bold">No Concepts Found!</h3>
+                        <p class="text-gray-400 mt-3">Try a different filter or contribute a new concept.</p>
+                        @auth
                         <a href="{{ route('contribute.create') }}"
-                            class="mt-8 inline-flex items-center bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white font-semibold py-3 px-7 rounded-full transition duration-300 transform hover:-translate-y-1 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-purple-500/50">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                            </svg>
+                            class="mt-8 inline-flex items-center bg-purple-600 hover:bg-purple-700 text-white py-3 px-7 rounded-full">
+                            <svg class="w-5 h-5 mr-2">...</svg>
                             Add Your First Concept
                         </a>
                         @endauth
                     </div>
                     @endif
-
-                    {{-- Empty State for JS filtering --}}
-                    <div id="noResultsFoundJS"
-                        class="text-center py-20 lg:col-span-4 bg-gray-800 rounded-2xl shadow-xl border border-gray-700 hidden">
-                        <div class="text-7xl mb-6">🔍</div>
-                        <h3 class="text-3xl font-bold mb-3 text-white">No Matches Found!</h3>
-                        <p class="text-gray-400 text-lg max-w-md mx-auto">
-                            Your search yielded no results. Try a different search term or clear the filter.
-                        </p>
-                        <button onclick="document.getElementById('searchInput').value = ''; filterConcepts();"
-                            class="mt-8 inline-block bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white font-semibold py-3 px-7 rounded-full transition duration-300 transform hover:-translate-y-1 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-purple-500/50">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004 16.08V12m4.214-1.214L11.99 15.01"></path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M20 20v-5h-.582m-15.356-2A8.001 8.001 0 0120 7.92V12m-4.214 1.214L12.01 8.99">
-                                </path>
-                            </svg>
-                            Clear Search
-                        </button>
-                    </div>
-
                 </main>
             </div>
         </div>

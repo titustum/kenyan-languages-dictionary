@@ -108,20 +108,80 @@ class MainController extends Controller
     }
 
 
+    // public function mainConcepts(Request $request)
+    // { 
+
+    //     $language = null;
+
+    //     if(request()->get('lang')) { //slug as slug is used to find specified langauge
+    //         $langSlug = request()->get('lang');
+    //         $language = Language::find($langSlug);
+    //         if (!$language) {
+    //             return redirect()->back()->with('error', 'Language not found.');
+    //         }
+    //     } else {
+    //         $langSlug = null;
+    //     }
+
+    //     if ($categorySlug = $request->get('category')) {
+    //         $mainEntries = DictionaryMainEntry::with('category')
+    //             ->whereHas('category', function ($query) use ($categorySlug) {
+    //                 $query->where('slug', $categorySlug);
+    //             })
+    //             ->latest()
+    //             ->paginate(20); // Example pagination
+    //     } else {
+    //         $mainEntries = DictionaryMainEntry::with('category')->latest()->paginate(20); // Example pagination
+    //     } 
+    //     $categories = Category::orderBy('name')->get(); 
+    //     $languages = Language::get(['id','name']);
+    //     return view('main-concepts', compact('mainEntries', 'categories', 'languages', 'langSlug', 'language'));
+    // }
+
+
     public function mainConcepts(Request $request)
     {
+        // Load all categories and languages for the UI
+        $categories = Category::orderBy('name')->get();
+        $languages = Language::select('id', 'name', 'slug')->get();
+
+        // Handle optional language selection
+        $langSlug = $request->get('lang');
+        $language = $langSlug ? Language::where('slug', $langSlug)->first() : null;
+
+        if ($langSlug && !$language) {
+            return redirect()->back()->with('error', 'Language not found.');
+        }
+
+        // Start building the query
+        $query = DictionaryMainEntry::with('category');
+
+        // Filter by category if provided
         if ($categorySlug = $request->get('category')) {
-            $mainEntries = DictionaryMainEntry::with('category')
-                ->whereHas('category', function ($query) use ($categorySlug) {
-                    $query->where('slug', $categorySlug);
-                })
-                ->latest()
-                ->paginate(20); // Example pagination
-        } else {
-            $mainEntries = DictionaryMainEntry::with('category')->latest()->paginate(20); // Example pagination
-        } 
-        $categories = Category::orderBy('name')->get(); 
-        $languages = Language::get(['id','name']);
-        return view('main-concepts', compact('mainEntries', 'categories', 'languages'));
+            $query->whereHas('category', function ($q) use ($categorySlug) {
+                $q->where('slug', $categorySlug);
+            });
+        }
+
+        // Apply search if provided
+        if ($search = $request->get('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('word_en', 'like', "%{$search}%")
+                ->orWhere('description_en', 'like', "%{$search}%")
+                ->orWhere('example_sentence_en', 'like', "%{$search}%");
+            });
+        }
+
+        // Paginate results, preserving query parameters
+        $mainEntries = $query->latest()->paginate(20)->appends($request->query());
+
+        // Return view with all data needed for Blade
+        return view('main-concepts', compact(
+            'mainEntries',
+            'categories',
+            'languages',
+            'langSlug',
+            'language'
+        ));
     }
 }
