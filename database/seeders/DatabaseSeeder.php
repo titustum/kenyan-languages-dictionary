@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\DictionaryEntry;
-use App\Models\User; 
+use App\Models\User;
 use Database\Seeders\CategorySeeder;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -23,11 +23,12 @@ class DatabaseSeeder extends Seeder
             'password' => 'password', // password
         ]);
 
-        $this->call(
-            [LanguageSeeder::class, 
-            CategorySeeder::class
-            ]
-        );
+        // Call seeders in proper order
+        $this->call([
+            LanguageSeeder::class,
+            CategorySeeder::class,
+            DictionaryMainEntrySeeder::class,
+        ]);
 
         // DictionaryEntry::factory(100)->create();
     }
