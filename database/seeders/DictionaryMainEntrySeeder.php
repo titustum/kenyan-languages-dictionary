@@ -378,7 +378,7 @@ class DictionaryMainEntrySeeder extends Seeder
                 ['category' => 'Numbers', 'word_en' => 'Seven',  'image_path' => 'images/numbers/7.png'],
                 ['category' => 'Numbers', 'word_en' => 'Eight',  'image_path' => 'images/numbers/8.png'],
                 ['category' => 'Numbers', 'word_en' => 'Nine',   'image_path' => 'images/numbers/9.png'],
-                ['category' => 'Numbers', 'word_en' => 'Ten',    'image_path' => 'images/numbers/10.png'], 
+                ['category' => 'Numbers', 'word_en' => 'Ten',    'image_path' => 'images/numbers/10.png'],
                 ['category' => 'Numbers', 'word_en' => 'Twenty',      'image_path' => 'images/numbers/20.png'],
                 ['category' => 'Numbers', 'word_en' => 'Thirty',      'image_path' => 'images/numbers/30.png'],
                 ['category' => 'Numbers', 'word_en' => 'Forty',       'image_path' => 'images/numbers/40.png'],
@@ -387,7 +387,7 @@ class DictionaryMainEntrySeeder extends Seeder
                 ['category' => 'Numbers', 'word_en' => 'Seventy',     'image_path' => 'images/numbers/70.png'],
                 ['category' => 'Numbers', 'word_en' => 'Eighty',      'image_path' => 'images/numbers/80.png'],
                 ['category' => 'Numbers', 'word_en' => 'Ninety',      'image_path' => 'images/numbers/90.png'],
-                ['category' => 'Numbers', 'word_en' => 'One Hundred', 'image_path' => 'images/numbers/100.png'], 
+                ['category' => 'Numbers', 'word_en' => 'One Hundred', 'image_path' => 'images/numbers/100.png'],
                 ['category' => 'Numbers', 'word_en' => 'Two Hundred',   'image_path' => 'images/numbers/200.png'],
                 ['category' => 'Numbers', 'word_en' => 'Three Hundred', 'image_path' => 'images/numbers/300.png'],
                 ['category' => 'Numbers', 'word_en' => 'Four Hundred',  'image_path' => 'images/numbers/400.png'],
@@ -405,11 +405,8 @@ class DictionaryMainEntrySeeder extends Seeder
 
 
         foreach ($entries as $entry) {
-            // Find the category by name
-            $category = Category::where('name', $entry['category'])->first();
-
-            if (!$category) {
-                // Optionally log or skip if category not found
+            if (!isset($categories[$entry['category']])) {
+                $this->command->error("Category {$entry['category']} not found!");
                 continue;
             }
 
