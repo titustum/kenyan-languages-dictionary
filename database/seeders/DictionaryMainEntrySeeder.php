@@ -360,6 +360,7 @@ class DictionaryMainEntrySeeder extends Seeder
 
 
         foreach ($entries as $entry) {
+            
             if (!isset($categories[$entry['category']])) {
                 $this->command->error("Category {$entry['category']} not found!");
                 continue;
