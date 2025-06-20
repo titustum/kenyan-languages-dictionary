@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 use App\Models\DictionaryMainEntry;
@@ -158,7 +159,6 @@ class DictionaryMainEntrySeeder extends Seeder
                 ['category' => 'Household Items', 'word_en' => 'Bed', 'image_path' => 'images/household_items/bed.png'],
                 ['category' => 'Household Items', 'word_en' => 'Door', 'image_path' => 'images/household_items/door.png'],
                 ['category' => 'Household Items', 'word_en' => 'Window', 'image_path' => 'images/household_items/window.png'],
-                ['category' => 'Household Items', 'word_en' => 'Book', 'image_path' => 'images/household_items/book.png'],
                 ['category' => 'Household Items', 'word_en' => 'Lamp', 'image_path' => 'images/household_items/lamp.png'],
                 ['category' => 'Household Items', 'word_en' => 'Sofa', 'image_path' => 'images/household_items/sofa.png'],
                 ['category' => 'Household Items', 'word_en' => 'Television', 'image_path' => 'images/household_items/television.png'],
@@ -332,6 +332,19 @@ class DictionaryMainEntrySeeder extends Seeder
                 ['category' => 'Travel', 'word_en' => 'Taxi', 'image_path' => 'images/travel/taxi.png'],
                 ['category' => 'Travel', 'word_en' => 'Beach', 'image_path' => 'images/travel/beach.png'],
 
+                //Clothing
+                ['category' => 'Clothing', 'word_en' => 'Shirt', 'image_path' => 'images/clothing/shirt.png'],
+                ['category' => 'Clothing', 'word_en' => 'Pants', 'image_path' => 'images/clothing/pants.png'],
+                ['category' => 'Clothing', 'word_en' => 'Dress', 'image_path' => 'images/clothing/dress.png'],
+                ['category' => 'Clothing', 'word_en' => 'Hat', 'image_path' => 'images/clothing/hat.png'],
+                ['category' => 'Clothing', 'word_en' => 'Shoes', 'image_path' => 'images/clothing/shoes.png'],
+                ['category' => 'Clothing', 'word_en' => 'Jacket', 'image_path' => 'images/clothing/jacket.png'],
+                ['category' => 'Clothing', 'word_en' => 'Skirt', 'image_path' => 'images/clothing/skirt.png'],
+                ['category' => 'Clothing', 'word_en' => 'Socks', 'image_path' => 'images/clothing/socks.png'],
+                ['category' => 'Clothing', 'word_en' => 'Belt', 'image_path' => 'images/clothing/belt.png'],
+                ['category' => 'Clothing', 'word_en' => 'Gloves', 'image_path' => 'images/clothing/gloves.png'],
+
+
                 // Time
                 ['category' => 'Time', 'word_en' => 'Day', 'image_path' => 'images/time/day.png'],
                 ['category' => 'Time', 'word_en' => 'Night', 'image_path' => 'images/time/night.png'],
@@ -356,25 +369,68 @@ class DictionaryMainEntrySeeder extends Seeder
                 ['category' => 'Music', 'word_en' => 'Melody', 'image_path' => 'images/music/melody.png'],
                 ['category' => 'Music', 'word_en' => 'Rhythm', 'image_path' => 'images/music/rhythm.png'],
 
-    ];
+                // Numbers (1–10)
+                ['category' => 'Numbers', 'word_en' => 'One',    'image_path' => 'images/numbers/1.png'],
+                ['category' => 'Numbers', 'word_en' => 'Two',    'image_path' => 'images/numbers/2.png'],
+                ['category' => 'Numbers', 'word_en' => 'Three',  'image_path' => 'images/numbers/3.png'],
+                ['category' => 'Numbers', 'word_en' => 'Four',   'image_path' => 'images/numbers/4.png'],
+                ['category' => 'Numbers', 'word_en' => 'Five',   'image_path' => 'images/numbers/5.png'],
+                ['category' => 'Numbers', 'word_en' => 'Six',    'image_path' => 'images/numbers/6.png'],
+                ['category' => 'Numbers', 'word_en' => 'Seven',  'image_path' => 'images/numbers/7.png'],
+                ['category' => 'Numbers', 'word_en' => 'Eight',  'image_path' => 'images/numbers/8.png'],
+                ['category' => 'Numbers', 'word_en' => 'Nine',   'image_path' => 'images/numbers/9.png'],
+                ['category' => 'Numbers', 'word_en' => 'Ten',    'image_path' => 'images/numbers/10.png'],
+                ['category' => 'Numbers', 'word_en' => 'Twenty',      'image_path' => 'images/numbers/20.png'],
+                ['category' => 'Numbers', 'word_en' => 'Thirty',      'image_path' => 'images/numbers/30.png'],
+                ['category' => 'Numbers', 'word_en' => 'Forty',       'image_path' => 'images/numbers/40.png'],
+                ['category' => 'Numbers', 'word_en' => 'Fifty',       'image_path' => 'images/numbers/50.png'],
+                ['category' => 'Numbers', 'word_en' => 'Sixty',       'image_path' => 'images/numbers/60.png'],
+                ['category' => 'Numbers', 'word_en' => 'Seventy',     'image_path' => 'images/numbers/70.png'],
+                ['category' => 'Numbers', 'word_en' => 'Eighty',      'image_path' => 'images/numbers/80.png'],
+                ['category' => 'Numbers', 'word_en' => 'Ninety',      'image_path' => 'images/numbers/90.png'],
+                ['category' => 'Numbers', 'word_en' => 'One Hundred', 'image_path' => 'images/numbers/100.png'],
+                ['category' => 'Numbers', 'word_en' => 'Two Hundred',   'image_path' => 'images/numbers/200.png'],
+                ['category' => 'Numbers', 'word_en' => 'Three Hundred', 'image_path' => 'images/numbers/300.png'],
+                ['category' => 'Numbers', 'word_en' => 'Four Hundred',  'image_path' => 'images/numbers/400.png'],
+                ['category' => 'Numbers', 'word_en' => 'Five Hundred',  'image_path' => 'images/numbers/500.png'],
+                ['category' => 'Numbers', 'word_en' => 'Six Hundred',   'image_path' => 'images/numbers/600.png'],
+                ['category' => 'Numbers', 'word_en' => 'Seven Hundred', 'image_path' => 'images/numbers/700.png'],
+                ['category' => 'Numbers', 'word_en' => 'Eight Hundred', 'image_path' => 'images/numbers/800.png'],
+                ['category' => 'Numbers', 'word_en' => 'Nine Hundred',  'image_path' => 'images/numbers/900.png'],
+                ['category' => 'Numbers', 'word_en' => 'One Thousand',  'image_path' => 'images/numbers/1000.png'],
+                ['category' => 'Numbers', 'word_en' => 'One Hundred Thousand',  'image_path' => 'images/numbers/100000.png'],
+                ['category' => 'Numbers', 'word_en' => 'Five Hundred Thousand', 'image_path' => 'images/numbers/500000.png'],
+                ['category' => 'Numbers', 'word_en' => 'One Million',           'image_path' => 'images/numbers/1000000.png'],
+
+        ];
 
 
         foreach ($entries as $entry) {
-            
             if (!isset($categories[$entry['category']])) {
                 $this->command->error("Category {$entry['category']} not found!");
                 continue;
             }
 
+            $baseSlug = Str::slug($entry['word_en']);
+            $slug = $baseSlug;
+
+            // Append category slug if there's a conflict
+            if (DictionaryMainEntry::where('slug_en', $slug)->exists()) {
+                $slug = $baseSlug . '-' . Str::slug($entry['category']);
+            }
+
+
             DictionaryMainEntry::updateOrCreate(
-                ['word_en' => $entry['word_en']],
                 [
-                    'user_id' => 1, // default user
-                    'slug_en' => Str::slug($entry['word_en']),
-                    'category_id' => $categories[$entry['category']],
-                    'description_en' => null,
-                    'example_sentence_en' => null,
-                    'image_path' => null,
+                    'word_en' => $entry['word_en'],
+                    'category_id' => $category->id,
+                ],
+                [
+                    'category_id' => $category->id,
+                    'word_en'     => $entry['word_en'],
+                    'slug_en'     => $slug,
+                    'image_path'  => $entry['image_path'] ?? null,
+                    'user_id'     => 1, // Assuming admin or default user
                 ]
             );
         }

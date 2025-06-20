@@ -32,6 +32,8 @@ class CategorySeeder extends Seeder
             ['name' => 'Travel',          'icon' => '✈️'],
             ['name' => 'Time',            'icon' => '⏰'],
             ['name' => 'Music',           'icon' => '🎵'],
+            ['name' => 'Numbers',         'icon' => '🔢'],
+
         ];
 
         foreach ($categories as $item) {
