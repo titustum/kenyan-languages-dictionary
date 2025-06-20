@@ -83,7 +83,6 @@ class DictionaryMainEntrySeeder extends Seeder
                 ['category' => 'Animals', 'word_en' => 'Camel', 'image_path' => 'images/animals/camel.png'],
 
                 // Food
-
                 ['category' => 'Food', 'word_en' => 'Apple', 'image_path' => 'images/food/apple.png'],
                 ['category' => 'Food', 'word_en' => 'Bread', 'image_path' => 'images/food/bread.png'],
                 ['category' => 'Food', 'word_en' => 'Water', 'image_path' => 'images/food/water.png'],
