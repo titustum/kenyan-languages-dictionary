@@ -1,17 +1,17 @@
 <x-layouts.app.guest language="{{ $language->name }}">
-    {{-- Custom Tailwind CSS --}}
 
     {{-- Custom Tailwind Animations and other styles --}}
     @push('styles')
     <style>
         /* Custom styling for audio player track and thumb for consistency */
+        /* Light Theme defaults */
         audio::-webkit-media-controls-panel {
-            background-color: #374151;
-            /* gray-700 */
-            color: #D1D5DB;
-            /* gray-300 */
+            background-color: #E5E7EB;
+            /* gray-200 */
+            color: #4B5563;
+            /* gray-600 */
             border-radius: 0.5rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
         audio::-webkit-media-controls-play-button,
@@ -19,28 +19,59 @@
         audio::-webkit-media-controls-time-remaining-display,
         audio::-webkit-media-controls-timeline,
         audio::-webkit-media-controls-volume-slider {
-            color: #D1D5DB;
-            /* gray-300 */
+            color: #4B5563;
+            /* gray-600 */
         }
 
         audio::-webkit-media-controls-timeline {
-            background-color: #4B5563;
-            /* gray-600 */
+            background-color: #D1D5DB;
+            /* gray-300 */
             border-radius: 10px;
         }
 
         audio::-webkit-media-controls-volume-slider {
-            background-color: #4B5563;
-            /* gray-600 */
+            background-color: #D1D5DB;
+            /* gray-300 */
             border-radius: 10px;
         }
 
+        /* Dark Theme overrides for audio controls */
+        .dark audio::-webkit-media-controls-panel {
+            background-color: #1F2937;
+            /* gray-800 */
+            color: #9CA3AF;
+            /* gray-400 */
+        }
+
+        .dark audio::-webkit-media-controls-play-button,
+        .dark audio::-webkit-media-controls-current-time-display,
+        .dark audio::-webkit-media-controls-time-remaining-display,
+        .dark audio::-webkit-media-controls-timeline,
+        .dark audio::-webkit-media-controls-volume-slider {
+            color: #D1D5DB;
+            /* gray-300 */
+        }
+
+        .dark audio::-webkit-media-controls-timeline,
+        .dark audio::-webkit-media-controls-volume-slider {
+            background-color: #374151;
+            /* gray-700 */
+        }
+
+
         /* Firefox specific styles for audio controls */
         audio {
-            --moz-range-thumb: #A78BFA;
-            /* purple-400 */
-            --moz-range-track: #4B5563;
-            /* gray-600 */
+            --moz-range-thumb: #20B2AA;
+            /* LightSeaGreen - close to Teal */
+            --moz-range-track: #D1D5DB;
+            /* gray-300 */
+        }
+
+        .dark audio {
+            --moz-range-thumb: #20B2AA;
+            /* LightSeaGreen - close to Teal */
+            --moz-range-track: #374151;
+            /* gray-700 */
         }
 
         /* Animations */
@@ -132,10 +163,14 @@
     </style>
     @endpush
 
-    <section class="min-h-screen py-16 md:py-24 bg-gray-950 text-white relative overflow-hidden">
+    <section
+        class="min-h-screen py-16 md:py-24 bg-gray-50 text-gray-900 relative overflow-hidden dark:bg-gray-950 dark:text-white">
         {{-- Subtle background pattern --}}
         <div class="absolute inset-0 z-0 opacity-10"
+            style="background-image: radial-gradient(#D1D5DB 1px, transparent 1px); background-size: 20px 20px;"></div>
+        <div class="absolute inset-0 z-0 opacity-10 dark:opacity-10"
             style="background-image: radial-gradient(#2d3748 1px, transparent 1px); background-size: 20px 20px;"></div>
+
 
         <div class="max-w-7xl mx-auto px-4 lg:px-8 relative z-10">
 
@@ -143,16 +178,17 @@
             <div class="text-center mb-8 md:mb-16 animate-fadeInUp">
                 <div class="text-7xl mb-4 transform hover:scale-110 transition-transform duration-300">{{
                     $language->icon ?? '🌍' }}</div>
-                <h1 class="text-4xl md:text-5xl font-extrabold leading-tight text-white/95 drop-shadow-lg">
+                <h1
+                    class="text-4xl md:text-5xl font-extrabold leading-tight text-gray-950 drop-shadow-lg dark:text-white/95">
                     Dive into {{ $language->name }} Vocabulary
                 </h1>
-                <p class="text-gray-300 mt-4 text-lg md:text-xl max-w-3xl mx-auto">
+                <p class="text-gray-600 mt-4 text-lg md:text-xl max-w-3xl mx-auto dark:text-gray-300">
                     {{ $language->description ?? 'Explore a rich collection of words, phrases, and examples from this
                     vibrant language.' }}
                 </p>
 
                 <a href="{{ route('languages.show', $language) }}"
-                    class="inline-flex items-center text-blue-400 hover:text-blue-300 hover:underline mt-6 font-medium transition duration-200 group">
+                    class="inline-flex items-center text-teal-600 hover:text-teal-700 hover:underline mt-6 font-medium transition duration-200 group dark:text-teal-400 dark:hover:text-teal-300">
                     <svg class="w-5 h-5 mr-1 group-hover:-translate-x-1 transition-transform duration-200" fill="none"
                         stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -165,7 +201,7 @@
             {{-- Filter Button for Mobile --}}
             <div class="lg:hidden text-center mb-8">
                 <button id="toggleSidebarBtn"
-                    class="inline-flex items-center justify-center px-6 py-3 bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white font-semibold rounded-full shadow-lg transition duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-purple-500/50">
+                    class="inline-flex items-center justify-center px-6 py-3 bg-teal-600 hover:bg-teal-700 active:bg-teal-800 text-white font-semibold rounded-full shadow-lg transition duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-teal-500/50">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -178,12 +214,13 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 md:gap-10">
                 {{-- Sidebar: Categories --}}
-                <aside id="sidebar"
-                    class="lg:col-span-1 mt-20 bg-gray-800 p-6 shadow-xl lg:rounded-2xl border border-gray-700 animate-slideInLeft overflow-y-auto hidden lg:block fixed inset-y-0 left-0 w-64 z-40 lg:static lg:w-auto">
-                    <div class="flex justify-between items-center mb-6 border-b border-gray-700 pb-4">
-                        <h2 class="text-2xl font-bold text-white">Categories</h2>
+                <aside id="sidebar" class="lg:col-span-1 mt-20 bg-white p-6 shadow-xl lg:rounded-2xl border border-gray-200 animate-slideInLeft overflow-y-auto hidden lg:block fixed inset-y-0 left-0 w-64 z-40 lg:static lg:w-auto
+                    dark:bg-gray-800 dark:border-gray-700">
+                    <div
+                        class="flex justify-between items-center mb-6 border-b border-gray-200 pb-4 dark:border-gray-700">
+                        <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Categories</h2>
                         <button id="closeSidebarBtn"
-                            class="lg:hidden text-gray-400 hover:text-white focus:outline-none">
+                            class="lg:hidden text-gray-500 hover:text-gray-700 focus:outline-none dark:text-gray-400 dark:hover:text-white">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -195,7 +232,7 @@
                         <li>
                             <a href="{{ route('languages.entries', $language->slug) }}"
                                 class="block p-3 rounded-lg text-base transition duration-200 ease-in-out
-                                        {{ request()->get('category') ? 'text-gray-300 hover:bg-gray-700' : 'bg-purple-600 text-white font-bold shadow-lg shadow-purple-500/20' }}">
+                                        {{ request()->get('category') ? 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700' : 'bg-teal-600 text-white font-bold shadow-lg shadow-teal-500/20' }}">
                                 <span class="flex items-center gap-2">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -210,7 +247,7 @@
                         <li>
                             <a href="{{ route('languages.entries', [$language->slug, 'category' => $category->slug]) }}"
                                 class="flex items-center text-base gap-3 p-3 rounded-lg transition duration-200 ease-in-out
-                                        {{ request()->get('category') === $category->slug ? 'bg-purple-600 text-white font-bold shadow-lg shadow-purple-500/20' : 'text-gray-300 hover:bg-gray-700' }}">
+                                        {{ request()->get('category') === $category->slug ? 'bg-teal-600 text-white font-bold shadow-lg shadow-teal-500/20' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700' }}">
                                 <span>{{ $category->icon ?? '📁' }}</span>
                                 <span>{{ $category->name }}</span>
                             </a>
@@ -229,8 +266,8 @@
                     <div class="mb-6 animate-fadeInUp delay-100">
                         <div class="relative">
                             <input type="text" id="searchInput" value="{{ request()->get('search') }}"
-                                placeholder="Search words, translations, or examples..."
-                                class="w-full bg-gray-800 border border-gray-700 rounded-xl pl-12 pr-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition duration-200 text-lg">
+                                placeholder="Search words, translations, or examples..." class="w-full bg-white border border-gray-200 rounded-xl pl-12 pr-4 py-3 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition duration-200 text-lg
+                                dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:placeholder-gray-400">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <svg class="h-7 w-7 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -247,22 +284,20 @@
                     <div id="entriesGrid"
                         class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3 animate-fadeInScale">
                         @foreach ($entries as $entry)
-                        <div class="entry-card bg-gray-800 rounded-2xl p-2 border border-gray-700 shadow-lg hover:border-emerald-500 transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-xl group"
-                            data-word="{{ strtolower($entry->word) }}"
-                            data-translation="{{ strtolower($entry->translation_en) }}"
-                            data-example="{{ strtolower($entry->example_sentence ?? '') }}">
+                        <div class="entry-card bg-white rounded-2xl p-2 border border-gray-200 shadow-lg hover:border-teal-400 transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-xl group
+                            dark:bg-gray-800 dark:border-gray-700">
 
                             {{-- Image at the top --}}
                             @if($entry->mainEntry->image_path)
                             <div
-                                class="mb-4 overflow-hidden rounded-lg bg-gray-900 flex items-center justify-center h-28 md:h-34 lg:h-40">
+                                class="mb-4 overflow-hidden rounded-lg bg-gray-100 flex items-center justify-center h-28 md:h-34 lg:h-40 dark:bg-gray-900">
                                 <img src="{{ asset('storage/' . $entry->mainEntry->image_path) }}"
                                     alt="{{ $entry->word }}"
                                     class="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-300 ease-in-out">
                             </div>
                             @else
                             <div
-                                class="mb-4 h-28 md:h-34 lg:h-40 bg-gray-900 rounded-lg flex items-center justify-center text-gray-500 text-opacity-50">
+                                class="mb-4 h-28 md:h-34 lg:h-40 bg-gray-100 rounded-lg flex items-center justify-center text-gray-300 text-opacity-50 dark:bg-gray-900 dark:text-gray-500">
                                 <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
@@ -274,17 +309,20 @@
 
                             {{-- Word + Translation --}}
                             <div class="mb-3">
-                                <h3 class="text-xl lg:text-3xl font-extrabold text-white leading-tight entry-word mb-1">
+                                <h3
+                                    class="text-xl lg:text-3xl font-extrabold text-gray-900 leading-tight entry-word mb-1 dark:text-white">
                                     {{ $entry->word }}
                                 </h3>
-                                <p class="text-emerald-400 text-base lg:text-lg font-semibold entry-translation">
+                                <p
+                                    class="text-teal-600 text-base lg:text-lg font-semibold entry-translation dark:text-teal-400">
                                     {{ $entry->mainEntry->word_en }}
                                 </p>
                             </div>
 
                             {{-- Example Sentence --}}
                             @if($entry->example_sentence)
-                            <p class="text-sm text-gray-400 italic mb-3 entry-example">"{{ $entry->example_sentence }}"
+                            <p class="text-sm text-gray-500 italic mb-3 entry-example dark:text-gray-400">"{{
+                                $entry->example_sentence }}"
                             </p>
                             @endif
 
@@ -313,16 +351,16 @@
 
                     @else
                     {{-- Empty State (initial state if no entries from server) --}}
-                    <div id="noEntriesFoundInitial"
-                        class="text-center py-20 lg:col-span-4 bg-gray-800 rounded-2xl shadow-xl border border-gray-700 animate-fadeInUp">
+                    <div id="noEntriesFoundInitial" class="text-center py-20 lg:col-span-4 bg-white rounded-2xl shadow-xl border border-gray-200 animate-fadeInUp
+                        dark:bg-gray-800 dark:border-gray-700">
                         <div class="text-7xl mb-6">📭</div>
-                        <h3 class="text-3xl font-bold mb-3 text-white">No Entries Found Yet!</h3>
-                        <p class="text-gray-400 text-lg max-w-md mx-auto">
+                        <h3 class="text-3xl font-bold mb-3 text-gray-800 dark:text-white">No Entries Found Yet!</h3>
+                        <p class="text-gray-600 text-lg max-w-md mx-auto dark:text-gray-400">
                             It seems there are no words matching your search or category. Try broadening your search or
                             selecting "All Entries" to see everything.
                         </p>
                         <a href="{{ route('languages.entries', $language->slug) }}"
-                            class="mt-8 inline-flex items-center bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white font-semibold py-3 px-7 rounded-full transition duration-300 transform hover:-translate-y-1 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-purple-500/50">
+                            class="mt-8 inline-flex items-center bg-teal-600 hover:bg-teal-700 active:bg-teal-800 text-white font-semibold py-3 px-7 rounded-full transition duration-300 transform hover:-translate-y-1 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-teal-500/50">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -337,16 +375,16 @@
                     @endif
 
                     {{-- Empty State for JS filtering --}}
-                    <div id="noResultsFoundJS"
-                        class="text-center py-20 lg:col-span-4 bg-gray-800 rounded-2xl shadow-xl border border-gray-700 hidden">
+                    <div id="noResultsFoundJS" class="text-center py-20 lg:col-span-4 bg-white rounded-2xl shadow-xl border border-gray-200 hidden
+                        dark:bg-gray-800 dark:border-gray-700">
                         <div class="text-7xl mb-6">🔍</div>
-                        <h3 class="text-3xl font-bold mb-3 text-white">No Matches Found!</h3>
-                        <p class="text-gray-400 text-lg max-w-md mx-auto">
+                        <h3 class="text-3xl font-bold mb-3 text-gray-800 dark:text-white">No Matches Found!</h3>
+                        <p class="text-gray-600 text-lg max-w-md mx-auto dark:text-gray-400">
                             Your search yielded no results in this category. Try a different search term or select "All
                             Entries."
                         </p>
                         <button onclick="document.getElementById('searchInput').value = ''; filterEntries();"
-                            class="mt-8 inline-block bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white font-semibold py-3 px-7 rounded-full transition duration-300 transform hover:-translate-y-1 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-purple-500/50">
+                            class="mt-8 inline-block bg-teal-600 hover:bg-teal-700 active:bg-teal-800 text-white font-semibold py-3 px-7 rounded-full transition duration-300 transform hover:-translate-y-1 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-teal-500/50">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

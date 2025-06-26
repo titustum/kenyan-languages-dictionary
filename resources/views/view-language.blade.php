@@ -1,104 +1,116 @@
-<x-layouts.app.guest>
+<x-layouts.app.guest language="{{ $language->name }}">
 
-    @php
-    $enhancedColors = [
-    'red' => 'from-red-500 to-red-600 shadow-lg shadow-red-500/30',
-    'yellow' => 'from-yellow-400 to-yellow-500 shadow-lg shadow-yellow-500/30 text-gray-900',
-    'green' => 'from-green-500 to-green-600 shadow-lg shadow-green-500/30',
-    'blue' => 'from-blue-500 to-blue-600 shadow-lg shadow-blue-500/30',
-    'indigo' => 'from-indigo-500 to-indigo-600 shadow-lg shadow-indigo-500/30',
-    'purple' => 'from-purple-500 to-purple-600 shadow-lg shadow-purple-500/30',
-    'pink' => 'from-pink-500 to-pink-600 shadow-lg shadow-pink-500/30',
-    'orange' => 'from-orange-500 to-orange-600 shadow-lg shadow-orange-500/30',
-    'teal' => 'from-teal-500 to-teal-600 shadow-lg shadow-teal-500/30',
-    'cyan' => 'from-cyan-500 to-cyan-600 shadow-lg shadow-cyan-500/30',
-    'amber' => 'from-amber-400 to-amber-500 shadow-lg shadow-amber-500/30 text-gray-900',
-    'lime' => 'from-lime-400 to-lime-500 shadow-lg shadow-lime-500/30 text-gray-900',
-    'gray' => 'from-gray-500 to-gray-600 shadow-lg shadow-gray-500/30',
-    'rose' => 'from-rose-500 to-rose-600 shadow-lg shadow-rose-500/30',
-    'brown' => 'from-yellow-800 to-yellow-900 shadow-lg shadow-yellow-800/30',
-    ];
-    @endphp
+    {{-- Custom Tailwind Animations and other styles --}}
+    @push('styles')
+    <style>
+        /* Custom styling for audio player track and thumb for consistency */
+        /* Light Theme defaults */
+        audio::-webkit-media-controls-panel {
+            background-color: #E5E7EB;
+            /* gray-200 */
+            color: #4B5563;
+            /* gray-600 */
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
 
-    <section
-        class="min-h-screen py-16 md:py-24 bg-gray-950 text-white relative overflow-hidden flex items-center justify-center">
+        audio::-webkit-media-controls-play-button,
+        audio::-webkit-media-controls-current-time-display,
+        audio::-webkit-media-controls-time-remaining-display,
+        audio::-webkit-media-controls-timeline,
+        audio::-webkit-media-controls-volume-slider {
+            color: #4B5563;
+            /* gray-600 */
+        }
 
-        <div class="absolute inset-0 z-0 opacity-10"
-            style="background-image: radial-gradient(#2d3748 1px, transparent 1px); background-size: 20px 20px;"></div>
+        audio::-webkit-media-controls-timeline {
+            background-color: #D1D5DB;
+            /* gray-300 */
+            border-radius: 10px;
+        }
 
-        <div class="max-w-6xl mx-auto px-6 lg:px-8 relative z-10 w-full">
+        audio::-webkit-media-controls-volume-slider {
+            background-color: #D1D5DB;
+            /* gray-300 */
+            border-radius: 10px;
+        }
 
-            <div class="text-center mb-12 md:mb-16">
-                <div class="text-7xl mb-4 animate-fade-in-up">
-                    {{ $language->icon ?? '🗣️' }}
-                </div>
-                <h1 class="text-5xl md:text-6xl font-extrabold mb-3 leading-tight animate-fade-in-up delay-100">{{
-                    $language->name }}</h1>
-                <p class="text-gray-300 text-lg md:text-xl animate-fade-in-up delay-200">{{ $language->region }}</p>
-            </div>
+        /* Dark Theme overrides for audio controls */
+        .dark audio::-webkit-media-controls-panel {
+            background-color: #1F2937;
+            /* gray-800 */
+            color: #9CA3AF;
+            /* gray-400 */
+        }
 
-            <div
-                class="bg-gradient-to-br {{ $enhancedColors[$language->color] ?? 'from-gray-700 to-gray-800 shadow-lg shadow-gray-700/30' }} rounded-3xl p-8 md:p-12 shadow-2xl text-white relative overflow-hidden transform transition-all duration-500 hover:scale-[1.01] hover:shadow-3xl animate-scale-in">
+        .dark audio::-webkit-media-controls-play-button,
+        .dark audio::-webkit-media-controls-current-time-display,
+        .dark audio::-webkit-media-controls-time-remaining-display,
+        .dark audio::-webkit-media-controls-timeline,
+        .dark audio::-webkit-media-controls-volume-slider {
+            color: #D1D5DB;
+            /* gray-300 */
+        }
 
-                @if($language->image_path)
-                <div
-                    class="mb-8 rounded-2xl overflow-hidden shadow-xl transform translate-y-0 opacity-100 transition-transform duration-700 ease-out animate-fade-in-up delay-300">
-                    <img src="{{ asset('storage/' . $language->image_path) }}"
-                        alt="{{ $language->name }} representative image"
-                        class="w-full h-72 md:h-96 object-cover object-center transition-transform duration-500 ease-in-out hover:scale-105">
-                </div>
-                @endif
+        .dark audio::-webkit-media-controls-timeline,
+        .dark audio::-webkit-media-controls-volume-slider {
+            background-color: #374151;
+            /* gray-700 */
+        }
 
-                <h2 class="text-3xl md:text-4xl font-bold mb-5 text-shadow-sm animate-fade-in-up delay-400">About {{
-                    $language->name }}</h2>
-                <p class="text-lg md:text-xl leading-relaxed text-white/90 mb-8 animate-fade-in-up delay-500">
-                    {{ $language->description ?? 'No description available for this language yet. Check back soon for
-                    more details!' }}
-                </p>
 
-                @if($language->speakers)
-                <div
-                    class="mt-6 text-xl md:text-2xl text-white/90 font-semibold flex items-center gap-3 animate-fade-in-up delay-600">
-                    <svg class="w-7 h-7 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M17 20h-2a4 4 0 01-4-4v-3a4 4 0 014-4h2a4 4 0 014 4v3a4 4 0 01-4 4z"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M7 20h-2a4 4 0 01-4-4v-3a4 4 0 014-4h2a4 4 0 014 4v3a4 4 0 01-4 4z"></path>
-                    </svg>
-                    Estimated speakers: <strong class="text-white text-2xl md:text-3xl">{{ $language->speakers
-                        }}</strong>
-                </div>
-                @endif
-            </div>
+        /* Firefox specific styles for audio controls */
+        audio {
+            --moz-range-thumb: #20B2AA;
+            /* LightSeaGreen - close to Teal */
+            --moz-range-track: #D1D5DB;
+            /* gray-300 */
+        }
 
-            <div class="mt-16 text-center animate-fade-in-up delay-700">
-                <a href="{{ route('languages.entries', $language->slug) }}"
-                    class="inline-flex items-center px-8 py-4 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white rounded-full text-xl font-bold transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-blue-500/50">
-                    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                    </svg>
-                    Back to {{ $language->name }} Entries
-                </a>
-            </div>
+        .dark audio {
+            --moz-range-thumb: #20B2AA;
+            /* LightSeaGreen - close to Teal */
+            --moz-range-track: #374151;
+            /* gray-700 */
+        }
 
-        </div>
+        /* Animations */
+        @keyframes fadeInScale {
+            0% {
+                opacity: 0;
+                transform: scale(0.95);
+            }
 
-        <div
-            class="absolute bottom-0 left-0 -mb-20 -ml-20 w-80 h-80 bg-gradient-to-tr from-gray-700 to-transparent rounded-full opacity-10 animate-blob">
-        </div>
-        <div
-            class="absolute top-0 right-0 -mt-20 -mr-20 w-96 h-96 bg-gradient-to-bl from-gray-700 to-transparent rounded-full opacity-10 animate-blob delay-500">
-        </div>
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
 
-    </section>
+        .animate-fadeInScale {
+            animation: fadeInScale 0.5s ease-out forwards;
+            opacity: 0;
+            /* hidden by default */
+        }
 
-    {{-- Tailwind CSS Custom Animations (add this to your main CSS file or a <style>
-        tag) --}}
+        @keyframes slideInLeft {
+            0% {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
 
-        <style>@keyframes fadeInOut {
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .animate-slideInLeft {
+            animation: slideInLeft 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeInUp {
             0% {
                 opacity: 0;
                 transform: translateY(20px);
@@ -110,82 +122,424 @@
             }
         }
 
-        .animate-fade-in-up {
-            animation: fadeInOut 0.8s ease-out forwards;
-            opacity: 0;
-            /* Hidden by default */
-        }
-
-        .animate-fade-in-up.delay-100 {
-            animation-delay: 0.1s;
-        }
-
-        .animate-fade-in-up.delay-200 {
-            animation-delay: 0.2s;
-        }
-
-        .animate-fade-in-up.delay-300 {
-            animation-delay: 0.3s;
-        }
-
-        .animate-fade-in-up.delay-400 {
-            animation-delay: 0.4s;
-        }
-
-        .animate-fade-in-up.delay-500 {
-            animation-delay: 0.5s;
-        }
-
-        .animate-fade-in-up.delay-600 {
-            animation-delay: 0.6s;
-        }
-
-        .animate-fade-in-up.delay-700 {
-            animation-delay: 0.7s;
-        }
-
-        @keyframes scaleIn {
-            0% {
-                transform: scale(0.9);
-                opacity: 0;
-            }
-
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        .animate-scale-in {
-            animation: scaleIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        .animate-fadeInUp {
+            animation: fadeInUp 0.7s ease-out forwards;
             opacity: 0;
         }
 
-        @keyframes blob {
-            0% {
-                transform: translate(0, 0) scale(1);
-            }
-
-            33% {
-                transform: translate(30px, -50px) scale(1.1);
-            }
-
-            66% {
-                transform: translate(-20px, 20px) scale(0.9);
-            }
-
-            100% {
-                transform: translate(0, 0) scale(1);
-            }
+        /* Sidebar specific animation */
+        .sidebar-enter-active,
+        .sidebar-leave-active {
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
         }
 
-        .animate-blob {
-            animation: blob 7s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        .sidebar-enter-from,
+        .sidebar-leave-to {
+            transform: translateX(-100%);
+            opacity: 0;
         }
 
-        /* Subtle text shadow for better contrast on gradients */
-        .text-shadow-sm {
-            text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+        .sidebar-enter-to,
+        .sidebar-leave-from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        /* Overlay */
+        .overlay-enter-active,
+        .overlay-leave-active {
+            transition: opacity 0.3s ease-out;
+        }
+
+        .overlay-enter-from,
+        .overlay-leave-to {
+            opacity: 0;
+        }
+
+        .overlay-enter-to,
+        .overlay-leave-from {
+            opacity: 1;
         }
     </style>
+    @endpush
+
+    <section
+        class="min-h-screen py-16 md:py-24 bg-gray-50 text-gray-900 relative overflow-hidden dark:bg-gray-950 dark:text-white">
+
+
+        {{-- Subtle background pattern --}}
+        <div class="absolute inset-0 z-0 opacity-10"
+            style="background-image: radial-gradient(#D1D5DB 1px, transparent 1px); background-size: 20px 20px;"></div>
+        <div class="absolute inset-0 z-0 opacity-10 dark:opacity-10"
+            style="background-image: radial-gradient(#2d3748 1px, transparent 1px); background-size: 20px 20px;"></div>
+
+
+
+        <div class="max-w-7xl mx-auto px-4 lg:px-8 relative z-10">
+
+            {{-- Header and Language Info --}}
+            <div class="text-center mb-8 md:mb-16 animate-fadeInUp">
+                <div class="text-7xl mb-4 transform hover:scale-110 transition-transform duration-300">{{
+                    $language->icon ?? '🌍' }}</div>
+                <h1
+                    class="text-4xl md:text-5xl font-extrabold leading-tight text-gray-950 drop-shadow-lg dark:text-white/95">
+                    Dive into {{ $language->name }} Vocabulary
+                </h1>
+                <p class="text-gray-600 mt-4 text-lg md:text-xl max-w-3xl mx-auto dark:text-gray-300">
+                    {{ $language->description ?? 'Explore a rich collection of words, phrases, and examples from this
+                    vibrant language.' }}
+                </p>
+
+                <a href="{{ route('languages.show', $language) }}"
+                    class="inline-flex items-center text-teal-600 hover:text-teal-700 hover:underline mt-6 font-medium transition duration-200 group dark:text-teal-400 dark:hover:text-teal-300">
+                    <svg class="w-5 h-5 mr-1 group-hover:-translate-x-1 transition-transform duration-200" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    Learn more about the {{ $language->name }} Community
+                </a>
+            </div>
+
+            {{-- Filter Button for Mobile --}}
+            <div class="lg:hidden text-center mb-8">
+                <button id="toggleSidebarBtn"
+                    class="inline-flex items-center justify-center px-6 py-3 bg-teal-600 hover:bg-teal-700 active:bg-teal-800 text-white font-semibold rounded-full shadow-lg transition duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-teal-500/50">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z">
+                        </path>
+                    </svg>
+                    Filter Categories
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 md:gap-10">
+                {{-- Sidebar: Categories --}}
+                <aside id="sidebar" class="lg:col-span-1 mt-20 bg-white p-6 shadow-xl lg:rounded-2xl border border-gray-200 animate-slideInLeft overflow-y-auto hidden lg:block fixed inset-y-0 left-0 w-64 z-40 lg:static lg:w-auto
+                    dark:bg-gray-800 dark:border-gray-700">
+                    <div
+                        class="flex justify-between items-center mb-6 border-b border-gray-200 pb-4 dark:border-gray-700">
+                        <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Categories</h2>
+                        <button id="closeSidebarBtn"
+                            class="lg:hidden text-gray-500 hover:text-gray-700 focus:outline-none dark:text-gray-400 dark:hover:text-white">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <ul class="space-y-3">
+                        <li>
+                            <a href="{{ route('languages.entries', $language->slug) }}"
+                                class="block p-3 rounded-lg text-base transition duration-200 ease-in-out
+                                        {{ request()->get('category') ? 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700' : 'bg-teal-600 text-white font-bold shadow-lg shadow-teal-500/20' }}">
+                                <span class="flex items-center gap-2">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4 6h16M4 12h16M4 18h16"></path>
+                                    </svg>
+                                    All Entries
+                                </span>
+                            </a>
+                        </li>
+                        @foreach ($categories as $category)
+                        <li>
+                            <a href="{{ route('languages.entries', [$language->slug, 'category' => $category->slug]) }}"
+                                class="flex items-center text-base gap-3 p-3 rounded-lg transition duration-200 ease-in-out
+                                        {{ request()->get('category') === $category->slug ? 'bg-teal-600 text-white font-bold shadow-lg shadow-teal-500/20' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700' }}">
+                                <span>{{ $category->icon ?? '📁' }}</span>
+                                <span>{{ $category->name }}</span>
+                            </a>
+                        </li>
+                        @endforeach
+                    </ul>
+                </aside>
+
+                {{-- Overlay for mobile sidebar --}}
+                <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-20 hidden lg:hidden"></div>
+
+                {{-- Main Content --}}
+                <main class="lg:col-span-4 space-y-8">
+
+                    {{-- Search Input --}}
+                    <div class="mb-6 animate-fadeInUp delay-100">
+                        <div class="relative">
+                            <input type="text" id="searchInput" value="{{ request()->get('search') }}"
+                                placeholder="Search words, translations, or examples..." class="w-full bg-white border border-gray-200 rounded-xl pl-12 pr-4 py-3 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition duration-200 text-lg
+                                dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:placeholder-gray-400">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg class="h-7 w-7 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Entries Grid Container --}}
+                    @if($entries->count())
+
+                    <div id="entriesGrid"
+                        class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3 animate-fadeInScale">
+                        @foreach ($entries as $entry)
+                        <div class="entry-card bg-white rounded-2xl p-2 border border-gray-200 shadow-lg hover:border-teal-400 transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-xl group
+                            dark:bg-gray-800 dark:border-gray-700">
+
+                            {{-- Image at the top --}}
+                            @if($entry->mainEntry->image_path)
+                            <div
+                                class="mb-4 overflow-hidden rounded-lg bg-gray-100 flex items-center justify-center h-28 md:h-34 lg:h-40 dark:bg-gray-900">
+                                <img src="{{ asset('storage/' . $entry->mainEntry->image_path) }}"
+                                    alt="{{ $entry->word }}"
+                                    class="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-300 ease-in-out">
+                            </div>
+                            @else
+                            <div
+                                class="mb-4 h-28 md:h-34 lg:h-40 bg-gray-100 rounded-lg flex items-center justify-center text-gray-300 text-opacity-50 dark:bg-gray-900 dark:text-gray-500">
+                                <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                    </path>
+                                </svg>
+                            </div>
+                            @endif
+
+                            {{-- Word + Translation --}}
+                            <div class="mb-3">
+                                <h3
+                                    class="text-xl lg:text-3xl font-extrabold text-gray-900 leading-tight entry-word mb-1 dark:text-white">
+                                    {{ $entry->word }}
+                                </h3>
+                                <p
+                                    class="text-teal-600 text-base lg:text-lg font-semibold entry-translation dark:text-teal-400">
+                                    {{ $entry->mainEntry->word_en }}
+                                </p>
+                            </div>
+
+                            {{-- Example Sentence --}}
+                            @if($entry->example_sentence)
+                            <p class="text-sm text-gray-500 italic mb-3 entry-example dark:text-gray-400">"{{
+                                $entry->example_sentence }}"
+                            </p>
+                            @endif
+
+                            {{-- Audio --}}
+                            @if($entry->audio_path)
+                            <audio controls class="w-full mt-auto mb-0 block">
+                                <source src="{{ asset('storage/' . $entry->audio_path) }}" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            @else
+                            <div class="w-full text-xs mt-auto mb-0 block text-gray-500 md:text-sm text-center">
+                                Audio coming soon!
+                            </div>
+                            @endif
+                        </div>
+                        @endforeach
+                    </div>
+
+                    {{-- Pagination (might need to be hidden/disabled for live search, or handled via AJAX for large
+                    datasets) --}}
+                    @if ($entries->hasPages())
+                    <div id="paginationLinks" class="mt-10 animate-fadeInUp delay-200">
+                        {{ $entries->links('pagination::tailwind') }}
+                    </div>
+                    @endif
+
+                    @else
+                    {{-- Empty State (initial state if no entries from server) --}}
+                    <div id="noEntriesFoundInitial" class="text-center py-20 lg:col-span-4 bg-white rounded-2xl shadow-xl border border-gray-200 animate-fadeInUp
+                        dark:bg-gray-800 dark:border-gray-700">
+                        <div class="text-7xl mb-6">📭</div>
+                        <h3 class="text-3xl font-bold mb-3 text-gray-800 dark:text-white">No Entries Found Yet!</h3>
+                        <p class="text-gray-600 text-lg max-w-md mx-auto dark:text-gray-400">
+                            It seems there are no words matching your search or category. Try broadening your search or
+                            selecting "All Entries" to see everything.
+                        </p>
+                        <a href="{{ route('languages.entries', $language->slug) }}"
+                            class="mt-8 inline-flex items-center bg-teal-600 hover:bg-teal-700 active:bg-teal-800 text-white font-semibold py-3 px-7 rounded-full transition duration-300 transform hover:-translate-y-1 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-teal-500/50">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004 16.08V12m4.214-1.214L11.99 15.01"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M20 20v-5h-.582m-15.356-2A8.001 8.001 0 0120 7.92V12m-4.214 1.214L12.01 8.99">
+                                </path>
+                            </svg>
+                            Reset Filters
+                        </a>
+                    </div>
+                    @endif
+
+                    {{-- Empty State for JS filtering --}}
+                    <div id="noResultsFoundJS" class="text-center py-20 lg:col-span-4 bg-white rounded-2xl shadow-xl border border-gray-200 hidden
+                        dark:bg-gray-800 dark:border-gray-700">
+                        <div class="text-7xl mb-6">🔍</div>
+                        <h3 class="text-3xl font-bold mb-3 text-gray-800 dark:text-white">No Matches Found!</h3>
+                        <p class="text-gray-600 text-lg max-w-md mx-auto dark:text-gray-400">
+                            Your search yielded no results in this category. Try a different search term or select "All
+                            Entries."
+                        </p>
+                        <button onclick="document.getElementById('searchInput').value = ''; filterEntries();"
+                            class="mt-8 inline-block bg-teal-600 hover:bg-teal-700 active:bg-teal-800 text-white font-semibold py-3 px-7 rounded-full transition duration-300 transform hover:-translate-y-1 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-teal-500/50">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004 16.08V12m4.214-1.214L11.99 15.01"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M20 20v-5h-.582m-15.356-2A8.001 8.001 0 0120 7.92V12m-4.214 1.214L12.01 8.99">
+                                </path>
+                            </svg>
+                            Clear Search
+                        </button>
+                    </div>
+
+                </main>
+            </div>
+        </div>
+    </section>
+
+    @push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            const entriesGrid = document.getElementById('entriesGrid');
+            const entryCards = document.querySelectorAll('.entry-card');
+            const initialEmptyState = document.getElementById('noEntriesFoundInitial');
+            const jsEmptyState = document.getElementById('noResultsFoundJS');
+            const paginationLinks = document.getElementById('paginationLinks');
+
+            // Mobile Sidebar elements
+            const sidebar = document.getElementById('sidebar');
+            const toggleSidebarBtn = document.getElementById('toggleSidebarBtn');
+            const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+            const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+            // Function to filter entries based on search term
+            window.filterEntries = function() {
+                const searchTerm = searchInput.value.toLowerCase().trim();
+                let visibleCount = 0;
+
+                entryCards.forEach(card => {
+                    const word = card.dataset.word;
+                    const translation = card.dataset.translation;
+                    const example = card.dataset.example;
+
+                    if (word.includes(searchTerm) || translation.includes(searchTerm) || example.includes(searchTerm)) {
+                        card.style.display = ''; // Show the card
+                        visibleCount++;
+                    } else {
+                        card.style.display = 'none'; // Hide the card
+                    }
+                });
+
+                // Handle empty states based on filter results
+                if (visibleCount === 0) {
+                    if (entriesGrid) entriesGrid.style.display = 'none';
+                    if (paginationLinks) paginationLinks.style.display = 'none';
+                    if (initialEmptyState) initialEmptyState.style.display = 'none';
+                    if (jsEmptyState) jsEmptyState.style.display = 'block';
+                } else {
+                    if (entriesGrid) entriesGrid.style.display = 'grid';
+                    if (paginationLinks && !searchTerm) paginationLinks.style.display = 'block';
+                    else if (paginationLinks) paginationLinks.style.display = 'none';
+                    if (initialEmptyState) initialEmptyState.style.display = 'none';
+                    if (jsEmptyState) jsEmptyState.style.display = 'none';
+                }
+            };
+
+            // Event listener for input changes (typing)
+            searchInput.addEventListener('keyup', filterEntries);
+            searchInput.addEventListener('change', filterEntries);
+
+            // Run filter on initial load if there's a search term from the URL
+            if (searchInput.value) {
+                filterEntries();
+            } else {
+                if (jsEmptyState) jsEmptyState.style.display = 'none';
+                if (initialEmptyState && entryCards.length === 0) initialEmptyState.style.display = 'block';
+                else if (initialEmptyState) initialEmptyState.style.display = 'none';
+            }
+
+            // If there are no entries initially, hide the grid and show initial empty state
+            if (entryCards.length === 0) {
+                if (entriesGrid) entriesGrid.style.display = 'none';
+                if (paginationLinks) paginationLinks.style.display = 'none';
+                if (initialEmptyState) initialEmptyState.style.display = 'block';
+            }
+
+            // --- Mobile Sidebar Toggle Logic ---
+            const toggleSidebar = () => {
+                const isHidden = sidebar.classList.contains('hidden');
+                if (isHidden) {
+                    // Show sidebar
+                    sidebar.classList.remove('hidden');
+                    sidebarOverlay.classList.remove('hidden');
+                    // Trigger animations
+                    sidebar.classList.add('sidebar-enter-active');
+                    sidebarOverlay.classList.add('overlay-enter-active');
+                    setTimeout(() => {
+                        sidebar.classList.remove('sidebar-enter-active', 'sidebar-enter-from');
+                        sidebarOverlay.classList.remove('overlay-enter-active', 'overlay-enter-from');
+                    }, 300); // Match transition duration
+                } else {
+                    // Hide sidebar
+                    sidebar.classList.add('sidebar-leave-active');
+                    sidebarOverlay.classList.add('overlay-leave-active');
+                    setTimeout(() => {
+                        sidebar.classList.add('hidden');
+                        sidebarOverlay.classList.add('hidden');
+                        sidebar.classList.remove('sidebar-leave-active', 'sidebar-leave-to');
+                        sidebarOverlay.classList.remove('overlay-leave-active', 'overlay-leave-to');
+                    }, 300); // Match transition duration
+                }
+                // Toggle body overflow to prevent scrolling content behind sidebar
+                document.body.classList.toggle('overflow-hidden', isHidden);
+            };
+
+            if (toggleSidebarBtn) {
+                toggleSidebarBtn.addEventListener('click', toggleSidebar);
+            }
+            if (closeSidebarBtn) {
+                closeSidebarBtn.addEventListener('click', toggleSidebar);
+            }
+            if (sidebarOverlay) {
+                sidebarOverlay.addEventListener('click', toggleSidebar); // Close sidebar when clicking overlay
+            }
+
+            // Close sidebar when a category link is clicked on mobile
+            document.querySelectorAll('#sidebar ul a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 1024) { // Only on small screens (less than lg)
+                        toggleSidebar();
+                    }
+                });
+            });
+
+            // Handle resize: If resized to desktop, ensure sidebar is visible and overlay is hidden
+            window.addEventListener('resize', () => {
+                if (window.innerWidth >= 1024) { // lg breakpoint
+                    sidebar.classList.remove('hidden', 'sidebar-enter-active', 'sidebar-leave-active');
+                    sidebar.style.transform = ''; // Clear any transform from JS
+                    sidebar.style.opacity = ''; // Clear any opacity from JS
+                    sidebarOverlay.classList.add('hidden');
+                    sidebarOverlay.classList.remove('overlay-enter-active', 'overlay-leave-active');
+                    document.body.classList.remove('overflow-hidden');
+                } else {
+                    // On mobile, if sidebar was open, keep it open, otherwise keep hidden
+                    // This handles cases where user resizes from desktop to mobile
+                    if (!sidebar.classList.contains('hidden')) {
+                        document.body.classList.add('overflow-hidden');
+                    }
+                }
+            });
+        });
+    </script>
+    @endpush
 </x-layouts.app.guest>

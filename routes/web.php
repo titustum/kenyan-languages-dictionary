@@ -8,12 +8,13 @@ use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
 Route::get('/', WelcomeController::class)->name('home');
-Route::get('/contribute', [MainController::class, 'contribute'])->name('contribute');
+Route::get('/new-concept', [MainController::class, 'contribute'])->name('contribute.create');
 Route::get('/languages', [MainController::class, 'viewLanguages'])->name('languages.index');
 Route::get('/{language:slug}/entries', [MainController::class, 'languageEntries'])->name('languages.entries');
 Route::get('/about/{language:slug}', [MainController::class, 'viewLanguage'])->name('languages.show');
 Route::post('/storeContribution', [MainController::class, 'storeContribution'])->name('contribute.store');
-Route::get('/concepts', [MainController::class, 'mainConcepts'])->name('concepts.index');
+Route::get('/contribute', [MainController::class, 'mainConcepts'])->name('concepts.index');
+Route::view('/about', 'about')->name('about');
 
 
 use App\Http\Controllers\TranslationContributionController; 

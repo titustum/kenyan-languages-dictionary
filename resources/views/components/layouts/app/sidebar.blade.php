@@ -5,6 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title ?? 'MotherLang - Kenyan Languages Visual Dictionary' }}</title>
+    <meta name="description"
+        content="MotherLang is a visual dictionary for Kenyan languages, designed to help you learn and explore the rich linguistic diversity of Kenya.">
+
+    {{-- CSRF Token --}}
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="theme-color" content="#7c3aed">
+
+    {{-- Favicon --}}
+    <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
 
     {{-- Vite Assets for Laravel --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])

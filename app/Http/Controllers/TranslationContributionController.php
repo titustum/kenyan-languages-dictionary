@@ -56,17 +56,20 @@ class TranslationContributionController extends Controller
         }
 
         try {
-            DictionaryTranslation::create([
-                'main_entry_id' => $validated['main_entry_id'],
-                'language_id' => $validated['language_id'],
-                'word' => $validated['word'],
-                'slug' => $slug,
-                'description' => $validated['description'] ?? null,
-                'example_sentence' => $validated['example_sentence'] ?? null,
-                'audio_path' => $audioPath,
-            ]);
+            DictionaryTranslation::updateOrCreate(
+                [
+                    'main_entry_id' => $validated['main_entry_id'],
+                    'language_id' => $validated['language_id'],
+                ], 
+                [
+                    'word' => $validated['word'],
+                    'slug' => $slug,
+                    'description' => $validated['description'] ?? null,
+                    'example_sentence' => $validated['example_sentence'] ?? null,
+                    'audio_path' => $audioPath,
+                ]);
 
-            return redirect()->back()->with('success', 'Translation added successfully.');
+            return redirect()->back()->with('success', 'Translation added/updated successfully.');
 
         } catch (QueryException $e) {
             if ($e->getCode() === '23000') {
