@@ -5,14 +5,39 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#1f2937" />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="MotherLang Team" />
+
+    <!-- SEO Meta -->
+    <meta name="description"
+        content="MotherLang is a multilingual learning app designed to preserve and teach over 43+ African languages spoken in Kenya. Learn your heritage language with images, audio, and culturally rich content." />
+    <meta name="keywords"
+        content="Kenya languages, African languages, language learning app, local languages Kenya, Kikuyu, Luo, Luhya, Swahili, mother tongue learning, indigenous languages, MotherLang" />
+
     <title>MotherLang - Preserve Kenya's Linguistic Heritage</title>
 
     <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml" />
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <!-- Open Graph Meta (Facebook, LinkedIn) -->
+    <meta property="og:title" content="MotherLang - Preserve Kenya's Linguistic Heritage" />
+    <meta property="og:description"
+        content="Learn over 43+ African languages spoken in Kenya through visuals, audio, and interactive lessons. Preserve your mother tongue today." />
+    <meta property="og:image" content="{{ asset('images/social-preview.jpg') }}" />
+    <meta property="og:url" content="{{ url()->current() }}" />
+    <meta property="og:type" content="website" />
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet" />
+    <!-- Twitter Card Meta -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="MotherLang - Learn and Preserve Kenyan Languages" />
+    <meta name="twitter:description"
+        content="Interactive learning for over 43 African languages spoken in Kenya. Learn with pictures and audio!" />
+    <meta name="twitter:image" content="{{ asset('images/social-preview.jpg') }}" />
+
+    <!-- Language & Encoding -->
+    <meta http-equiv="Content-Language" content="en" />
+    <meta name="language" content="English" />
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 
     @stack('styles')
@@ -105,23 +130,15 @@
                         </svg>
                         <span>Languages</span>
                     </a>
-                    <a href="/leran"
-                        class="flex items-center space-x-3 text-gray-600 hover:text-gray-800 transition-colors">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
-                            </path>
-                        </svg>
-                        <span>Learn</span>
-                    </a>
-                    <a href="/contribute"
+
+                    <a href="/contributors"
                         class="flex items-center space-x-3 text-gray-600 hover:text-gray-800 transition-colors">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z">
                             </path>
                         </svg>
-                        <span>Contribute</span>
+                        <span>Contributors</span>
                     </a>
                     <a href="/about"
                         class="flex items-center space-x-3 text-gray-600 hover:text-gray-800 transition-colors">
@@ -184,10 +201,8 @@
                         class="text-emerald-600 dark:text-emerald-400 font-medium hover:text-emerald-500 transition-colors">Home</a>
                     <a href="/languages"
                         class="text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors">Languages</a>
-                    <a href="/learn"
-                        class="text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors">Learn</a>
-                    <a href="/contribute"
-                        class="text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors">Contribute</a>
+                    <a href="/contributors"
+                        class="text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors">Contributors</a>
                     <a href="/about"
                         class="text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors">About</a>
                 </nav>

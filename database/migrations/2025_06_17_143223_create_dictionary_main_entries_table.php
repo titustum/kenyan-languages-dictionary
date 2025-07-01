@@ -35,6 +35,8 @@ return new class extends Migration
             // --- RE-ADDED: Image path directly on main entry ---
             $table->string('image_path')->nullable()->comment('Path to the main image file for this concept.');
 
+            // $table->integer('value')->nullable()->comment('Value for numbers to be ordered with it');
+
             $table->timestamps();
         });
     }

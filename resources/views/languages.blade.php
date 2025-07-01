@@ -84,8 +84,7 @@
                 @endforeach
             </div>
 
-            <div id="languagesGrid"
-                class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
+            <div id="languagesGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
                 @php
                 $enhancedColors = [
                 'red' => 'from-red-500 to-red-600 shadow-red-500/25 text-white',
@@ -125,7 +124,7 @@
                         <div class="text-sm opacity-90 text-gray-200 dark:text-gray-400 mb-3">{{ $language->region }}
                         </div>
 
-                        <div
+                        {{-- <div
                             class="text-xs opacity-75 flex justify-center items-center space-x-2 text-gray-200 dark:text-gray-400">
                             <span class="flex items-center">
                                 <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
@@ -142,16 +141,16 @@
                                 </svg>
                                 {{ $language->audio_count ?? rand(50, 300) }} audio
                             </span>
-                        </div>
+                        </div> --}}
 
-                        <div
+                        {{-- <div
                             class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all duration-300">
                             <svg class="w-4 h-4 text-white dark:text-white" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
                                 </path>
                             </svg>
-                        </div>
+                        </div> --}}
                     </div>
                 </a>
                 @endforeach

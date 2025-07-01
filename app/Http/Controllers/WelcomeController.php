@@ -12,11 +12,8 @@ class WelcomeController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $languages = Language::limit(11)
-            ->orderBy('id', 'asc')
-            ->get();
-
-        $remainingLanguagesCount = Language::count() - $languages->count();
-        return view('welcome', compact('languages', 'remainingLanguagesCount'));
+        $languages = Language::orderBy('id', 'asc')
+            ->get(); 
+        return view('welcome', compact('languages'));
     }
 }
