@@ -21,7 +21,7 @@ Users can explore words with images, audio pronunciations, and cultural context.
 ## Tech Stack
 
 - Backend: Laravel 12+
-- Frontend: Blade + TailwindCSS
+- Frontend: Blade + livewire + TailwindCSS
 - Database: MySQL / PostgreSQL / SQLite
 - Storage: Local disk or cloud (S3, etc.) for images and audio files
 
@@ -31,7 +31,7 @@ Users can explore words with images, audio pronunciations, and cultural context.
 
 1. Clone the repository  
    ```bash
-   git clone https://github.com/yourusername/kenyan-languages-dictionary.git
+   git clone https://github.com/titustum/kenyan-languages-dictionary.git
    cd kenyan-languages-dictionary
    ```
 
@@ -108,9 +108,9 @@ MIT License © \[Your Name or Organization]
 ## Contact
 
 * \[Your Name]
-* Email: [your.email@example.com](mailto:your.email@example.com)
-* GitHub: [yourusername](https://github.com/yourusername)
-* Twitter: [@yourhandle](https://twitter.com/yourhandle)
+* Email: [your.email@example.com](mailto:tituskiptanuitum@gmail.com)
+* GitHub: [yourusername](https://github.com/titustum)
+* Twitter: [@yourhandle](https://twitter.com/titusktum)
 
 ---
 

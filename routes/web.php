@@ -11,6 +11,7 @@ Route::get('/', WelcomeController::class)->name('home');
 Route::get('/new-concept', [MainController::class, 'contribute'])->name('contribute.create');
 Route::get('/languages', [MainController::class, 'viewLanguages'])->name('languages.index');
 Route::get('/{language:slug}/entries', [MainController::class, 'languageEntries'])->name('languages.entries');
+Route::get('/{language:slug}/{slug}', [MainController::class, 'languageEntry'])->name('languages.entry');
 Route::get('/about/{language:slug}', [MainController::class, 'viewLanguage'])->name('languages.show');
 Route::post('/storeContribution', [MainController::class, 'storeContribution'])->name('contribute.store');
 Route::get('/contribute', [MainController::class, 'mainConcepts'])->name('concepts.index');

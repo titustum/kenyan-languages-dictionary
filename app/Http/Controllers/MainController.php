@@ -94,7 +94,7 @@ class MainController extends Controller
             });
         }
 
-        $entries = $query->latest()->paginate(12);
+        $entries = $query->latest()->paginate(30);
         $categories = Category::orderBy('name')->get(); 
 
         return view('entries', compact('language', 'entries', 'categories'));
@@ -184,4 +184,19 @@ class MainController extends Controller
             'language'
         ));
     }
+
+
+    public function languageEntry(Request $request, Language $language,  $slug = null) {
+        //view translated language entry
+        $translatedWord = $language->dictionaryTranslations->where('slug', $slug)->first();
+        $mainEntry = DictionaryMainEntry::find($translatedWord->main_entry_id) ;
+        // dd($mainEntry);
+        return view('language-entry',
+        compact(
+            "language",
+            "mainEntry",
+            "translatedWord"
+        ));
+    }
+
 }

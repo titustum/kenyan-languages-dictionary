@@ -53,4 +53,13 @@ class DictionaryTranslation extends Model
     {
         return $this->audio_path ? asset('storage/' . $this->audio_path) : null;
     }
+
+    /**
+     * Get the route key for the model.
+     * Use 'slug' instead of 'id' for clean URLs.
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
 }

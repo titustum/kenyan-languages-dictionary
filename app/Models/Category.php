@@ -17,10 +17,11 @@ class Category extends Model
     ];
 
     // Relations
-    public function dictionaryEntries()
+    public function dictionaryMainEntries()
     {
-        return $this->hasMany(DictionaryEntry::class);
-    }
+        return $this->hasMany(DictionaryMainEntry::class);
+    } 
+    
     public function user()
     {
         return $this->belongsTo(User::class);

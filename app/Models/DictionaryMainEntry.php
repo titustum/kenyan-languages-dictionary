@@ -76,9 +76,12 @@ class DictionaryMainEntry extends Model
         return $this->image_path ? asset('storage/' . $this->image_path) : null;
     }
 
-    // Use slug instead of id for route model binding
-    // public function getRouteKeyName()
-    // {
-    //     return 'slug';
-    // }
+    /**
+     * Get the route key for the model.
+     * Use 'slug' instead of 'id' for clean URLs.
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
 }
