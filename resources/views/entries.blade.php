@@ -297,7 +297,7 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 md:gap-10">
                 {{-- Enhanced Sidebar --}}
-                <aside id="sidebar" class="lg:col-span-1 bg-white/80 backdrop-blur-sm p-6 shadow-2xl lg:rounded-2xl border border-gray-200/50 animate-slideInLeft overflow-y-auto custom-scrollbar hidden lg:block fixed inset-y-0 left-0 w-72 z-40 lg:static lg:w-auto lg:h-fit lg:sticky lg:top-8
+                <aside id="sidebar" class="lg:col-span-1 bg-white/80 backdrop-blur-sm p-6 shadow-2xl lg:rounded-2xl border border-gray-200/50 animate-slideInLeft overflow-y-auto custom-scrollbar hidden lg:block fixed inset-y-0 left-0 w-72 z-40 lg:w-auto lg:h-fit lg:sticky lg:top-8
                     dark:bg-gray-800/80 dark:border-gray-700/50">
                     <div
                         class="flex justify-between items-center mb-6 border-b border-gray-200 pb-4 dark:border-gray-700">
@@ -399,7 +399,7 @@
                                 </svg>
                             </div>
                             <button id="clearSearchBtn"
-                                class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 transition-colors duration-200 hidden">
+                                class="absolute inset-y-0 right-0 pr-4 items-center text-gray-400 hover:text-gray-600 transition-colors duration-200 hidden">
                                 <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M6 18L18 6M6 6l12 12"></path>

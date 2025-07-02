@@ -7,7 +7,8 @@ use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
-Route::get('/', WelcomeController::class)->name('home');
+Route::get('/', WelcomeController::class)->name('home'); 
+
 Route::get('/new-concept', [MainController::class, 'contribute'])->name('contribute.create');
 Route::get('/languages', [MainController::class, 'viewLanguages'])->name('languages.index');
 Route::get('/{language:slug}/entries', [MainController::class, 'languageEntries'])->name('languages.entries');

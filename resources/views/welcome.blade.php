@@ -1,4 +1,4 @@
-<x-layouts.app.guest>
+<x-layouts.app.guest title="Welcome!">
 
     @push('styles')
     <style>
@@ -14,9 +14,45 @@
             transform: scale(1) translateY(0);
             transition: opacity 0.3s ease-in, transform 0.3s ease-in;
         }
+
+        /* Hero Section specific styles */
+        .hero-pattern-dots {
+            background-image: radial-gradient(circle, #D1D5DB 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .dark .hero-pattern-dots {
+            background-image: radial-gradient(circle, #2d3748 1px, transparent 1px);
+        }
+
+        /* Feature card hover effect */
+        .feature-card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .dark .feature-card-hover:hover {
+            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.05);
+        }
+
+        /* Button glow effect */
+        .btn-glow {
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.5), 0 0 20px rgba(6, 182, 212, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn-glow:hover {
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.7), 0 0 30px rgba(6, 182, 212, 0.5);
+        }
     </style>
     @endpush
 
+
+    {{-- Language Exploration Section --}}
     <section id="languages"
         class="py-24 bg-gradient-to-br from-white via-gray-50 to-gray-100 dark:from-gray-900 dark:via-slate-900 dark:to-gray-800 relative overflow-hidden transition-colors duration-500">
 
@@ -40,7 +76,7 @@
                 </h2>
                 <p class="text-xl text-gray-700 dark:text-gray-300 max-w-4xl mx-auto leading-relaxed">
                     From the highlands of Kikuyu to the pastoral lands of Turkana, discover the rich linguistic tapestry
-                    that weaves through Kenya's cultural heritage
+                    that weaves through Kenya's cultural heritage.
                 </p>
 
                 <div class="max-w-md mx-auto mt-10">
@@ -59,18 +95,30 @@
             </div>
 
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
-                @foreach ([
-                ['42+', 'Languages'],
-                ['15K+', 'Words'],
-                ['8K+', 'Audio Files'],
-                ['1.2K+', 'Contributors'],
-                ] as $stat)
                 <div
                     class="text-center p-6 bg-white/70 dark:bg-black/5 backdrop-blur-sm rounded-2xl border border-gray-200 dark:border-white/10">
-                    <div class="text-3xl font-bold text-emerald-600 dark:text-emerald-400 mb-2">{{ $stat[0] }}</div>
-                    <div class="text-gray-600 dark:text-gray-400 text-sm">{{ $stat[1] }}</div>
+                    <div class="text-3xl font-bold text-emerald-600 dark:text-emerald-400 mb-2">{{ $languages->count()
+                        }}+</div>
+                    <div class="text-gray-600 dark:text-gray-400 text-sm">Languages</div>
                 </div>
-                @endforeach
+                <div
+                    class="text-center p-6 bg-white/70 dark:bg-black/5 backdrop-blur-sm rounded-2xl border border-gray-200 dark:border-white/10">
+                    <div class="text-3xl font-bold text-emerald-600 dark:text-emerald-400 mb-2">{{
+                        number_format($total_words) }}+</div>
+                    <div class="text-gray-600 dark:text-gray-400 text-sm">Words</div>
+                </div>
+                <div
+                    class="text-center p-6 bg-white/70 dark:bg-black/5 backdrop-blur-sm rounded-2xl border border-gray-200 dark:border-white/10">
+                    <div class="text-3xl font-bold text-emerald-600 dark:text-emerald-400 mb-2">{{
+                        number_format($total_audio_files) }}+</div>
+                    <div class="text-gray-600 dark:text-gray-400 text-sm">Audio Files</div>
+                </div>
+                <div
+                    class="text-center p-6 bg-white/70 dark:bg-black/5 backdrop-blur-sm rounded-2xl border border-gray-200 dark:border-white/10">
+                    <div class="text-3xl font-bold text-emerald-600 dark:text-emerald-400 mb-2">{{
+                        number_format($total_contributors) }}+</div>
+                    <div class="text-gray-600 dark:text-gray-400 text-sm">Contributors</div>
+                </div>
             </div>
 
 
@@ -168,6 +216,7 @@
     </section>
 
 
+    {{-- Community Section --}}
     <section id="community"
         class="py-24 bg-white text-gray-900 relative overflow-hidden dark:bg-gradient-to-br dark:from-gray-900 dark:via-zinc-900 dark:to-black dark:text-white">
         <div
@@ -271,12 +320,12 @@
                     </div>
 
                     <div class="flex flex-col sm:flex-row gap-4 pt-8 animate-fade-in-up delay-500">
-                        <a href="/contribute"
+                        <a href="{{ route('register') }}" {{-- Link to registration for contributing --}}
                             class="px-8 py-4 bg-teal-600 text-white rounded-xl text-lg font-bold hover:bg-teal-700 transform hover:scale-105 transition-all duration-300 shadow-lg shadow-teal-500/30 text-center flex items-center justify-center
                         dark:bg-gradient-to-r dark:from-teal-500 dark:to-teal-600 dark:hover:from-teal-600 dark:hover:to-teal-700">
                             Start Contributing
                         </a>
-                        <a href="/contributors"
+                        <a href="/leaderboard" {{-- Assuming you'll have a leaderboard route --}}
                             class="px-8 py-4 border-2 border-gray-300 bg-white/50 text-gray-800 rounded-xl text-lg font-bold hover:bg-gray-100 hover:border-gray-400 transition-all duration-300 text-center flex items-center justify-center
                         dark:border-white/20 dark:backdrop-blur-sm dark:bg-white/10 dark:text-white dark:hover:bg-white/10 dark:hover:border-white/30">
                             View Contributors
@@ -295,6 +344,7 @@
                         </div>
 
                         <div class="space-y-6">
+                            {{-- These should ideally be dynamic from your controller. Example uses static for now. --}}
                             <div
                                 class="relative p-6 bg-amber-500/10 rounded-2xl border border-amber-500/20 shadow-md transform hover:scale-105 transition-transform duration-300
                             dark:bg-gradient-to-r dark:from-amber-500/20 dark:via-orange-500/20 dark:to-red-500/20 dark:border-amber-500/30 dark:backdrop-blur-sm">
@@ -378,8 +428,9 @@
                             </div>
 
                             <div class="text-center pt-4 border-t border-gray-200 dark:border-white/10">
-                                <p class="text-gray-600 text-sm mb-3 dark:text-gray-400">+1,247 more community members
-                                </p>
+                                <p class="text-gray-600 text-sm mb-3 dark:text-gray-400">+{{ number_format(max(0,
+                                    App\Models\User::count() - 3)) }} more community members</p> {{-- Ensure
+                                non-negative count --}}
                                 <a href="/leaderboard" class="inline-flex items-center text-teal-600 hover:text-teal-700 transition-colors duration-300 group
                                 dark:text-teal-400 dark:hover:text-teal-300">
                                     <span class="font-medium">View Full Leaderboard</span>
@@ -397,6 +448,149 @@
         </div>
     </section>
 
+
+    {{-- New Section: Testimonials & Endorsements --}}
+    {{-- New Section: Testimonials & Endorsements --}}
+    <section
+        class="py-20 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-950 dark:to-slate-900 transition-colors duration-500 relative overflow-hidden">
+        {{-- Subtle background shapes for visual interest --}}
+        <div
+            class="absolute -top-10 -left-10 w-48 h-48 bg-blue-300/20 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob-slow dark:bg-blue-600/10">
+        </div>
+        <div
+            class="absolute -bottom-10 -right-10 w-64 h-64 bg-teal-300/20 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob-slow animation-delay-2000 dark:bg-teal-600/10">
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 lg:px-8 text-center relative z-10">
+            <div class="inline-flex items-center px-4 py-2 bg-purple-100 border border-purple-200 rounded-full text-purple-700 text-sm font-medium mb-6 animate-fadeInUp
+        dark:bg-purple-500/15 dark:border-purple-500/25 dark:text-purple-400">
+                <span class="w-2.5 h-2.5 bg-purple-500 rounded-full mr-2 animate-pulse-slow dark:bg-purple-400"></span>
+                Real Stories, Real Impact
+            </div>
+            <h2 class="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-12 animate-fadeInUp">
+                What Our Community Says
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <blockquote
+                    class="glass-card p-6 rounded-2xl shadow-xl text-left animate-fadeInUp delay-100 transform transition-transform hover:scale-[1.02] hover:shadow-2xl">
+                    <p class="text-lg italic text-gray-700 dark:text-gray-300 mb-4 relative">
+                        <span
+                            class="absolute -top-4 -left-4 text-5xl font-serif text-teal-400 dark:text-teal-600 opacity-60">"</span>
+                        {!! Markdown::parse("The **visuals and audio** are a game-changer! I'm finally grasping Luo in a
+                        way I never could with just textbooks.") !!}
+                        <span
+                            class="absolute -bottom-4 -right-4 text-5xl font-serif text-teal-400 dark:text-teal-600 opacity-60">"</span>
+                    </p>
+                    <div class="flex items-center mt-6">
+                        <img src="https://api.dicebear.com/8.x/initials/svg?seed=AK&backgroundType=solid&backgroundColor=b0e0e6"
+                            alt="Profile picture of Amina K., a language learner"
+                            class="w-12 h-12 rounded-full mr-4 object-cover border-2 border-teal-400 shadow-md">
+                        <div>
+                            <p class="font-semibold text-gray-900 dark:text-white">Amina K.</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Language Learner, Nairobi</p>
+                        </div>
+                    </div>
+                </blockquote>
+
+                <blockquote
+                    class="glass-card p-6 rounded-2xl shadow-xl text-left animate-fadeInUp delay-200 transform transition-transform hover:scale-[1.02] hover:shadow-2xl">
+                    <p class="text-lg italic text-gray-700 dark:text-gray-300 mb-4 relative">
+                        <span
+                            class="absolute -top-4 -left-4 text-5xl font-serif text-blue-400 dark:text-blue-600 opacity-60">"</span>
+                        As a linguist, I appreciate the dedication to **authentic pronunciation and cultural context**.
+                        This is an invaluable resource.
+                        <span
+                            class="absolute -bottom-4 -right-4 text-5xl font-serif text-blue-400 dark:text-blue-600 opacity-60">"</span>
+                    </p>
+                    <div class="flex items-center mt-6">
+                        <img src="https://api.dicebear.com/8.x/initials/svg?seed=JO&backgroundType=solid&backgroundColor=dda0dd"
+                            alt="Profile picture of Dr. Juma O., a university researcher"
+                            class="w-12 h-12 rounded-full mr-4 object-cover border-2 border-blue-400 shadow-md">
+                        <div>
+                            <p class="font-semibold text-gray-900 dark:text-white">Dr. Juma O.</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">University Researcher, Kenya</p>
+                        </div>
+                    </div>
+                </blockquote>
+
+                <blockquote
+                    class="glass-card p-6 rounded-2xl shadow-xl text-left animate-fadeInUp delay-300 transform transition-transform hover:scale-[1.02] hover:shadow-2xl">
+                    <p class="text-lg italic text-gray-700 dark:text-gray-300 mb-4 relative">
+                        <span
+                            class="absolute -top-4 -left-4 text-5xl font-serif text-emerald-400 dark:text-emerald-600 opacity-60">"</span>
+                        Being able to **contribute and help grow** this dictionary feels incredible. It's a true
+                        community effort for our heritage.
+                        <span
+                            class="absolute -bottom-4 -right-4 text-5xl font-serif text-emerald-400 dark:text-emerald-600 opacity-60">"</span>
+                    </p>
+                    <div class="flex items-center mt-6">
+                        <img src="https://api.dicebear.com/8.x/initials/svg?seed=DM&backgroundType=solid&backgroundColor=f0e68c"
+                            alt="Profile picture of David M., a top contributor"
+                            class="w-12 h-12 rounded-full mr-4 object-cover border-2 border-emerald-400 shadow-md">
+                        <div>
+                            <p class="font-semibold text-gray-900 dark:text-white">David M.</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Top Contributor</p>
+                        </div>
+                    </div>
+                </blockquote>
+            </div>
+
+            {{-- Small Call to Action for more testimonials or to submit one --}}
+            <div class="mt-16 text-center animate-fadeInUp delay-400">
+                <p class="text-lg text-gray-700 dark:text-gray-300 mb-6">
+                    Inspired by these stories? Your voice matters!
+                </p>
+                <a href="{{ route('register') }}" {{-- Or a route to a dedicated "submit testimonial" page if available
+                    --}}
+                    class="inline-flex items-center justify-center px-8 py-3 bg-gradient-to-r from-purple-600 to-indigo-700 hover:from-purple-700 hover:to-indigo-800 text-white font-bold rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-purple-500/50">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    Share Your Experience
+                </a>
+            </div>
+        </div>
+    </section>
+
+    {{-- Final Call to Action --}}
+    <section class="py-20 bg-white dark:bg-gray-800 transition-colors duration-500">
+        <div class="max-w-4xl mx-auto px-4 lg:px-8 text-center">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-8 animate-fadeInUp">
+                Ready to Discover Kenya's Linguistic Wonders?
+            </h2>
+            <p class="text-xl md:text-2xl text-gray-700 dark:text-gray-300 mb-10 animate-fadeInUp delay-100">
+                Start your journey of cultural immersion and language mastery today.
+            </p>
+
+            <div class="flex flex-col sm:flex-row justify-center gap-4 animate-fadeInUp delay-200">
+                <a href="#languages" {{-- Scroll to the languages section --}}
+                    class="inline-flex items-center justify-center px-10 py-5 bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 text-white font-bold rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 btn-glow focus:outline-none focus:ring-4 focus:ring-teal-500/50">
+                    <svg class="w-7 h-7 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5s3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18s-3.332.477-4.5 1.253">
+                        </path>
+                    </svg>
+                    Explore All Languages
+                </a>
+
+                {{-- Placeholder for future mobile app download --}}
+                <div class="flex flex-col sm:flex-row justify-center gap-4 mt-6 sm:mt-0">
+                    <a href="#"
+                        class="inline-flex items-center justify-center px-6 py-4 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full shadow-md transition-all duration-300 hover:scale-105 opacity-50 cursor-not-allowed">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg"
+                            alt="Download on the App Store" class="h-8 mr-2">
+                        Coming Soon on iOS
+                    </a>
+                    <a href="#"
+                        class="inline-flex items-center justify-center px-6 py-4 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full shadow-md transition-all duration-300 hover:scale-105 opacity-50 cursor-not-allowed">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
+                            alt="Get it on Google Play" class="h-8 mr-2">
+                        Coming Soon on Android
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
 
     @push('scripts')
     <script>
@@ -462,7 +656,6 @@
 
                 // Add active state to the clicked tag
                 target.classList.add('bg-emerald-600', 'border-emerald-600', 'font-semibold', 'shadow-lg');
-                // Remove the general styles that conflict with active state
                 target.classList.remove('bg-white/70', 'border-gray-300', 'text-gray-700', 'hover:bg-gray-200', 'dark:bg-black/10', 'dark:border-white/20', 'dark:text-gray-300', 'dark:hover:bg-black/20');
 
 
@@ -470,247 +663,16 @@
                 filterLanguages();
             });
 
-            // Global function to reset all filters
-            window.resetFilters = function() {
+            // Function to reset filters (called by the "No Languages Found" button)
+            window.resetFilters = () => {
                 searchInput.value = ''; // Clear search input
-                // Set 'All Regions' button as active
-                document.querySelector('.filter-tag[data-region-slug="all"]').click(); // Simulate a click to update state and filter
+                document.querySelector('.filter-tag[data-region-slug="all"]').click(); // Click "All Regions" tag
             };
 
-            // Initial filter when page loads (e.g., if search term was in URL)
+            // Initial filter on page load (important for consistent state)
             filterLanguages();
         });
     </script>
-    @endpush
-
-
-    @push('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const searchInput = document.getElementById('languageSearchInput');
-            const filterTagsContainer = document.getElementById('filterTagsContainer');
-            const languageCards = document.querySelectorAll('.language-card');
-            const noLanguagesFoundState = document.getElementById('noLanguagesFoundJS');
-            let currentRegionFilter = 'all'; // Default filter
-
-            // Function to filter languages
-            const filterLanguages = () => {
-                const searchTerm = searchInput.value.toLowerCase().trim();
-                let visibleCount = 0;
-
-                languageCards.forEach(card => {
-                    const languageName = card.dataset.name;
-                    const languageRegion = card.dataset.region;
-
-                    const matchesSearch = languageName.includes(searchTerm);
-                    const matchesRegion = currentRegionFilter === 'all' || languageRegion === currentRegionFilter;
-
-                    if (matchesSearch && matchesRegion) {
-                        card.classList.remove('fade-out');
-                        card.classList.add('fade-in');
-                        card.style.display = 'block'; // Show the card
-                        visibleCount++;
-                    } else {
-                        card.classList.remove('fade-in');
-                        card.classList.add('fade-out');
-                        // Use a slight delay for display: none to allow fade-out animation to complete
-                        setTimeout(() => {
-                             if (card.classList.contains('fade-out')) {
-                                card.style.display = 'none';
-                             }
-                        }, 300); // Matches transition duration
-                    }
-                });
-
-                // Show/hide no results message
-                if (visibleCount === 0) {
-                    noLanguagesFoundState.style.display = 'block';
-                } else {
-                    noLanguagesFoundState.style.display = 'none';
-                }
-            };
-
-            // Event listener for search input
-            searchInput.addEventListener('keyup', filterLanguages);
-            searchInput.addEventListener('change', filterLanguages);
-
-            // Event listeners for region filter tags
-            filterTagsContainer.addEventListener('click', function(event) {
-                const target = event.target.closest('.filter-tag'); // Use closest to handle clicks on child spans
-                if (!target) return; // Not a filter tag
-
-                // Remove active state from all tags
-                document.querySelectorAll('.filter-tag').forEach(tag => {
-                    tag.classList.remove('bg-emerald-600', 'border-emerald-600', 'font-semibold', 'shadow-lg');
-                    tag.classList.add('bg-white/10', 'border-white/20', 'text-gray-300', 'hover:bg-white/20');
-                });
-
-                // Add active state to the clicked tag
-                target.classList.add('bg-emerald-600', 'border-emerald-600', 'font-semibold', 'shadow-lg');
-                target.classList.remove('bg-white/10', 'border-white/20', 'text-gray-300', 'hover:bg-white/20');
-
-                currentRegionFilter = target.dataset.regionSlug;
-                filterLanguages();
-            });
-
-            // Global function to reset all filters
-            window.resetFilters = function() {
-                searchInput.value = ''; // Clear search input
-                // Set 'All Regions' button as active
-                document.querySelector('.filter-tag[data-region-slug="all"]').click(); // Simulate a click to update state and filter
-            };
-
-            // Initial filter when page loads (e.g., if search term was in URL)
-            filterLanguages();
-        });
-    </script>
-    @endpush
-
-    @push('styles')
-    <style>
-        @keyframes blob-1 {
-            0% {
-                transform: translateY(0) scale(1);
-            }
-
-            50% {
-                transform: translateY(-20px) scale(1.05);
-            }
-
-            100% {
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        @keyframes blob-2 {
-            0% {
-                transform: translateY(0) scale(1);
-            }
-
-            50% {
-                transform: translateY(20px) scale(1.05);
-            }
-
-            100% {
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        @keyframes pulse-slow {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: .4;
-            }
-        }
-
-        @keyframes fade-in-down {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fade-in-right {
-            from {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes fade-in-up {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .animate-blob-1 {
-            animation: blob-1 8s infinite alternate ease-in-out;
-        }
-
-        .animate-blob-2 {
-            animation: blob-2 9s infinite alternate-reverse ease-in-out;
-        }
-
-        .animate-pulse-slow {
-            animation: pulse-slow 3s infinite ease-in-out;
-        }
-
-        .animate-fade-in-down {
-            animation: fade-in-down 0.8s ease-out forwards;
-        }
-
-        .animate-fade-in-right {
-            animation: fade-in-right 0.8s ease-out forwards;
-        }
-
-        .animate-fade-in-up {
-            animation: fade-in-up 0.8s ease-out forwards;
-        }
-
-        .animate-fade-in-left {
-            animation: fade-in-right 0.8s ease-out forwards;
-            /* Using fade-in-right with reversed direction implicitly */
-            transform: translateX(20px);
-            /* Initial position for fade-in-left */
-        }
-
-        .delay-100 {
-            animation-delay: 0.1s;
-        }
-
-        .delay-200 {
-            animation-delay: 0.2s;
-        }
-
-        .delay-300 {
-            animation-delay: 0.3s;
-        }
-
-        .delay-400 {
-            animation-delay: 0.4s;
-        }
-
-        .delay-500 {
-            animation-delay: 0.5s;
-        }
-
-        @keyframes bounce-slow {
-
-            0%,
-            100% {
-                transform: translateY(0) rotate(12deg);
-            }
-
-            50% {
-                transform: translateY(-5px) rotate(12deg);
-            }
-        }
-
-        .animate-bounce-slow {
-            animation: bounce-slow 2s infinite ease-in-out;
-        }
-    </style>
     @endpush
 
 </x-layouts.app.guest>
