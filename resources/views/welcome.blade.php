@@ -476,8 +476,8 @@
                     <p class="text-lg italic text-gray-700 dark:text-gray-300 mb-4 relative">
                         <span
                             class="absolute -top-4 -left-4 text-5xl font-serif text-teal-400 dark:text-teal-600 opacity-60">"</span>
-                        {!! Markdown::parse("The **visuals and audio** are a game-changer! I'm finally grasping Luo in a
-                        way I never could with just textbooks.") !!}
+                        The **visuals and audio** are a game-changer! I'm finally grasping Luo in a
+                        way I never could with just textbooks.
                         <span
                             class="absolute -bottom-4 -right-4 text-5xl font-serif text-teal-400 dark:text-teal-600 opacity-60">"</span>
                     </p>

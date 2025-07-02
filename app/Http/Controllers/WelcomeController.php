@@ -6,6 +6,7 @@ use App\Models\Language;
 use App\Models\User; // Import User model
 use App\Models\DictionaryTranslation; // Assuming this model for word count  
 use Illuminate\Http\Request;
+use Markdown; // This is the crucial line for facade usage
 
 class WelcomeController extends Controller
 {
