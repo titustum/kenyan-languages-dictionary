@@ -100,10 +100,11 @@ class MainController extends Controller
         return view('entries', compact('language', 'entries', 'categories'));
     }
 
-    public function viewLanguage(Language $language)
+    public function viewLanguage(Request $request, Language $language)
     {
         return view('view-language', [
-            'language' => $language 
+            'language' => $language,
+            'page_title' => 'About ' . $language->name, // Dynamic title for the layout
         ]);
     }
 

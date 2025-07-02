@@ -1,7 +1,6 @@
 <?php
 
-use App\Http\Controllers\DictionaryEntryController;
-use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\DictionaryEntryController; 
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
@@ -13,7 +12,7 @@ Route::get('/new-concept', [MainController::class, 'contribute'])->name('contrib
 Route::get('/languages', [MainController::class, 'viewLanguages'])->name('languages.index');
 Route::get('/{language:slug}/entries', [MainController::class, 'languageEntries'])->name('languages.entries');
 Route::get('/{language:slug}/{slug}', [MainController::class, 'languageEntry'])->name('languages.entry');
-Route::get('/about/{language:slug}', [MainController::class, 'viewLanguage'])->name('languages.show');
+Route::get('/about/x/{language:slug}/', [MainController::class, 'viewLanguage'])->name('languages.show');
 Route::post('/storeContribution', [MainController::class, 'storeContribution'])->name('contribute.store');
 Route::get('/contribute', [MainController::class, 'mainConcepts'])->name('concepts.index');
 Route::view('/about', 'about')->name('about');
