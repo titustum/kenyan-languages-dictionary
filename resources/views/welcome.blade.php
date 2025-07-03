@@ -48,8 +48,89 @@
         .btn-glow:hover {
             box-shadow: 0 0 15px rgba(6, 182, 212, 0.7), 0 0 30px rgba(6, 182, 212, 0.5);
         }
+
+        .language-card {
+            transition: all 0.3s ease;
+        }
+
+        .language-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .word-card {
+            transition: all 0.3s ease;
+        }
+
+        .word-card:hover {
+            transform: scale(1.05);
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+        }
     </style>
     @endpush
+
+
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-green-400 to-blue-500 text-white py-16 px-6 text-center">
+        <div class="max-w-3xl mx-auto">
+            <h1 class="text-4xl font-extrabold mb-4 animate-fade-in">
+                Reclaim your mother tongue. One word at a time.
+            </h1>
+            <p class="mb-8 text-lg max-w-xl mx-auto opacity-90">
+                Learn basic vocabulary in 10+ Kenyan languages through beautiful images and simple translations.
+            </p>
+
+            <!-- Language selector -->
+            <label for="language-select" class="block mb-2 text-sm font-semibold">
+                Choose your language to begin
+            </label>
+            <select id="language-select" name="language"
+                class="mb-6 px-4 py-2 rounded bg-white text-black w-full max-w-xs mx-auto block focus:ring-2 focus:ring-white focus:outline-none"
+                aria-label="Select language to learn">
+                <option value="" disabled selected>Select a language</option>
+                <option value="kikuyu">Kikuyu (Gĩkũyũ)</option>
+                <option value="luo">Luo (Dholuo)</option>
+                <option value="kiswahili">Kiswahili</option>
+                <option value="kamba">Kamba (Kikamba)</option>
+                <option value="luhya">Luhya (Luluhya)</option>
+                <option value="maasai">Maasai (Maa)</option>
+                <option value="meru">Meru (Kimeru)</option>
+                <option value="kalenjin">Kalenjin</option>
+                <option value="embu">Embu (Kĩembu)</option>
+                <option value="taita">Taita (Kitaita)</option>
+                <option value="turkana">Turkana (Ng'aturkana)</option>
+                <option value="somali">Somali (Af-Soomaali)</option>
+            </select>
+
+            <!-- CTA Button -->
+            <button onclick="handleLanguageSelection()"
+                class="bg-white text-blue-600 font-bold px-8 py-3 rounded-lg shadow-lg hover:bg-gray-100 hover:shadow-xl transition duration-300 transform hover:scale-105"
+                aria-label="Start learning selected language">
+                Start Learning Now
+            </button>
+        </div>
+    </section>
+
 
 
     {{-- Language Exploration Section --}}
