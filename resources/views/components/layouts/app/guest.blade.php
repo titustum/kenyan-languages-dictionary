@@ -177,7 +177,7 @@
     </nav>
 
 
-    <header class="fixed top-0 left-0 right-0 z-30 glass-morphism border-b border-white/10 dark:border-gray-800">
+    <header class="fixed top-0 left-0 right-0 z-30 glass-morphism border-b border-gray-200 dark:border-gray-800">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
                 <a href="{{ url('/') }}" class="flex items-center space-x-3">

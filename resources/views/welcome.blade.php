@@ -90,52 +90,10 @@
 
 
 
-    <!-- Hero Section -->
-    <section class="bg-gradient-to-r from-green-400 to-blue-500 text-white py-16 px-6 text-center">
-        <div class="max-w-3xl mx-auto">
-            <h1 class="text-4xl font-extrabold mb-4 animate-fade-in">
-                Reclaim your mother tongue. One word at a time.
-            </h1>
-            <p class="mb-8 text-lg max-w-xl mx-auto opacity-90">
-                Learn basic vocabulary in 10+ Kenyan languages through beautiful images and simple translations.
-            </p>
-
-            <!-- Language selector -->
-            <label for="language-select" class="block mb-2 text-sm font-semibold">
-                Choose your language to begin
-            </label>
-            <select id="language-select" name="language"
-                class="mb-6 px-4 py-2 rounded bg-white text-black w-full max-w-xs mx-auto block focus:ring-2 focus:ring-white focus:outline-none"
-                aria-label="Select language to learn">
-                <option value="" disabled selected>Select a language</option>
-                <option value="kikuyu">Kikuyu (Gĩkũyũ)</option>
-                <option value="luo">Luo (Dholuo)</option>
-                <option value="kiswahili">Kiswahili</option>
-                <option value="kamba">Kamba (Kikamba)</option>
-                <option value="luhya">Luhya (Luluhya)</option>
-                <option value="maasai">Maasai (Maa)</option>
-                <option value="meru">Meru (Kimeru)</option>
-                <option value="kalenjin">Kalenjin</option>
-                <option value="embu">Embu (Kĩembu)</option>
-                <option value="taita">Taita (Kitaita)</option>
-                <option value="turkana">Turkana (Ng'aturkana)</option>
-                <option value="somali">Somali (Af-Soomaali)</option>
-            </select>
-
-            <!-- CTA Button -->
-            <button onclick="handleLanguageSelection()"
-                class="bg-white text-blue-600 font-bold px-8 py-3 rounded-lg shadow-lg hover:bg-gray-100 hover:shadow-xl transition duration-300 transform hover:scale-105"
-                aria-label="Start learning selected language">
-                Start Learning Now
-            </button>
-        </div>
-    </section>
-
-
+   
 
     {{-- Language Exploration Section --}}
-    <section id="languages"
-        class="py-24 bg-gradient-to-br from-white via-gray-50 to-gray-100 dark:from-gray-900 dark:via-slate-900 dark:to-gray-800 relative overflow-hidden transition-colors duration-500">
+    <section  class="py-24 bg-gradient-to-br from-white via-gray-50 to-gray-100 dark:from-gray-900 dark:via-slate-900 dark:to-gray-800 relative overflow-hidden transition-colors duration-500">
 
         {{-- Subtle background pattern --}}
         <div class="absolute inset-0 z-0 opacity-10"
@@ -161,16 +119,18 @@
                 </p>
 
                 <div class="max-w-md mx-auto mt-10">
-                    <div class="relative">
-                        <input type="text" id="languageSearchInput" placeholder="Search languages..."
-                            class="w-full px-6 py-4 bg-white/50 dark:bg-black/10 backdrop-blur-sm border border-gray-300 dark:border-white/20 rounded-2xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50 transition-all">
-                        <div class="absolute right-4 top-1/2 transform -translate-y-1/2">
-                            <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                            </svg>
-                        </div>
+                    <div class="grid gap-2">
+                        <select  class="w-full px-6 py-4 bg-white/50 dark:bg-black/10 backdrop-blur-sm border border-gray-300 dark:border-white/20 rounded-2xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50 transition-all">>
+                            @foreach ($languages as $language)
+                                <flux:select.option value="{{ $language->id }}">{{ $language->name }}</flux:select.option>
+                            @endforeach
+                            
+                        </select>
+                        <a href="{{ route('register') }}" {{-- Link to registration for contributing --}}
+                            class="px-8 py-4 bg-teal-600 text-white rounded-xl text-lg font-bold hover:bg-teal-700 transform hover:scale-105 transition-all duration-300 shadow-lg shadow-teal-500/30 text-center flex items-center justify-center
+                        dark:bg-gradient-to-r dark:from-teal-500 dark:to-teal-600 dark:hover:from-teal-600 dark:hover:to-teal-700">
+                            Explore free
+                        </a>
                     </div>
                 </div>
             </div>
@@ -200,98 +160,6 @@
                         number_format($total_contributors) }}+</div>
                     <div class="text-gray-600 dark:text-gray-400 text-sm">Contributors</div>
                 </div>
-            </div>
-
-
-            {{-- Make sure the regions array exists and is passed to the view --}}
-            @php
-            $regions = [
-            'Nyanza Kenya',
-            'Western Kenya',
-            'Rift Valley',
-            'Central Kenya',
-            'Coastal Kenya',
-            'Northern Kenya',
-            'Eastern Kenya',
-            ];
-            @endphp
-
-            <div id="filterTagsContainer" class="my-12 flex flex-wrap justify-center gap-3">
-                <button data-region-slug="all"
-                    class="filter-tag px-4 py-2 bg-emerald-600 border border-emerald-600 rounded-full text-sm text-white hover:bg-emerald-700 hover:text-white transition-all duration-300 font-semibold shadow-lg">
-                    All Regions
-                </button>
-                @foreach ($regions as $region)
-                <button data-region-slug="{{ Str::slug($region) }}"
-                    class="filter-tag px-4 py-2 bg-white/70 dark:bg-black/10 backdrop-blur-sm border border-gray-300 dark:border-white/20 rounded-full text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-black/20 hover:text-gray-900 dark:hover:text-white transition-all duration-300">
-                    {{ $region }}
-                </button>
-                @endforeach
-            </div>
-
-            <div id="languagesGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
-                @php
-                $enhancedColors = [
-                'red' => 'from-red-500 to-red-600 shadow-red-500/25 text-white',
-                'yellow' => 'from-yellow-400 to-yellow-500 shadow-yellow-500/25 text-gray-900',
-                'green' => 'from-green-500 to-green-600 shadow-green-500/25 text-white',
-                'blue' => 'from-blue-500 to-blue-600 shadow-blue-500/25 text-white',
-                'indigo' => 'from-indigo-500 to-indigo-600 shadow-indigo-500/25 text-white',
-                'purple' => 'from-purple-500 to-purple-600 shadow-purple-500/25 text-white',
-                'pink' => 'from-pink-500 to-pink-600 shadow-pink-500/25 text-white',
-                'orange' => 'from-orange-500 to-orange-600 shadow-orange-500/25 text-white',
-                'teal' => 'from-teal-500 to-teal-600 shadow-teal-500/25 text-white',
-                'cyan' => 'from-cyan-500 to-cyan-600 shadow-cyan-500/25 text-white',
-                'amber' => 'from-amber-400 to-amber-500 shadow-amber-500/25 text-gray-900',
-                'lime' => 'from-lime-400 to-lime-500 shadow-lime-500/25 text-gray-900',
-                'gray' => 'from-gray-500 to-gray-600 shadow-gray-500/25 text-white',
-                'rose' => 'from-rose-500 to-rose-600 shadow-rose-500/25 text-white',
-                'brown' => 'from-yellow-800 to-yellow-900 shadow-yellow-800/25 text-white',
-                ];
-                @endphp
-
-                @foreach ($languages as $language)
-                <a href="{{ route('languages.entries', $language) }}"
-                    class="language-card group relative bg-gradient-to-br {{ $enhancedColors[$language->color] ?? 'from-gray-700 to-gray-800 shadow-gray-700/25 text-white' }} dark:from-gray-700 dark:to-gray-800 dark:text-white rounded-2xl p-6 text-center cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-2xl border border-gray-200 dark:border-white/10 backdrop-blur-sm"
-                    role="button" tabindex="0"
-                    aria-label="Explore {{ $language->name }} language from {{ $language->region }}"
-                    data-name="{{ strtolower($language->name) }}" data-region="{{ Str::slug($language->region) }}">
-
-                    <div
-                        class="absolute inset-0 rounded-2xl bg-gradient-to-br {{ str_replace('shadow-', 'from-', explode(' ', $enhancedColors[$language->color] ?? 'shadow-gray-700/25')[2]) }}/0 group-hover:{{ str_replace('shadow-', 'from-', explode(' ', $enhancedColors[$language->color] ?? 'shadow-gray-700/25')[2]) }}/20 transition-all duration-300">
-                    </div>
-
-                    <div class="relative z-10">
-                        <div class="text-4xl mb-4 transform group-hover:scale-110 transition-transform duration-300">
-                            {{ $language->icon ?? '🗣️' }}
-                        </div>
-                        <div class="font-bold text-lg mb-2 text-white dark:text-white">{{ $language->name }}</div>
-                        <div class="text-sm opacity-90 text-gray-200 dark:text-gray-400 mb-3">{{ $language->region }}
-                        </div>
-                    </div>
-                </a>
-                @endforeach
-            </div>
-
-            {{-- Empty State for JS filtering --}}
-            <div id="noLanguagesFoundJS"
-                class="text-center py-20 bg-gray-100 dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 hidden mt-10 transition-colors duration-500">
-                <div class="text-7xl mb-6">🚫</div>
-                <h3 class="text-3xl font-bold mb-3 text-gray-900 dark:text-white">No Languages Found!</h3>
-                <p class="text-gray-600 dark:text-gray-400 text-lg max-w-md mx-auto">
-                    No languages match your current search and filter criteria. Try adjusting them.
-                </p>
-                <button onclick="resetFilters();"
-                    class="mt-8 inline-flex items-center bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-semibold py-3 px-7 rounded-full transition duration-300 transform hover:-translate-y-1 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-emerald-500/50">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004 16.08V12m4.214-1.214L11.99 15.01"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M20 20v-5h-.582m-15.356-2A8.001 8.001 0 0120 7.92V12m-4.214 1.214L12.01 8.99"></path>
-                    </svg>
-                    Reset Filters
-                </button>
             </div>
         </div>
     </section>
@@ -527,10 +395,9 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> 
 
 
-    {{-- New Section: Testimonials & Endorsements --}}
     {{-- New Section: Testimonials & Endorsements --}}
     <section
         class="py-20 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-950 dark:to-slate-900 transition-colors duration-500 relative overflow-hidden">
