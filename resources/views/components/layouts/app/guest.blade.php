@@ -205,13 +205,25 @@
                 </nav>
 
                 <div class="hidden lg:flex items-center space-x-4">
+                    @auth()
+                    <a href="/profile"
+                        class="text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors">
+                        Profile
+                    </a>
+                    <a href="/logout"
+                        class="text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors">
+                        Sign Out
+                    </a>
+                    @else
                     <a href="/login"
-                        class="text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors">Sign
+                        class="text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors">
+                        Sign
                         In</a>
                     <a href="/register"
                         class="px-6 py-2.5 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-xl font-medium hover:from-emerald-600 hover:to-emerald-700 transform hover:scale-105 transition-all duration-300 shadow-lg shadow-emerald-500/25">
                         Get Started
                     </a>
+                    @endauth
 
                     <button id="theme-toggle" class="ml-4 text-xl hover:scale-110 transition-transform"
                         title="Toggle theme">
