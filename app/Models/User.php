@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'language_id',
     ];
 
     /**
@@ -60,8 +61,14 @@ class User extends Authenticatable
     }
 
     // Relation: User has many dictionary entries
-    public function dictionaryEntries()
+    public function dictionaryMainEntries()
     {
-        return $this->hasMany(DictionaryEntry::class);
+        return $this->hasMany(DictionaryMainEntry::class);
+    }
+
+    // Relation: User has many translation entries
+    public function translationEntries()
+    {
+        return $this->hasMany(DictionaryTranslation::class);
     }
 }
