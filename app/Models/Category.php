@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use PSpell\Dictionary;
 
 class Category extends Model
 {
@@ -31,4 +32,10 @@ class Category extends Model
     {
         return 'slug';
     }
-}
+
+    public function mainEntries()
+    {
+        return $this->hasMany(DictionaryMainEntry::class);
+    } 
+     
+}   

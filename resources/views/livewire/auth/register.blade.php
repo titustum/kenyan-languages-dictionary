@@ -32,8 +32,7 @@ new #[Layout('components.layouts.app.guest')] class extends Component {
     public function register(): void
     {
         $validated = $this->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'language' => ['required', 'string', 'exists:languages,slug'],
+            'name' => ['required', 'string', 'max:255'], 
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
         ]);
@@ -81,22 +80,6 @@ new #[Layout('components.layouts.app.guest')] class extends Component {
                 placeholder="email@example.com"
                 class="w-full px-5 py-3 bg-white/10 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 transition duration-300 ease-in-out">
             @error('email')
-            <p class="mt-2 text-sm text-red-500">{{ $message }}</p>
-            @enderror
-        </div>
-
-        {{-- select language here --}}
-        <div>
-            <label for="language"
-                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Language</label>
-            <select id="language" wire:model="language" required
-                class="w-full px-5 py-3 bg-white/10 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 transition duration-300 ease-in-out">
-                <option value="">Select a language</option>
-                @foreach ($languages as $lang)
-                <option value="{{ $lang->slug }}">{{ $lang->name }}</option>
-                @endforeach
-            </select>
-            @error('language')
             <p class="mt-2 text-sm text-red-500">{{ $message }}</p>
             @enderror
         </div>

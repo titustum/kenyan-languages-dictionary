@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Language;
 use App\Models\User; // Import User model
+use App\Models\Visitor; // Import Visitor model
 use App\Models\DictionaryTranslation; // Assuming this model for word count  
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -61,6 +62,36 @@ class WelcomeController extends Controller
         // Redirect to the language entries page
         session()->flash('success', 'Registration successful! You can now explore the language entries.');
         
+        // Redirect to the language entries page
+        return redirect()->route('languages.entries', ['language' => $language->slug]);
+    }
+
+
+    public function selectAndExplore(Request $request)
+    {
+        // Validate the request
+        $request->validate([
+            'language' => 'required|string|exists:languages,slug', 
+            'category' => 'required|string|in:student,teacher,researcher,developer,native,enthusiast,other',  
+        ]);
+
+        // Retrieve language
+        $languageSlug = $request->input('language');
+        $language = Language::where('slug', $languageSlug)->first();
+
+        if (!$language) {
+            return redirect()->back()->with('error', 'Language not found');
+        }
+
+        // Log visitor info
+        Visitor::create([
+            'ip_address'    => $request->ip(),
+            'user_agent'    => $request->userAgent(),
+            'language_slug' => $language->slug,
+            'category'      => $request->input('category'),
+            'referrer'      => $request->headers->get('referer'),
+        ]);
+
         // Redirect to the language entries page
         return redirect()->route('languages.entries', ['language' => $language->slug]);
     }

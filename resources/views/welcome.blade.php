@@ -103,32 +103,27 @@
 
                         {{-- Registration Form --}}
 
-                        <form class="space-y-6 " action="{{ route('register.explore') }}" method="POST">
+                        <form class="space-y-6 " action="{{ route('select.explore') }}" method="POST">
                             @csrf
-                            <div class="relative">
-                                <label for="name"
-                                    class="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">Your
-                                    Name</label>
-                                <input type="text" id="name" name="name"
-                                    class="w-full px-6 py-4 bg-white dark:bg-white/10 backdrop-blur-sm border border-gray-300 dark:border-white/20 rounded-2xl text-gray-800 dark:text-white text-lg focus:outline-none focus:ring-2 focus:ring-emerald-400/50 input-focus placeholder-gray-400 dark:placeholder-gray-500"
-                                    placeholder="e.g. John Doe" required>
-                            </div>
+
 
                             <div class="relative">
-                                <label for="email"
-                                    class="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">Email
-                                    Address</label>
-                                <input type="email" id="email" name="email"
-                                    class="w-full px-6 py-4 bg-white dark:bg-white/10 backdrop-blur-sm border border-gray-300 dark:border-white/20 rounded-2xl text-gray-800 dark:text-white text-lg focus:outline-none focus:ring-2 focus:ring-emerald-400/50 input-focus placeholder-gray-400 dark:placeholder-gray-500"
-                                    placeholder="e.g. john@gmail.com" required>
-                            </div>
-
-                            <div class="relative">
-                                <label for="password"
-                                    class="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">Password</label>
-                                <input type="password" id="password" name="password"
-                                    class="w-full px-6 py-4 bg-white dark:bg-white/10 backdrop-blur-sm border border-gray-300 dark:border-white/20 rounded-2xl text-gray-800 dark:text-white text-lg focus:outline-none focus:ring-2 focus:ring-emerald-400/50 input-focus placeholder-gray-400 dark:placeholder-gray-500"
-                                    placeholder="••••••••" required>
+                                <label for="language"
+                                    class="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">
+                                    Select user category
+                                </label>
+                                <select id="category" name="category"
+                                    class="w-full px-6 py-4 bg-white dark:bg-gray-600 backdrop-blur-sm border border-gray-300 dark:border-white/20 rounded-2xl text-gray-800 dark:text-white text-lg focus:outline-none focus:ring-2 focus:ring-emerald-400/50 input-focus"
+                                    required>
+                                    <option value="" disabled selected>Select your category...</option>
+                                    <option value="student">Student</option>
+                                    <option value="teacher">Teacher</option>
+                                    <option value="researcher">Researcher</option>
+                                    <option value="developer">Developer</option>
+                                    <option value="native">Native Speaker</option>
+                                    <option value="enthusiast">Enthusiast</option>
+                                    <option value="other">Other</option>
+                                </select>
                             </div>
 
                             <div class="relative">
@@ -147,7 +142,7 @@
 
                             <button type="submit"
                                 class="w-full px-6 py-4 btn-primary text-white font-bold rounded-2xl text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 bg-emerald-500 hover:bg-emerald-600">
-                                <span class="relative z-10">Create Account and Explore</span>
+                                <span class="relative z-10">Explore language for free</span>
                             </button>
                         </form>
 

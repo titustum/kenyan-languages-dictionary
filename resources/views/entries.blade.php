@@ -363,7 +363,7 @@
                                 </svg>
                                 Quick Search
                             </button>
-                            <button id="randomEntryBtn"
+                            <a href="{{ route('languages.random_entry', $language->slug) }}" id="randomEntryBtn"
                                 class="w-full text-left p-2 rounded-lg text-sm text-gray-600 hover:bg-gray-100 transition-colors dark:text-gray-400 dark:hover:bg-gray-700">
                                 <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -371,7 +371,7 @@
                                     </path>
                                 </svg>
                                 Random Word
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </aside>
@@ -432,37 +432,63 @@
                     {{-- Enhanced Entries Grid --}}
                     @if($entries->count())
                     <div id="entriesGrid"
-                        class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 animate-fadeInScale">
+                        class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 animate-fadeInScale delay-200">
                         @foreach ($entries as $index => $entry)
-                        <div class="entry-card p-4 transition-all duration-300 transform bg-white/80 backdrop-blur-sm rounded-2xl shadow-md hover:shadow-2xl border border-gray-200/50 animate-stagger
-                            dark:bg-gray-800/80 dark:border-gray-700/50" data-word="{{ strtolower($entry->word) }}"
+                        <div class="entry-card bg-white rounded-2xl p-4 border border-gray-200 shadow-lg hover:border-teal-400 transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-xl group
+                            dark:bg-gray-800 dark:border-gray-700" data-word="{{ strtolower($entry->word) }}"
                             data-translation="{{ strtolower($entry->mainEntry->word_en) }}"
                             data-example="{{ strtolower($entry->example ?? '') }}"
                             style="animation-delay: {{ $index * 0.05 }}s">
 
-                            {{-- Enhanced Image Display --}}
-                            @if($entry->mainEntry->image_path)
+                            @php
+                            $main = $entry->mainEntry;
+                            $category = strtolower($main->category->slug ?? '');
+                            $imageExists = $main->image_path && file_exists(public_path('storage/' .$main->image_path));
+
+                            @endphp
+
                             <a href="{{ route('languages.entry', [$language, $entry->slug]) }}"
                                 class="block relative group mb-3">
+                                @if ($category === 'numbers' && $main->numeric_value !== null)
+                                {{-- Show numeric value --}}
                                 <div
-                                    class="w-20 h-20 mx-auto rounded-2xl bg-gradient-to-br from-orange-100 to-orange-200 dark:from-gray-600 dark:to-gray-700 p-2 group-hover:scale-105 transition-transform duration-300">
-                                    <img src="{{ asset('storage/' . $entry->mainEntry->image_path) }}"
-                                        alt="{{ $entry->word }}" class="w-full h-full object-contain rounded-xl">
+                                    class="mb-4 h-32 md:h-34 lg:h-40 bg-gray-100 rounded-lg flex items-center justify-center text-4xl font-bold dark:bg-gray-900 dark:text-gray-100">
+                                    {{ $main->numeric_value }}
                                 </div>
-                            </a>
-                            @else
-                            <a href="{{ route('languages.entry', [$language, $entry->slug]) }}"
-                                class="block relative group mb-3">
+
+                                @elseif ($category === 'colors' && !empty($main->color_code))
+                                {{-- Show color block --}}
+                                <div class="mb-4 h-32 md:h-34 lg:h-40 rounded-lg border dark:border-gray-700"
+                                    style="background-color: {{ $main->color_code }}">
+                                </div>
+
+                                @elseif ($imageExists)
+                                {{-- Show image --}}
+                                <div
+                                    class="mb-4 overflow-hidden rounded-lg bg-gray-100 flex items-center justify-center h-32 md:h-34 lg:h-40 dark:bg-gray-900">
+                                    <img src="{{ asset('storage/' . $main->image_path) }}" alt="{{ $entry->word }}"
+                                        class="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-300 ease-in-out">
+                                </div>
+
+                                @elseif (!empty($main->icon))
+                                {{-- Show emoji icon --}}
+                                <div
+                                    class="mb-4 h-32 md:h-34 lg:h-40 bg-gray-100 rounded-lg flex items-center justify-center text-6xl dark:bg-gray-900">
+                                    {!! $main->icon !!}
+                                </div>
+
+                                @else
+                                {{-- Fallback SVG --}}
                                 <div
                                     class="w-20 h-20 mx-auto rounded-2xl bg-gradient-to-br from-orange-300 to-orange-500 dark:from-gray-700 dark:to-gray-800 p-4 text-white group-hover:scale-105 transition-transform duration-300">
                                     <svg class="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
-                                        </path>
+                                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
                                 </div>
+                                @endif
                             </a>
-                            @endif
+
 
                             {{-- Enhanced Word Display --}}
                             <div class="text-center space-y-2">

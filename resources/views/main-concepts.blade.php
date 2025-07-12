@@ -335,14 +335,49 @@
                             data-example-en="{{ strtolower($mainEntry->example_sentence_en ?? '') }}"
                             data-category-slug="{{ $mainEntry->category->slug }}" class="concept-card bg-white rounded-2xl p-4 border border-gray-200 shadow-lg hover:border-teal-400 transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-xl group
                             dark:bg-gray-800 dark:border-gray-700">
+
                             {{-- Image --}}
-                            @if($mainEntry->image_path)
+                            @php
+                            // Example: get category name as lowercase string
+                            $category = $mainEntry->category->slug ?? '';
+
+                            // Check if image file exists in public folder
+                            $imageExists = $mainEntry->image_path && file_exists(public_path('storage/'
+                            .$mainEntry->image_path));
+
+                            @endphp
+
+                            @if ($category === 'numbers' && $mainEntry->numeric_value !== null)
+                            {{-- Show numeric value --}}
+                            <div
+                                class="mb-4 h-32 md:h-34 lg:h-40 bg-gray-100 rounded-lg flex items-center justify-center text-4xl font-bold dark:bg-gray-900 dark:text-gray-100">
+                                {{ $mainEntry->numeric_value }}
+                            </div>
+
+                            @elseif ($category === 'colors' && !empty($mainEntry->color_code))
+                            {{-- Show color block --}}
+                            <div class="mb-4 h-32 md:h-34 lg:h-40 rounded-lg border dark:border-gray-700"
+                                style="background-color: {{ $mainEntry->color_code }}">
+                            </div>
+
+                            @elseif ($imageExists)
+                            {{-- Show image if exists --}}
                             <div
                                 class="mb-4 overflow-hidden rounded-lg bg-gray-100 flex items-center justify-center h-32 md:h-34 lg:h-40 dark:bg-gray-900">
-                                <img src="{{ $mainEntry->image_url }}" alt="{{ $mainEntry->word_en }}"
+                                <img src="{{ asset('storage/' . $mainEntry->image_path) }}"
+                                    alt="{{ $mainEntry->word_en }}"
                                     class="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-300 ease-in-out">
                             </div>
+
+                            @elseif (!empty($mainEntry->icon))
+                            {{-- Show emoji/icon --}}
+                            <div
+                                class="mb-4 h-32 md:h-34 lg:h-40 bg-gray-100 rounded-lg flex items-center justify-center text-6xl dark:bg-gray-900">
+                                {!! $mainEntry->icon !!}
+                            </div>
+
                             @else
+                            {{-- Fallback placeholder icon --}}
                             <div
                                 class="mb-4 h-32 md:h-34 lg:h-40 bg-gray-100 rounded-lg flex items-center justify-center text-gray-300 text-opacity-50 dark:bg-gray-900 dark:text-gray-500">
                                 <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -353,6 +388,7 @@
                                 </svg>
                             </div>
                             @endif
+
 
                             {{-- Word & Category --}}
                             <h3

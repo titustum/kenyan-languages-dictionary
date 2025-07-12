@@ -210,7 +210,28 @@
                     <div class="glass-card rounded-3xl p-8 shadow-2xl mb-8 animate-slideInLeft">
 
                         {{-- Image Section --}}
-                        @if($mainEntry->image_path)
+                        {{-- Image Section --}}
+                        @php
+                        $category = $mainEntry->category->slug ?? '';
+                        $imageExists = $mainEntry->image_path && file_exists(public_path('storage/' .
+                        $mainEntry->image_path));
+                        @endphp
+
+                        @if ($category === 'numbers' && $mainEntry->numeric_value !== null)
+                        {{-- Show Numeric Value --}}
+                        <div class="mb-8 h-64 md:h-80 flex items-center justify-center text-7xl font-bold rounded-2xl shadow-inner
+                bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900">
+                            {{ $mainEntry->numeric_value }}
+                        </div>
+
+                        @elseif ($category === 'colors' && !empty($mainEntry->color_code))
+                        {{-- Show Color Block --}}
+                        <div class="mb-8 h-64 md:h-80 rounded-2xl shadow-inner border dark:border-gray-700"
+                            style="background-color: {{ $mainEntry->color_code }}">
+                        </div>
+
+                        @elseif ($imageExists)
+                        {{-- Show Stored Image --}}
                         <div class="mb-8 relative group">
                             <div
                                 class="overflow-hidden rounded-2xl bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 p-6 h-64 md:h-80 flex items-center justify-center shadow-inner">
@@ -222,7 +243,16 @@
                                 class="absolute inset-0 bg-black/0 group-hover:bg-black/5 rounded-2xl transition-colors duration-300">
                             </div>
                         </div>
+
+                        @elseif (!empty($mainEntry->icon))
+                        {{-- Show Emoji Icon --}}
+                        <div class="mb-8 h-64 md:h-80 flex items-center justify-center text-7xl rounded-2xl shadow-inner
+                bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900">
+                            {!! $mainEntry->icon !!}
+                        </div>
+
                         @else
+                        {{-- Fallback: No Visual --}}
                         <div class="mb-8 relative group">
                             <div
                                 class="h-64 md:h-80 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 rounded-2xl flex items-center justify-center shadow-inner">
@@ -230,14 +260,14 @@
                                     <svg class="w-24 h-24 mx-auto text-gray-300 dark:text-gray-600 mb-4 group-hover:scale-110 transition-transform duration-300"
                                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
-                                        </path>
+                                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
                                     <p class="text-gray-500 dark:text-gray-400 text-lg">Visual coming soon</p>
                                 </div>
                             </div>
                         </div>
                         @endif
+
 
                         {{-- Word Display --}}
                         <div class="text-center mb-8">
@@ -387,7 +417,7 @@
                                     Share Word
                                 </button>
 
-                                <button id="randomWordBtn"
+                                <a href="{{ route('languages.random_entry', $language->slug) }}" id="randomWordBtn"
                                     class="w-full flex items-center justify-center px-4 py-3 bg-gradient-to-r from-purple-500 to-violet-500 hover:from-purple-600 hover:to-violet-600 text-white rounded-xl shadow-lg transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-purple-500/30">
                                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -395,7 +425,7 @@
                                         </path>
                                     </svg>
                                     Random Word
-                                </button>
+                                </a>
                             </div>
                         </div>
 

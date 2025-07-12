@@ -1,32 +1,16 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="{{ session('theme', '') }}">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title ?? 'MotherLang - Kenyan Languages Visual Dictionary' }}</title>
-    <meta name="description"
-        content="MotherLang is a visual dictionary for Kenyan languages, designed to help you learn and explore the rich linguistic diversity of Kenya.">
-
-    {{-- CSRF Token --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="theme-color" content="#7c3aed">
-
-    {{-- Favicon --}}
     <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
-
-    {{-- Vite Assets for Laravel --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-    {{-- Alpine.js for interactive elements --}}
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-    {{-- Google Font: Inter --}}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..800&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -71,26 +55,34 @@
     </style>
 </head>
 
-<body class="bg-gray-900 text-white min-h-screen flex">
+<body class="min-h-screen flex bg-white dark:bg-gray-900 text-gray-800 dark:text-white">
+
+    <!-- Theme Toggle -->
+    <button id="themeToggle"
+        class="fixed top-4 right-4 z-50 px-3 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white rounded shadow hover:bg-gray-300 dark:hover:bg-gray-600 transition">
+        🌞 / 🌙
+    </button>
 
     <!-- Desktop Sidebar -->
     <aside x-data="{ open: true }"
-        class="hidden lg:flex flex-col w-64 fixed inset-y-0 left-0 sidebar-bg border-r border-gray-800 p-6 shadow-xl z-40 transition-all duration-300 ease-in-out">
+        class="bg-gray-100 dark:bg-gray-800 border-gray-200 dark:border-gray-800 text-gray-900 dark:text-white hidden lg:flex flex-col w-64 fixed inset-y-0 left-0 p-6 shadow-xl z-40 transition-all duration-300 ease-in-out">
         <a href="{{ route('dashboard') }}" class="mb-8 flex items-center space-x-3 rtl:space-x-reverse" wire:navigate>
             <div
                 class="w-10 h-10 gradient-logo rounded-lg flex items-center justify-center font-bold text-lg text-white">
                 M
             </div>
-            <span class="text-2xl font-bold text-white">MotherLang</span>
+            <span class="text-2xl font-bold text-gray-900 dark:text-white">MotherLang</span>
         </a>
 
         <!-- Navigation List -->
         <nav class="flex flex-col flex-grow">
-            <h3 class="text-sm font-semibold uppercase text-gray-500 mb-4">Platform</h3>
+            <h3 class="text-sm font-semibold uppercase text-gray-500 dark:text-gray-400 mb-4">Platform</h3>
             <ul class="space-y-2 mb-8">
                 <li>
                     <a href="{{ route('dashboard') }}" class="flex items-center gap-3 p-3 rounded-lg text-base font-medium
-                       {{ request()->routeIs('dashboard') ? 'bg-purple-700 text-white shadow-md' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}
+                       {{ request()->routeIs('dashboard') 
+                       ? 'bg-purple-700 text-white shadow-md' 
+                           : 'text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-black dark:hover:text-white' }}
                        transition-all duration-200" wire:navigate>
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg">
@@ -103,7 +95,9 @@
                 </li>
                 <li>
                     <a href="{{ route('languages.index') }}" class="flex items-center gap-3 p-3 rounded-lg text-base font-medium
-                       {{ request()->routeIs('languages.*') ? 'bg-purple-700 text-white shadow-md' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}
+                       {{ request()->routeIs('languages.*') 
+                       ? 'bg-purple-700 text-white shadow-md' 
+                           : 'text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-black dark:hover:text-white' }}
                        transition-all duration-200" wire:navigate>
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg">
@@ -118,38 +112,13 @@
 
             <div class="flex-grow"></div> {{-- Spacer --}}
 
-            <h3 class="text-sm font-semibold uppercase text-gray-500 mb-4">Resources</h3>
-            <ul class="space-y-2">
-                <li>
-                    <a href="https://github.com/laravel/livewire-starter-kit" target="_blank"
-                        class="flex items-center gap-3 p-3 rounded-lg text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white transition-all duration-200">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 9l4-4 4 4m0 6l-4 4-4-4"></path>
-                        </svg>
-                        <span>Repository</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="https://laravel.com/docs/starter-kits#livewire" target="_blank"
-                        class="flex items-center gap-3 p-3 rounded-lg text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white transition-all duration-200">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.523 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.523 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
-                            </path>
-                        </svg>
-                        <span>Documentation</span>
-                    </a>
-                </li>
-            </ul>
+
         </nav>
 
         <!-- Desktop User Menu Dropdown -->
         <div x-data="{ open: false }" class="relative mt-8">
             <button @click="open = !open" type="button"
-                class="w-full flex items-center justify-between p-3 rounded-lg bg-gray-700 hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500">
+                class="w-full flex items-center justify-between p-3 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500">
                 <span class="flex items-center gap-3">
                     <span class="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-full">
                         <span
@@ -158,13 +127,15 @@
                         </span>
                     </span>
                     <span class="grid flex-1 text-start text-sm leading-tight">
-                        <span class="truncate font-semibold text-white">{{ auth()->user()->name ?? 'Guest User'
-                            }}</span>
-                        <span class="truncate text-xs text-gray-400">{{ auth()->user()->email ?? 'guest@example.com'
-                            }}</span>
+                        <span class="truncate font-semibold text-gray-900 dark:text-white">
+                            {{ auth()->user()->name ?? 'Guest User' }}
+                        </span>
+                        <span class="truncate text-xs text-gray-500 dark:text-gray-400">
+                            {{ auth()->user()->email ?? 'guest@example.com' }}
+                        </span>
                     </span>
                 </span>
-                <svg class="w-4 h-4 text-gray-400 transform transition-transform duration-200"
+                <svg class="text-gray-500 dark:text-gray-400 w-4 h-4 transform transition-transform duration-200"
                     :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -177,11 +148,10 @@
                 x-transition:leave="transition ease-in duration-75"
                 x-transition:leave-start="transform opacity-100 scale-100"
                 x-transition:leave-end="transform opacity-0 scale-95"
-                class="absolute bottom-full left-0 mb-2 w-full bg-gray-800 rounded-lg shadow-lg border border-gray-700 py-1"
+                class="absolute bottom-full left-0 mb-2 w-full bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-300 dark:border-gray-700 py-1"
                 style="display: none;">
-                <a href="{{ route('settings.profile') }}"
-                    class="flex items-center gap-3 px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors rounded-md"
-                    wire:navigate>
+                <a href="{{ route('settings.profile') }}" class="text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-black dark:hover:text-white
+                    flex items-center gap-3 px-4 py-2 text-sm transition-colors rounded-md" wire:navigate>
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -190,11 +160,11 @@
                     </svg>
                     <span>Settings</span>
                 </a>
-                <div class="border-t border-gray-700 my-1"></div>
+                <div class="border-t border-gray-200 dark:border-gray-700 my-1"></div>
                 <form method="POST" action="{{ route('logout') }}" class="w-full">
                     @csrf
                     <button type="submit"
-                        class="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors rounded-md text-left">
+                        class="text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-black dark:hover:text-white  w-full flex items-center gap-3 px-4 py-2 text-sm transition-colors rounded-md text-left">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -208,7 +178,6 @@
         </div>
     </aside>
 
-    <!-- Main Content Wrapper -->
     <div class="flex flex-col flex-1 lg:ml-64">
         <!-- Mobile Top Bar (mimics header from Flux) -->
         <header x-data="{ open: false }"
@@ -338,75 +307,28 @@
                         </li>
                     </ul>
 
-                    <div class="flex-grow"></div> {{-- Spacer --}}
 
-                    <h3 class="text-sm font-semibold uppercase text-gray-500 mb-4">Resources</h3>
-                    <ul class="space-y-2">
-                        <li>
-                            <a href="https://github.com/laravel/livewire-starter-kit" target="_blank"
-                                class="flex items-center gap-3 p-3 rounded-lg text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white transition-all duration-200"
-                                @click="open = false">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M8 9l4-4 4 4m0 6l-4 4-4-4"></path>
-                                </svg>
-                                <span>Repository</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://laravel.com/docs/starter-kits#livewire" target="_blank"
-                                class="flex items-center gap-3 p-3 rounded-lg text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white transition-all duration-200"
-                                @click="open = false">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.523 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.523 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
-                                    </path>
-                                </svg>
-                                <span>Documentation</span>
-                            </a>
-                        </li>
-                    </ul>
+
                 </nav>
             </div>
         </header>
 
-        <!-- Main content area -->
-        <main class="flex-grow p-4 bg-gray-900">
+        <main class="flex-grow p-4">
             {{ $slot }}
         </main>
     </div>
 
     <script>
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="{{ url('/') }}#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                const targetId = this.getAttribute('href').split('#')[1];
-                const target = document.getElementById(targetId);
-                if (target) {
-                    e.preventDefault();
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // This particular scroll effect is for a standalone nav,
-        // which might not be needed as much with a fixed sidebar/topbar.
-        // Keeping it for potential adaptation or if user wants a different type of page.
-        window.addEventListener('scroll', () => {
-            const nav = document.querySelector('header.lg\\:hidden'); // Targeting the mobile header
-            if (nav && window.scrollY > 50) {
-                nav.style.backgroundColor = 'rgba(17, 24, 39, 0.9)'; // gray-900 with transparency
-                nav.classList.add('shadow-xl');
-            } else if (nav) {
-                nav.style.backgroundColor = 'rgba(255, 255, 255, 0.05)'; // glass effect
-                nav.classList.remove('shadow-xl');
-            }
-        });
+        document.addEventListener('DOMContentLoaded', function () {
+      const theme = localStorage.getItem('theme');
+      if (theme === 'dark') document.documentElement.classList.add('dark');
+      document.getElementById('themeToggle').addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme',
+          document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+        );
+      });
+    });
     </script>
 </body>
 

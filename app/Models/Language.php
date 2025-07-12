@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Str; // Keep if you use it for creating slugs internally
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use PSpell\Dictionary;
 
 class Language extends Model
 {
@@ -91,4 +92,20 @@ class Language extends Model
     {
         return $this->icon ? asset('storage/' . $this->icon) : null;
     }
+    /**
+     * Get all categories that have words in this language.
+     * This assumes a many-to-many relationship between categories and dictionary translations.
+     */
+    public function translations()
+    {
+        return $this->hasMany(DictionaryTranslation::class);
+    }
+
+    public function categoriesWithWords()
+    {
+        return Category::whereHas('translations', function ($query) {
+            $query->where('language_id', $this->id);
+        })->get();
+    }
+
 }

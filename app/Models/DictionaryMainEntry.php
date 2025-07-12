@@ -30,7 +30,10 @@ class DictionaryMainEntry extends Model
         'description_en',
         'example_sentence_en',
         'category_id',
-        'image_path', // Updated to include image_path
+        'image_path', // Updated to include image_path,
+        'numeric_value', // Numeric value for concepts like "one", "two", etc.
+        'icon', // Optional icon or emoji representation
+        'color_code', // Optional color code (e.g., #FF0000) for color concepts
     ];
 
     /**

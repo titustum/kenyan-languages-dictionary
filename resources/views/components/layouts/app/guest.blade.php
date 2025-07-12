@@ -150,7 +150,25 @@
                     </a>
                 </div>
 
+
                 <div class="mt-12 space-y-4">
+                    @auth
+                    <a href="{{ route('concepts.index') }}"
+                        class="block w-full px-6 py-3 text-center bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-all">
+                        Contribute
+                    </a>
+                    <a href="/profile"
+                        class="block w-full px-6 py-3 text-center bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-all">
+                        Profile
+                    </a>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit"
+                            class="block w-full px-6 py-3 text-center bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-all">
+                            Sign Out
+                        </button>
+                    </form>
+                    @else
                     <a href="/login"
                         class="block w-full px-6 py-3 text-center bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-all">
                         Sign In
@@ -159,6 +177,7 @@
                         class="block w-full px-6 py-3 text-center bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-xl font-medium hover:from-emerald-600 hover:to-emerald-700 transition-all shadow-lg">
                         Get Started
                     </a>
+                    @endauth
                 </div>
             </div>
 
@@ -198,27 +217,35 @@
                         class="text-emerald-600 dark:text-emerald-400 font-medium hover:text-emerald-500 transition-colors">Home</a>
                     <a href="/languages"
                         class="text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors">Languages</a>
-                    <a href="/contributors"
+                    {{-- <a href="/contributors"
                         class="text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors">Contributors</a>
+                    --}}
                     <a href="/about"
                         class="text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors">About</a>
                 </nav>
 
                 <div class="hidden lg:flex items-center space-x-4">
                     @auth()
+                    <a href=" {{ route('concepts.index') }}"
+                        class="text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors">
+                        Contribute
+                    </a>
                     <a href="/profile"
                         class="text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors">
                         Profile
                     </a>
-                    <a href="/logout"
-                        class="text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors">
-                        Sign Out
-                    </a>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit"
+                            class="text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors">
+                            Sign Out
+                        </button>
+                    </form>
                     @else
                     <a href="/login"
                         class="text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors">
-                        Sign
-                        In</a>
+                        Sign In
+                    </a>
                     <a href="/register"
                         class="px-6 py-2.5 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-xl font-medium hover:from-emerald-600 hover:to-emerald-700 transform hover:scale-105 transition-all duration-300 shadow-lg shadow-emerald-500/25">
                         Get Started

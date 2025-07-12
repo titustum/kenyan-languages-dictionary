@@ -9,18 +9,23 @@ use Illuminate\Http\Request;
 
 Route::get('/', [WelcomeController::class, 'index'])->name('home');
 
-Route::get('/new-concept', [MainController::class, 'contribute'])->name('contribute.create');
+
 Route::get('/languages', [MainController::class, 'viewLanguages'])->name('languages.index');
 Route::get('/{language:slug}/entries', [MainController::class, 'languageEntries'])->name('languages.entries');
 Route::get('/{language:slug}/{slug}', [MainController::class, 'languageEntry'])->name('languages.entry');
+Route::get('/{language:slug}/word/random', [MainController::class, 'randomLanguageEntry'])->name('languages.random_entry');
 Route::get('/about/x/{language:slug}/', [MainController::class, 'viewLanguage'])->name('languages.show');
-Route::post('/storeContribution', [MainController::class, 'storeContribution'])->name('contribute.store');
-Route::get('/contribute', [MainController::class, 'mainConcepts'])->name('concepts.index');
 Route::view('/about', 'about')->name('about');
+Route::post('/select-explore', [WelcomeController::class, 'selectAndExplore'])->name('select.explore');
 Route::post('/register-explore', [WelcomeController::class, 'registerAndExplore'])->name('register.explore');
 
 
 use App\Http\Controllers\TranslationContributionController; 
+
+Route::get('/new-concept', [MainController::class, 'contribute'])->name('contribute.create');
+Route::post('/storeContribution', [MainController::class, 'storeContribution'])->name('contribute.store');
+Route::get('/translate', [MainController::class, 'mainConcepts'])->name('concepts.index');
+
 // Route for adding a new translation to a specific main entry
 Route::get('/contribute/translation/create/{mainEntry:slug_en}', [TranslationContributionController::class, 'create'])
     ->name('contribute.translation.create');

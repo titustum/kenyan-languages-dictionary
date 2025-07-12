@@ -95,6 +95,8 @@ class MainController extends Controller
         }
 
         $entries = $query->latest()->paginate(30);
+
+
         $categories = Category::orderBy('name')->get(); 
 
         return view('entries', compact('language', 'entries', 'categories'));
@@ -191,6 +193,28 @@ class MainController extends Controller
         //view translated language entry
         $translatedWord = $language->dictionaryTranslations->where('slug', $slug)->first();
         $mainEntry = DictionaryMainEntry::find($translatedWord->main_entry_id) ;
+        // dd($mainEntry);
+        return view('language-entry',
+        compact(
+            "language",
+            "mainEntry",
+            "translatedWord"
+        ));
+    }
+
+    public function randomLanguageEntry(Request $request, Language $language) {
+        //view translated language entry
+
+
+        $translatedRandomWord =  $language->dictionaryTranslations->random();
+
+
+        $translatedWord = $language->dictionaryTranslations()
+            ->where('id', $translatedRandomWord->id)
+            ->first();
+        
+
+        $mainEntry = DictionaryMainEntry::find($translatedRandomWord->main_entry_id) ;
         // dd($mainEntry);
         return view('language-entry',
         compact(
