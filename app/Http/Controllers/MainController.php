@@ -212,16 +212,16 @@ class MainController extends Controller
         $translatedWord = $language->dictionaryTranslations()
             ->where('id', $translatedRandomWord->id)
             ->first();
-        
 
-        $mainEntry = DictionaryMainEntry::find($translatedRandomWord->main_entry_id) ;
-        // dd($mainEntry);
-        return view('language-entry',
-        compact(
-            "language",
-            "mainEntry",
-            "translatedWord"
-        ));
+        if (!$translatedWord) {
+            return redirect()->back()->with('error', 'No random word found for this language.');
+        }
+        // Find the ma`in entry for the translated word
+        
+        return redirect()->route('languages.entry', [
+            'language' => $language->slug,
+            'slug' => $translatedWord->slug
+        ]);
     }
 
 }
