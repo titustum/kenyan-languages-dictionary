@@ -244,8 +244,7 @@
                     Explore {{ $language->name }} Vocabulary
                 </h1>
                 <p class="text-gray-600 mt-4 text-lg md:text-xl max-w-3xl mx-auto dark:text-gray-300 leading-relaxed">
-                    {{ $language->description ?? 'Discover a rich collection of words, phrases, and examples from this
-                    vibrant language.' }}
+                    {{ Str::limit($language->description, 100, '...') }}
                 </p>
 
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
