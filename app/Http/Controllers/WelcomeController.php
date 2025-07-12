@@ -6,14 +6,15 @@ use App\Models\Language;
 use App\Models\User; // Import User model
 use App\Models\DictionaryTranslation; // Assuming this model for word count  
 use Illuminate\Http\Request;
-use Markdown; // This is the crucial line for facade usage
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class WelcomeController extends Controller
 {
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request)
+    public function index(Request $request)
     {
         $languages = Language::orderBy('id', 'asc')->get();  
 
@@ -24,5 +25,43 @@ class WelcomeController extends Controller
         $total_contributors = User::count(); // Assuming a column `is_contributor`
 
         return view('welcome', compact('languages', 'total_words', 'total_audio_files', 'total_contributors'));
+    }
+
+    // register and explore language entries
+
+    public function registerAndExplore(Request $request)
+    {
+        // Validate the request to ensure 'language' is provided
+        $request->validate([
+            'language' => 'required|string|exists:languages,slug',
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',  
+        ]);
+
+         $languageSlug = $request->input('language');
+         $language = \App\Models\Language::where('slug', $languageSlug)->first();
+
+        if (!$language) {
+            return redirect()->back()->with('error', 'Language not found');
+        }
+        
+
+        // register the user now based on the name, email, password, and language
+        $user = User::create([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => Hash::make($request->input('password')),
+            'language_id' => $language->id, // Set the language ID
+        ]);
+
+        // Log the user in
+        Auth::login($user);
+
+        // Redirect to the language entries page
+        session()->flash('success', 'Registration successful! You can now explore the language entries.');
+        
+        // Redirect to the language entries page
+        return redirect()->route('languages.entries', ['language' => $language->slug]);
     }
 }

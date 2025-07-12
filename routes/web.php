@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 use Illuminate\Http\Request;
 
-Route::get('/', WelcomeController::class)->name('home'); 
+Route::get('/', [WelcomeController::class, 'index'])->name('home');
 
 Route::get('/new-concept', [MainController::class, 'contribute'])->name('contribute.create');
 Route::get('/languages', [MainController::class, 'viewLanguages'])->name('languages.index');
@@ -17,17 +17,7 @@ Route::get('/about/x/{language:slug}/', [MainController::class, 'viewLanguage'])
 Route::post('/storeContribution', [MainController::class, 'storeContribution'])->name('contribute.store');
 Route::get('/contribute', [MainController::class, 'mainConcepts'])->name('concepts.index');
 Route::view('/about', 'about')->name('about');
-
-
-Route::get('/explore-language', 
-function (Request $request) { 
-    $languageSlug = $request->query('language');
-    $language = \App\Models\Language::where('slug', $languageSlug)->first();
-    if (!$language) {
-        return redirect()->back()->with('error', 'Language not found');
-    }
-    return redirect()->route('languages.entries', ['language' => $language->slug]);
-})->name('redirect.to.language'); 
+Route::post('/register-explore', [WelcomeController::class, 'registerAndExplore'])->name('register.explore');
 
 
 use App\Http\Controllers\TranslationContributionController; 

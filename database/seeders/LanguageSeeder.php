@@ -123,7 +123,6 @@ class LanguageSeeder extends Seeder
             Language::updateOrCreate(
                 ['slug' => $slug],
                 [
-                    'user_id' => 1,
                     'name' => $lang['name'],
                     'slug' => $slug,
                     'description' => $lang['description'],

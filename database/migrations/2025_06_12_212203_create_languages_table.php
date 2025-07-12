@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('languages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete()->default(1); // Default to user ID 1 (admin)
             $table->string('name');
             $table->string('slug')->unique();
             $table->text('description')->nullable();

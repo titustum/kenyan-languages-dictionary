@@ -14,6 +14,14 @@ class DictionaryMainEntrySeeder extends Seeder
      */
     public function run(): void
     {
+
+         // Fetch all categories once and index by name
+        $categories = Category::all()->keyBy('name');
+
+        // Keep track of which missing categories have already been reported
+        $missingCategories = [];
+
+
         // Example entries to seed
         $entries = [
                 // Greetings
@@ -405,19 +413,24 @@ class DictionaryMainEntrySeeder extends Seeder
 
 
         foreach ($entries as $entry) {
-            if (!isset($categories[$entry['category']])) {
-                $this->command->error("Category {$entry['category']} not found!");
+            $categoryName = $entry['category'];
+
+            if (!isset($categories[$categoryName])) {
+                if (!in_array($categoryName, $missingCategories)) {
+                    $this->command->error("Category '{$categoryName}' not found!");
+                    $missingCategories[] = $categoryName;
+                }
                 continue;
             }
 
+            $category = $categories[$categoryName];
             $baseSlug = Str::slug($entry['word_en']);
             $slug = $baseSlug;
 
-            // Append category slug if there's a conflict
+            // Append category slug if there's a slug conflict
             if (DictionaryMainEntry::where('slug_en', $slug)->exists()) {
-                $slug = $baseSlug . '-' . Str::slug($entry['category']);
+                $slug = $baseSlug . '-' . Str::slug($categoryName);
             }
-
 
             DictionaryMainEntry::updateOrCreate(
                 [

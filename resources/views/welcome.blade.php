@@ -76,21 +76,49 @@
                             <p class="text-gray-600 dark:text-gray-300">Select from 42+ authentic Kenyan languages</p>
                         </div>
 
-                        <form class="space-y-6">
+                        {{-- show form validation errors --}}
+                        @if ($errors->any())
+                        <div class="bg-red-500/20 text-red-300 p-3 rounded-md text-center text-sm">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        @endif
+
+                        {{-- Show session status messages --}}
+                        @if (session('success'))
+                        <div class="bg-green-500/20 text-green-300 p-3 rounded-md text-center text-sm">
+                            {{ session('success') }}
+                        </div>
+                        @endif
+
+                        {{-- Show session error messages --}}
+                        @if (session('error'))
+                        <div class="bg-red-500/20 text-red-300 p-3 rounded-md text-center text-sm">
+                            {{ session('error') }}
+                        </div>
+                        @endif
+
+                        {{-- Registration Form --}}
+
+                        <form class="space-y-6 " action="{{ route('register.explore') }}" method="POST">
+                            @csrf
                             <div class="relative">
-                                <label for="user_name"
+                                <label for="name"
                                     class="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">Your
                                     Name</label>
-                                <input type="text" id="user_name" name="user_name"
+                                <input type="text" id="name" name="name"
                                     class="w-full px-6 py-4 bg-white dark:bg-white/10 backdrop-blur-sm border border-gray-300 dark:border-white/20 rounded-2xl text-gray-800 dark:text-white text-lg focus:outline-none focus:ring-2 focus:ring-emerald-400/50 input-focus placeholder-gray-400 dark:placeholder-gray-500"
                                     placeholder="e.g. John Doe" required>
                             </div>
 
                             <div class="relative">
-                                <label for="user_email"
+                                <label for="email"
                                     class="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">Email
                                     Address</label>
-                                <input type="email" id="user_email" name="user_email"
+                                <input type="email" id="email" name="email"
                                     class="w-full px-6 py-4 bg-white dark:bg-white/10 backdrop-blur-sm border border-gray-300 dark:border-white/20 rounded-2xl text-gray-800 dark:text-white text-lg focus:outline-none focus:ring-2 focus:ring-emerald-400/50 input-focus placeholder-gray-400 dark:placeholder-gray-500"
                                     placeholder="e.g. john@gmail.com" required>
                             </div>
