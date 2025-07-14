@@ -61,27 +61,30 @@ Route::get('/run-artisan/{command}', function ($command, Request $request) {
         abort(403, 'Unauthorized');
     }
 
+    // Define allowed commands and optional arguments
     $allowedCommands = [
-        'migrate',
-        'migrate:fresh',
-        'migrate:fresh --seed',
-        'db:seed',
-        'optimize',
-        'cache:clear',
-        'config:cache',
-        'route:cache',
-        'storage:link',
+        'migrate' => [],
+        'migrate:fresh' => [],
+        'migrate:fresh:seed' => ['--seed' => true],
+        'db:seed' => [],
+        'optimize' => [],
+        'cache:clear' => [],
+        'config:cache' => [],
+        'route:cache' => [],
+        'storage:link' => [],
     ];
 
-    if (!in_array($command, $allowedCommands)) {
+    // Special handling if command is like migrate:fresh:seed
+    $args = [];
+    if (isset($allowedCommands[$command])) {
+        $args = $allowedCommands[$command];
+    } else {
         abort(400, 'Command not allowed');
     }
 
     try {
-        $options = ['--force' => true];
-
-        // For migrate:fresh you might want to pass extra options here if needed
-        Artisan::call($command, $options);
+        $args['--force'] = true; // Add --force to all commands
+        Artisan::call(str_replace(':seed', '', $command), $args);
 
         return response()->json([
             'status' => 'success',
